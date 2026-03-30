@@ -4,22 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
-    <title>3D Solar System | By Johan Adrian Ang</title>
+    <title>3D Solar System | By dinzimelle</title>
 
     <style>
         body { margin: 0; background-color: #030303 !important; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; }
         
-        /* Left Information Panel */
+        /* Left Information Panel (Now Draggable!) */
         #info-panel { 
             position: absolute; top: 20px; left: 20px; 
-            background: rgba(15, 15, 15, 0.85); padding: 25px; 
+            background: rgba(15, 15, 15, 0.85); padding: 20px 25px 25px 25px; 
             border-radius: 12px; border: 1px solid #444; 
             width: 300px; z-index: 10; 
             backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             max-height: 70vh; overflow-y: auto;
+            /* Removed 'transition: all' so dragging is buttery smooth */
         }
+
+        /* NEW: Drag Handle for Mobile & Desktop */
+        #drag-handle {
+            width: 100%; text-align: center; color: #666; font-size: 1.2rem;
+            cursor: grab; margin-bottom: 5px; touch-action: none; padding-bottom: 5px;
+        }
+        #drag-handle:active { cursor: grabbing; }
         
         h2 { color: #ffcc00; margin: 0 0 5px 0; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between;}
         .nickname { font-size: 0.85rem; color: #88ccff; display: block; margin-bottom: 10px; font-style: italic; }
@@ -75,23 +82,26 @@
         #quiz-question { color: #fff; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.4; font-weight: bold;}
         #quiz-feedback { color: #ff4422; font-weight: bold; margin-bottom: 10px; min-height: 20px; }
         
-        #btn-quiz-start {
-            background: #88ccff; color: #000; border: none; padding: 10px; border-radius: 6px; 
+        #btn-quiz-start, #btn-quiz-exit {
+            border: none; padding: 10px; border-radius: 6px; 
             font-weight: bold; cursor: pointer; width: 100%; transition: 0.2s;
         }
+        #btn-quiz-start { background: #88ccff; color: #000; }
         #btn-quiz-start:hover { background: #66b3ff; }
-        
-        #btn-quiz-exit {
-            background: #ff4422; color: #fff; border: none; padding: 10px; border-radius: 6px; 
-            font-weight: bold; cursor: pointer; width: 100%; transition: 0.2s; display: none;
-        }
+        #btn-quiz-exit { background: #ff4422; color: #fff; display: none; }
         #btn-quiz-exit:hover { background: #dd3311; }
 
         .hint { position: absolute; bottom: 35px; width: 100%; text-align: center; color: #888; font-size: 0.9rem; pointer-events: none; z-index: 5;}
         
-        /* Header kept, Footer removed! */
-        .project-header { position: absolute; top: 20px; right: 20px; color: white; font-weight: bold; font-size: 1.1rem; z-index: 100; pointer-events: none; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); }
-        
+        /* NEW: Matrix Green Footer Signature */
+        .matrix-footer { 
+            position: absolute; bottom: 20px; right: 20px; 
+            color: #00ff00; font-family: 'Courier New', Courier, monospace; 
+            font-weight: bold; font-size: 1rem; text-align: right; 
+            z-index: 5; pointer-events: none; 
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.8); 
+        }
+
         #error-log { position: absolute; top: 0; left: 0; width: 100%; background: rgba(255,0,0,0.8); color: white; padding: 10px; font-family: monospace; z-index: 9999; display: none; text-align: center; font-weight: bold; }
 
         canvas { display: block !important; }
@@ -121,7 +131,11 @@
         <button id="btn-quiz-exit">Exit Quiz 🛑</button>
     </div>
 
+    <div class="matrix-footer">Project created by dinzimelle</div>
+
     <div id="info-panel">
+        <div id="drag-handle" title="Drag to move panel">☰</div>
+        
         <h2 id="p-name">☀️ The Sun <span class="audio-icon" id="audio-indicator">🔊</span></h2>
         <span id="p-nickname" class="nickname">The Heart of our System</span>
         <p id="p-desc">The core of our solar system. A Yellow Dwarf star made of hot plasma.</p>
@@ -223,9 +237,45 @@
             planets.push({ mesh, data, angle: Math.random() * Math.PI * 2 });
         });
 
+        // --- NEW: DRAGGABLE INFO PANEL LOGIC ---
+        const dragHandle = document.getElementById('drag-handle');
+        const infoPanelEl = document.getElementById('info-panel');
+        let isDragging = false;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+
+        dragHandle.addEventListener('pointerdown', (e) => {
+            isDragging = true;
+            // Calculate where the user clicked relative to the panel's top-left corner
+            const rect = infoPanelEl.getBoundingClientRect();
+            dragOffsetX = e.clientX - rect.left;
+            dragOffsetY = e.clientY - rect.top;
+            
+            // Stop OrbitControls from spinning the 3D camera while dragging
+            e.stopPropagation(); 
+        });
+
+        window.addEventListener('pointermove', (e) => {
+            if (!isDragging) return;
+            
+            // Calculate new position
+            let newLeft = e.clientX - dragOffsetX;
+            let newTop = e.clientY - dragOffsetY;
+
+            // Optional: Keep it inside the screen boundaries
+            newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - infoPanelEl.offsetWidth));
+            newTop = Math.max(0, Math.min(newTop, window.innerHeight - infoPanelEl.offsetHeight));
+
+            infoPanelEl.style.left = `${newLeft}px`;
+            infoPanelEl.style.top = `${newTop}px`;
+        });
+
+        window.addEventListener('pointerup', () => {
+            isDragging = false;
+        });
+
+
         // --- 4. AUDIO ENGINE ---
-        const infoPanel = document.getElementById('info-panel');
-        
         function speakSafely(text) {
             try {
                 if (!('speechSynthesis' in window)) return;
@@ -235,9 +285,9 @@
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.rate = 0.9; 
                 
-                utterance.onstart = () => infoPanel.classList.add('speaking');
-                utterance.onend = () => infoPanel.classList.remove('speaking');
-                utterance.onerror = () => infoPanel.classList.remove('speaking');
+                utterance.onstart = () => infoPanelEl.classList.add('speaking');
+                utterance.onend = () => infoPanelEl.classList.remove('speaking');
+                utterance.onerror = () => infoPanelEl.classList.remove('speaking');
 
                 synth.speak(utterance);
             } catch (error) { console.log("Audio skipped."); }
@@ -248,7 +298,7 @@
                 if ('speechSynthesis' in window && window.speechSynthesis.speaking) {
                     window.speechSynthesis.cancel();
                 }
-                infoPanel.classList.remove('speaking');
+                infoPanelEl.classList.remove('speaking');
             } catch(e) {}
         }
 
