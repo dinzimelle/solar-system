@@ -6,12 +6,12 @@
     <meta name="color-scheme" content="light dark">
     <title>3D Solar System</title>
 
-    <script data-goatcounter="https://dinzimelle.goatcounter.com/count"
-            async src="//gc.zgo.at/count.js"></script>
+    <script data-goatcounter="https://dinzimelle.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
     <style>
         body { margin: 0; background-color: #030303 !important; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; }
         
+        /* Draggable Info Panel */
         #info-panel { 
             position: absolute; top: 20px; left: 20px; 
             background: rgba(15, 15, 15, 0.85); padding: 20px 25px 25px 25px; 
@@ -27,7 +27,23 @@
             cursor: grab; margin-bottom: 5px; touch-action: none; padding-bottom: 5px;
         }
         #drag-handle:active { cursor: grabbing; }
+
+        /* Draggable Quiz Panel */
+        #quiz-panel {
+            position: absolute; top: 20px; right: 20px; 
+            background: rgba(15, 15, 15, 0.85); padding: 20px; 
+            border-radius: 12px; border: 1px solid #444; 
+            width: 250px; z-index: 10; backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center;
+        }
+
+        #quiz-drag-handle {
+            width: 100%; text-align: center; color: #666; font-size: 1.2rem;
+            cursor: grab; margin-bottom: 5px; touch-action: none; padding-bottom: 5px;
+        }
+        #quiz-drag-handle:active { cursor: grabbing; }
         
+        /* Typography & UI Elements */
         h2 { color: #ffcc00; margin: 0 0 5px 0; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between;}
         .nickname { font-size: 0.85rem; color: #88ccff; display: block; margin-bottom: 10px; font-style: italic; }
         
@@ -54,6 +70,7 @@
         }
         button.action-btn:hover { background: #e6b800; }
         
+        /* Time Warp Controls */
         #time-controls {
             position: absolute; bottom: 20px; left: 20px; 
             display: flex; gap: 15px; background: rgba(20, 20, 20, 0.85); 
@@ -69,13 +86,7 @@
         .time-btn:hover { background: #333; transform: scale(1.1); }
         .time-btn.active { background: #ffcc00; color: #000; border-color: #ffcc00; }
 
-        #quiz-panel {
-            position: absolute; top: 20px; right: 20px; 
-            background: rgba(15, 15, 15, 0.85); padding: 20px; 
-            border-radius: 12px; border: 1px solid #444; 
-            width: 250px; z-index: 10; backdrop-filter: blur(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center;
-        }
+        /* Quiz UI Inner Elements */
         #quiz-title { color: #88ccff; margin: 0 0 10px 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;}
         #quiz-question { color: #fff; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.4; font-weight: bold;}
         #quiz-feedback { color: #ff4422; font-weight: bold; margin-bottom: 10px; min-height: 20px; }
@@ -91,6 +102,7 @@
 
         .hint { position: absolute; bottom: 35px; width: 100%; text-align: center; color: #888; font-size: 0.9rem; pointer-events: none; z-index: 5;}
         
+        /* Matrix Green Footer Signature */
         .matrix-footer { 
             position: absolute; bottom: 20px; right: 20px; 
             color: #00ff00; font-family: 'Courier New', Courier, monospace; 
@@ -100,13 +112,12 @@
         }
 
         #error-log { position: absolute; top: 0; left: 0; width: 100%; background: rgba(255,0,0,0.8); color: white; padding: 10px; font-family: monospace; z-index: 9999; display: none; text-align: center; font-weight: bold; }
-
         canvas { display: block !important; }
         .fact-label { color: #ffcc00; font-weight: bold; }
         
-        #info-panel::-webkit-scrollbar { width: 6px; }
-        #info-panel::-webkit-scrollbar-track { background: transparent; }
-        #info-panel::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
+        #info-panel::-webkit-scrollbar, #quiz-panel::-webkit-scrollbar { width: 6px; }
+        #info-panel::-webkit-scrollbar-track, #quiz-panel::-webkit-scrollbar-track { background: transparent; }
+        #info-panel::-webkit-scrollbar-thumb, #quiz-panel::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -121,6 +132,7 @@
     </script>
 
     <div id="quiz-panel">
+        <div id="quiz-drag-handle" title="Drag to move quiz">☰</div>
         <h3 id="quiz-title">🎯 Cosmic Quiz</h3>
         <div id="quiz-question">Ready to test your space knowledge?</div>
         <div id="quiz-feedback"></div>
@@ -170,18 +182,18 @@
         controls.target.copy(defaultTarget);
         controls.maxDistance = 250;
 
-        // --- NEW: TEXTURE LOADER & LIGHTING ---
+        // --- 2. TEXTURE LOADER & LIGHTING ---
         const textureLoader = new THREE.TextureLoader();
 
-        // Ambient Light: Gives a tiny bit of light to the whole scene so dark sides aren't pitch black
+        // Ambient Light: Soft base light
         const ambientLight = new THREE.AmbientLight(0x222222); 
         scene.add(ambientLight);
 
-        // Point Light: The "Sunlight" shooting out from the center (0,0,0)
+        // Point Light: Realistic Sun rays shooting outward
         const sunLight = new THREE.PointLight(0xffffff, 2, 300);
         scene.add(sunLight);
 
-        // --- 2. BACKGROUND STARS ---
+        // --- 3. BACKGROUND STARS ---
         const starGeom = new THREE.BufferGeometry();
         const starCount = 2000;
         const starPosArray = new Float32Array(starCount * 3);
@@ -193,8 +205,7 @@
         const stars = new THREE.Points(starGeom, starMat);
         scene.add(stars);
 
-        // --- 3. DATA & REALISTIC OBJECTS ---
-        // The Sun uses MeshBasicMaterial because it emits light, it shouldn't have shadows on it!
+        // --- 4. DATA & REALISTIC OBJECTS ---
         const sunTexture = textureLoader.load('textures/sun.jpg');
         const sun = new THREE.Mesh(
             new THREE.SphereGeometry(6, 64, 64), 
@@ -202,7 +213,6 @@
         );
         scene.add(sun);
 
-        // Notice the new "textureUrl" property! Make sure the names match your downloaded files.
         const planetsData = [
             { name: "Mercury", textureUrl: 'textures/mercury.jpg', emoji: "🪨", nickname: "The Swift Planet", dist: 12, speed: 0.02, size: 1.2, info: "The smallest planet and closest to the Sun.", funfact: "A year on Mercury is just 88 days, but a single day lasts 176 Earth days!", details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" },
             { name: "Venus", textureUrl: 'textures/venus.jpg', emoji: "🔥", nickname: "The Morning Star", dist: 18, speed: 0.015, size: 1.8, info: "The hottest planet in our solar system.", funfact: "Venus spins backwards! The Sun rises in the west and sets in the east.", details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" },
@@ -224,14 +234,12 @@
             path.rotation.x = Math.PI / 2;
             scene.add(path);
 
-            // CHANGED to MeshStandardMaterial to react to light and texture
             const planetTexture = textureLoader.load(data.textureUrl);
             const mesh = new THREE.Mesh(
-                new THREE.SphereGeometry(data.size, 64, 64), // Increased segments for smoother spheres
+                new THREE.SphereGeometry(data.size, 64, 64), 
                 new THREE.MeshStandardMaterial({ map: planetTexture, roughness: 0.8, metalness: 0.1 })
             );
 
-            // Keep Saturn's Rings (You could add a texture here too later!)
             if (data.name === "Saturn") {
                 const ringGeom = new THREE.RingGeometry(data.size * 1.3, data.size * 2.2, 64);
                 const ringMat = new THREE.MeshBasicMaterial({ color: 0xccbb88, side: THREE.DoubleSide, transparent: true, opacity: 0.7 });
@@ -244,7 +252,7 @@
             planets.push({ mesh, data, angle: Math.random() * Math.PI * 2 });
         });
 
-        // --- DRAGGABLE INFO PANEL LOGIC ---
+        // --- 5. DRAGGABLE INFO PANEL LOGIC ---
         const dragHandle = document.getElementById('drag-handle');
         const infoPanelEl = document.getElementById('info-panel');
         let isDragging = false;
@@ -267,7 +275,35 @@
         });
         window.addEventListener('pointerup', () => { isDragging = false; });
 
-        // --- AUDIO ENGINE ---
+        // --- 6. DRAGGABLE QUIZ PANEL LOGIC ---
+        const quizDragHandle = document.getElementById('quiz-drag-handle');
+        const quizPanelEl = document.getElementById('quiz-panel');
+        let isQuizDragging = false;
+        let quizDragOffsetX = 0; let quizDragOffsetY = 0;
+
+        quizDragHandle.addEventListener('pointerdown', (e) => {
+            isQuizDragging = true;
+            const rect = quizPanelEl.getBoundingClientRect();
+            quizDragOffsetX = e.clientX - rect.left; 
+            quizDragOffsetY = e.clientY - rect.top;
+            e.stopPropagation(); 
+        });
+
+        window.addEventListener('pointermove', (e) => {
+            if (!isQuizDragging) return;
+            let newLeft = e.clientX - quizDragOffsetX;
+            let newTop = e.clientY - quizDragOffsetY;
+            newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - quizPanelEl.offsetWidth));
+            newTop = Math.max(0, Math.min(newTop, window.innerHeight - quizPanelEl.offsetHeight));
+            
+            // Clear 'right' property so 'left' positioning works cleanly
+            quizPanelEl.style.right = 'auto'; 
+            quizPanelEl.style.left = `${newLeft}px`; 
+            quizPanelEl.style.top = `${newTop}px`;
+        });
+        window.addEventListener('pointerup', () => { isQuizDragging = false; });
+
+        // --- 7. AUDIO ENGINE ---
         function speakSafely(text) {
             try {
                 if (!('speechSynthesis' in window)) return;
@@ -291,7 +327,7 @@
             } catch(e) {}
         }
 
-        // --- COSMIC QUIZ LOGIC ---
+        // --- 8. COSMIC QUIZ LOGIC ---
         const quizQuestions = [
             { q: "Can you find the hottest planet in the Solar System?", answer: "Venus" },
             { q: "Which planet is known as the Red Planet?", answer: "Mars" },
@@ -337,7 +373,7 @@
             quizQuestionEl.innerText = currentQuestion.q; quizFeedbackEl.innerText = ""; speakSafely(currentQuestion.q);
         }
 
-        // --- INTERACTIVITY & CAMERA LOGIC ---
+        // --- 9. INTERACTIVITY & CAMERA LOGIC ---
         let focusedPlanet = null;
         let globalSpeed = 1.0; 
         let returningToCenter = false;
@@ -419,7 +455,7 @@
             resetBtn.style.display = 'none';
         };
 
-        // --- 7. ANIMATION LOOP ---
+        // --- 10. ANIMATION LOOP ---
         const targetCamPos = new THREE.Vector3();
         
         function animate() {
@@ -431,7 +467,6 @@
             planets.forEach(p => {
                 p.angle += (p.data.speed * globalSpeed);
                 p.mesh.position.set(Math.cos(p.angle) * p.data.dist, 0, Math.sin(p.angle) * p.data.dist);
-                // Rotate planets on their axis
                 p.mesh.rotation.y += (0.01 * globalSpeed); 
             });
 
