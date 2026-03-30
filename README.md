@@ -53,4 +53,4 @@ This project followed a full **SDLC (Software Development Life Cycle)**:
 **Project Created by dinzimelle** *Passionate about EdTech, 3D Graphics, and Modern Web Architecture.*
 
 ---
-© 2024 solarsystem3d.space
+© 2026 solarsystem3d.space
