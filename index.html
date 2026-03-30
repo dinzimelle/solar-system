@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
-    <title>3D Solar System | By dinzimelle</title>
+    <title>3D Solar System</title>
 
     <style>
         body { margin: 0; background-color: #030303 !important; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; }
         
-        /* Left Information Panel (Now Draggable!) */
         #info-panel { 
             position: absolute; top: 20px; left: 20px; 
             background: rgba(15, 15, 15, 0.85); padding: 20px 25px 25px 25px; 
@@ -18,10 +17,8 @@
             backdrop-filter: blur(5px);
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             max-height: 70vh; overflow-y: auto;
-            /* Removed 'transition: all' so dragging is buttery smooth */
         }
 
-        /* NEW: Drag Handle for Mobile & Desktop */
         #drag-handle {
             width: 100%; text-align: center; color: #666; font-size: 1.2rem;
             cursor: grab; margin-bottom: 5px; touch-action: none; padding-bottom: 5px;
@@ -54,7 +51,6 @@
         }
         button.action-btn:hover { background: #e6b800; }
         
-        /* Time Warp Controls */
         #time-controls {
             position: absolute; bottom: 20px; left: 20px; 
             display: flex; gap: 15px; background: rgba(20, 20, 20, 0.85); 
@@ -70,7 +66,6 @@
         .time-btn:hover { background: #333; transform: scale(1.1); }
         .time-btn.active { background: #ffcc00; color: #000; border-color: #ffcc00; }
 
-        /* Cosmic Quiz Panel */
         #quiz-panel {
             position: absolute; top: 20px; right: 20px; 
             background: rgba(15, 15, 15, 0.85); padding: 20px; 
@@ -93,7 +88,6 @@
 
         .hint { position: absolute; bottom: 35px; width: 100%; text-align: center; color: #888; font-size: 0.9rem; pointer-events: none; z-index: 5;}
         
-        /* NEW: Matrix Green Footer Signature */
         .matrix-footer { 
             position: absolute; bottom: 20px; right: 20px; 
             color: #00ff00; font-family: 'Courier New', Courier, monospace; 
@@ -159,7 +153,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
@@ -177,6 +170,7 @@
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
+        controls.dampingFactor = 0.05; // Smooth dragging
         controls.target.copy(defaultTarget);
         controls.maxDistance = 250;
 
@@ -192,23 +186,23 @@
         const stars = new THREE.Points(starGeom, starMat);
         scene.add(stars);
 
-        // --- 3. DATA & OBJECTS ---
+        // --- 3. DATA & OBJECTS (PLANETS SCALED UP!) ---
         const sun = new THREE.Mesh(
-            new THREE.SphereGeometry(4, 32, 32),
+            new THREE.SphereGeometry(6, 32, 32), // Sun increased from 4 to 6
             new THREE.MeshBasicMaterial({ color: 0xffcc00 })
         );
         scene.add(sun);
 
         const planetsData = [
-            { name: "Mercury", emoji: "🪨", nickname: "The Swift Planet", color: 0xaaaaaa, dist: 9, speed: 0.02, size: 0.8, info: "The smallest planet and closest to the Sun.", funfact: "A year on Mercury is just 88 days, but a single day lasts 176 Earth days!", details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" },
-            { name: "Venus", emoji: "🔥", nickname: "The Morning Star", color: 0xffa500, dist: 14, speed: 0.015, size: 1.2, info: "The hottest planet in our solar system.", funfact: "Venus spins backwards! The Sun rises in the west and sets in the east.", details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" },
-            { name: "Earth", emoji: "🌍", nickname: "The Blue Marble", color: 0x4488ff, dist: 19, speed: 0.01, size: 1.3, info: "Our home planet and the only known harbor of life.", funfact: "Earth is the only planet not named after a mythological god or goddess.", details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 1" },
-            { name: "Mars", emoji: "🔴", nickname: "The Red Planet", color: 0xff3333, dist: 25, speed: 0.008, size: 1.0, info: "Often called the 'Red Planet' due to iron oxide on its surface.", funfact: "Mars has lower gravity, so if you weigh 100 lbs on Earth, you'd only weigh 38 lbs on Mars!", details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 2" },
-            { name: "Jupiter", emoji: "🌩️", nickname: "The Gas Giant", color: 0xddaa77, dist: 33, speed: 0.005, size: 2.5, info: "The largest planet in our solar system.", funfact: "Jupiter spins so fast that a day is only 10 hours long, but a year takes 12 Earth years!", details: "<span class='fact-label'>Type:</span> Gas Giant<br><span class='fact-label'>Moons:</span> 95 confirmed" },
-            { name: "Saturn", emoji: "🪐", nickname: "The Ringed Jewel", color: 0xeedd88, dist: 43, speed: 0.003, size: 2.2, info: "Famous for its stunning, complex ring system.", funfact: "Saturn is so light and airy that if you had a bathtub big enough, it would float!", details: "<span class='fact-label'>Type:</span> Gas Giant<br><span class='fact-label'>Moons:</span> 146 confirmed" },
-            { name: "Uranus", emoji: "🧊", nickname: "The Ice Giant", color: 0x66ccff, dist: 53, speed: 0.002, size: 1.7, info: "The only planet that spins on its side.", funfact: "Uranus rolls around the Sun on its side like a giant blue barrel!", details: "<span class='fact-label'>Type:</span> Ice Giant<br><span class='fact-label'>Moons:</span> 28" },
-            { name: "Neptune", emoji: "🌪️", nickname: "The Windy Planet", color: 0x3333cc, dist: 62, speed: 0.0015, size: 1.6, info: "The windiest and most distant major planet.", funfact: "Winds on Neptune blow faster than a fighter jet, reaching 1,200 miles per hour!", details: "<span class='fact-label'>Type:</span> Ice Giant<br><span class='fact-label'>Moons:</span> 16" },
-            { name: "Pluto", emoji: "❄️", nickname: "The Dwarf Planet", color: 0x998888, dist: 70, speed: 0.001, size: 0.6, info: "A famous resident of the Kuiper Belt.", funfact: "Pluto is so small that it is actually smaller than Earth's moon!", details: "<span class='fact-label'>Type:</span> Dwarf Planet<br><span class='fact-label'>Moons:</span> 5" }
+            { name: "Mercury", emoji: "🪨", nickname: "The Swift Planet", color: 0xaaaaaa, dist: 12, speed: 0.02, size: 1.2, info: "The smallest planet and closest to the Sun.", funfact: "A year on Mercury is just 88 days, but a single day lasts 176 Earth days!", details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" },
+            { name: "Venus", emoji: "🔥", nickname: "The Morning Star", color: 0xffa500, dist: 18, speed: 0.015, size: 1.8, info: "The hottest planet in our solar system.", funfact: "Venus spins backwards! The Sun rises in the west and sets in the east.", details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" },
+            { name: "Earth", emoji: "🌍", nickname: "The Blue Marble", color: 0x4488ff, dist: 25, speed: 0.01, size: 2.0, info: "Our home planet and the only known harbor of life.", funfact: "Earth is the only planet not named after a mythological god or goddess.", details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 1" },
+            { name: "Mars", emoji: "🔴", nickname: "The Red Planet", color: 0xff3333, dist: 32, speed: 0.008, size: 1.5, info: "Often called the 'Red Planet' due to iron oxide on its surface.", funfact: "Mars has lower gravity, so if you weigh 100 lbs on Earth, you'd only weigh 38 lbs on Mars!", details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 2" },
+            { name: "Jupiter", emoji: "🌩️", nickname: "The Gas Giant", color: 0xddaa77, dist: 45, speed: 0.005, size: 3.5, info: "The largest planet in our solar system.", funfact: "Jupiter spins so fast that a day is only 10 hours long, but a year takes 12 Earth years!", details: "<span class='fact-label'>Type:</span> Gas Giant<br><span class='fact-label'>Moons:</span> 95 confirmed" },
+            { name: "Saturn", emoji: "🪐", nickname: "The Ringed Jewel", color: 0xeedd88, dist: 58, speed: 0.003, size: 3.0, info: "Famous for its stunning, complex ring system.", funfact: "Saturn is so light and airy that if you had a bathtub big enough, it would float!", details: "<span class='fact-label'>Type:</span> Gas Giant<br><span class='fact-label'>Moons:</span> 146 confirmed" },
+            { name: "Uranus", emoji: "🧊", nickname: "The Ice Giant", color: 0x66ccff, dist: 70, speed: 0.002, size: 2.5, info: "The only planet that spins on its side.", funfact: "Uranus rolls around the Sun on its side like a giant blue barrel!", details: "<span class='fact-label'>Type:</span> Ice Giant<br><span class='fact-label'>Moons:</span> 28" },
+            { name: "Neptune", emoji: "🌪️", nickname: "The Windy Planet", color: 0x3333cc, dist: 82, speed: 0.0015, size: 2.4, info: "The windiest and most distant major planet.", funfact: "Winds on Neptune blow faster than a fighter jet, reaching 1,200 miles per hour!", details: "<span class='fact-label'>Type:</span> Ice Giant<br><span class='fact-label'>Moons:</span> 16" },
+            { name: "Pluto", emoji: "❄️", nickname: "The Dwarf Planet", color: 0x998888, dist: 92, speed: 0.001, size: 0.9, info: "A famous resident of the Kuiper Belt.", funfact: "Pluto is so small that it is actually smaller than Earth's moon!", details: "<span class='fact-label'>Type:</span> Dwarf Planet<br><span class='fact-label'>Moons:</span> 5" }
         ];
 
         const planets = [];
@@ -226,7 +220,7 @@
             );
 
             if (data.name === "Saturn") {
-                const ringGeom = new THREE.RingGeometry(data.size * 1.3, data.size * 2.0, 32);
+                const ringGeom = new THREE.RingGeometry(data.size * 1.3, data.size * 2.2, 32); // Adjusted ring scale
                 const ringMat = new THREE.MeshBasicMaterial({ color: 0xccbb88, side: THREE.DoubleSide, transparent: true, opacity: 0.8 });
                 const saturnRing = new THREE.Mesh(ringGeom, ringMat);
                 saturnRing.rotation.x = Math.PI / 2.2; 
@@ -237,58 +231,40 @@
             planets.push({ mesh, data, angle: Math.random() * Math.PI * 2 });
         });
 
-        // --- NEW: DRAGGABLE INFO PANEL LOGIC ---
+        // --- DRAGGABLE INFO PANEL LOGIC ---
         const dragHandle = document.getElementById('drag-handle');
         const infoPanelEl = document.getElementById('info-panel');
         let isDragging = false;
-        let dragOffsetX = 0;
-        let dragOffsetY = 0;
+        let dragOffsetX = 0; let dragOffsetY = 0;
 
         dragHandle.addEventListener('pointerdown', (e) => {
             isDragging = true;
-            // Calculate where the user clicked relative to the panel's top-left corner
             const rect = infoPanelEl.getBoundingClientRect();
-            dragOffsetX = e.clientX - rect.left;
-            dragOffsetY = e.clientY - rect.top;
-            
-            // Stop OrbitControls from spinning the 3D camera while dragging
+            dragOffsetX = e.clientX - rect.left; dragOffsetY = e.clientY - rect.top;
             e.stopPropagation(); 
         });
 
         window.addEventListener('pointermove', (e) => {
             if (!isDragging) return;
-            
-            // Calculate new position
             let newLeft = e.clientX - dragOffsetX;
             let newTop = e.clientY - dragOffsetY;
-
-            // Optional: Keep it inside the screen boundaries
             newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - infoPanelEl.offsetWidth));
             newTop = Math.max(0, Math.min(newTop, window.innerHeight - infoPanelEl.offsetHeight));
-
-            infoPanelEl.style.left = `${newLeft}px`;
-            infoPanelEl.style.top = `${newTop}px`;
+            infoPanelEl.style.left = `${newLeft}px`; infoPanelEl.style.top = `${newTop}px`;
         });
+        window.addEventListener('pointerup', () => { isDragging = false; });
 
-        window.addEventListener('pointerup', () => {
-            isDragging = false;
-        });
-
-
-        // --- 4. AUDIO ENGINE ---
+        // --- AUDIO ENGINE ---
         function speakSafely(text) {
             try {
                 if (!('speechSynthesis' in window)) return;
                 const synth = window.speechSynthesis;
                 if (synth.speaking) synth.cancel();
-
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.rate = 0.9; 
-                
                 utterance.onstart = () => infoPanelEl.classList.add('speaking');
                 utterance.onend = () => infoPanelEl.classList.remove('speaking');
                 utterance.onerror = () => infoPanelEl.classList.remove('speaking');
-
                 synth.speak(utterance);
             } catch (error) { console.log("Audio skipped."); }
         }
@@ -302,7 +278,7 @@
             } catch(e) {}
         }
 
-        // --- 5. COSMIC QUIZ LOGIC ---
+        // --- COSMIC QUIZ LOGIC ---
         const quizQuestions = [
             { q: "Can you find the hottest planet in the Solar System?", answer: "Venus" },
             { q: "Which planet is known as the Red Planet?", answer: "Mars" },
@@ -313,65 +289,45 @@
             { q: "Find the tiny Dwarf Planet out in the Kuiper Belt!", answer: "Pluto" }
         ];
         
-        let quizActive = false;
-        let currentQuestion = null;
-        let questionQueue = [];
-
+        let quizActive = false; let currentQuestion = null; let questionQueue = [];
         const quizQuestionEl = document.getElementById('quiz-question');
         const quizFeedbackEl = document.getElementById('quiz-feedback');
         const btnQuizStart = document.getElementById('btn-quiz-start');
         const btnQuizExit = document.getElementById('btn-quiz-exit');
 
         btnQuizStart.onclick = function() {
-            quizActive = true;
-            btnQuizStart.style.display = 'none';
-            btnQuizExit.style.display = 'block'; 
-            
-            questionQueue = [...quizQuestions].sort(() => Math.random() - 0.5);
-            nextQuestion();
+            quizActive = true; btnQuizStart.style.display = 'none'; btnQuizExit.style.display = 'block'; 
+            questionQueue = [...quizQuestions].sort(() => Math.random() - 0.5); nextQuestion();
         };
 
         btnQuizExit.onclick = function() {
-            quizActive = false;
-            currentQuestion = null;
-            
-            btnQuizExit.style.display = 'none';
-            btnQuizStart.style.display = 'block';
-            btnQuizStart.innerText = "Start Quiz!";
-            
-            quizQuestionEl.innerText = "Ready to test your space knowledge?";
-            quizFeedbackEl.innerText = "";
-            
+            quizActive = false; currentQuestion = null;
+            btnQuizExit.style.display = 'none'; btnQuizStart.style.display = 'block'; btnQuizStart.innerText = "Start Quiz!";
+            quizQuestionEl.innerText = "Ready to test your space knowledge?"; quizFeedbackEl.innerText = "";
             stopAudioSafely();
         };
 
         function nextQuestion() {
             if (!quizActive) return; 
-
             if (questionQueue.length === 0) {
                 quizQuestionEl.innerText = "You found them all! You are a Space Expert! 🏆";
                 quizFeedbackEl.innerText = "";
                 speakSafely("You found them all! You are a Space Expert!");
                 confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
-                
                 setTimeout(() => {
-                    quizActive = false;
-                    btnQuizExit.style.display = 'none';
-                    btnQuizStart.innerText = "Play Again!";
-                    btnQuizStart.style.display = 'block';
+                    quizActive = false; btnQuizExit.style.display = 'none';
+                    btnQuizStart.innerText = "Play Again!"; btnQuizStart.style.display = 'block';
                 }, 4000);
                 return;
             }
-
             currentQuestion = questionQueue.pop();
-            quizQuestionEl.innerText = currentQuestion.q;
-            quizFeedbackEl.innerText = "";
-            speakSafely(currentQuestion.q);
+            quizQuestionEl.innerText = currentQuestion.q; quizFeedbackEl.innerText = ""; speakSafely(currentQuestion.q);
         }
 
-        // --- 6. INTERACTIVITY & UI STATE ---
+        // --- INTERACTIVITY & CAMERA LOGIC ---
         let focusedPlanet = null;
         let globalSpeed = 1.0; 
+        let returningToCenter = false; // NEW: The camera auto-pilot switch
 
         const titleEl = document.getElementById('p-name');
         const nicknameEl = document.getElementById('p-nickname');
@@ -380,7 +336,6 @@
         const funfactTextEl = document.getElementById('p-funfact-text');
         const resetBtn = document.getElementById('reset-btn');
 
-        // Time Warp UI
         const btnPause = document.getElementById('btn-pause');
         const btnNormal = document.getElementById('btn-normal');
         const btnFast = document.getElementById('btn-fast');
@@ -397,6 +352,11 @@
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
 
+        // Give control back to user if they manually grab the screen during a flight
+        controls.addEventListener('start', () => {
+            returningToCenter = false; 
+        });
+
         renderer.domElement.addEventListener('pointerdown', (event) => {
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -408,34 +368,24 @@
 
             if (intersects.length > 0) {
                 focusedPlanet = planets.find(p => p.mesh === intersects[0].object);
+                returningToCenter = false; // Turn off autopilot to focus on planet
                 
-                // Quiz Logic
                 if (quizActive && currentQuestion) {
                     if (focusedPlanet.data.name === currentQuestion.answer) {
                         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-                        quizFeedbackEl.style.color = "#44ff44";
-                        quizFeedbackEl.innerText = `Correct! That's ${focusedPlanet.data.name}!`;
+                        quizFeedbackEl.style.color = "#44ff44"; quizFeedbackEl.innerText = `Correct! That's ${focusedPlanet.data.name}!`;
                         speakSafely(`Correct! That is ${focusedPlanet.data.name}.`);
-                        
-                        setTimeout(() => {
-                            if (quizActive) nextQuestion(); 
-                        }, 2500); 
+                        setTimeout(() => { if (quizActive) nextQuestion(); }, 2500); 
                     } else {
-                        quizFeedbackEl.style.color = "#ff4422";
-                        quizFeedbackEl.innerText = `Oops! That's ${focusedPlanet.data.name}. Try again!`;
+                        quizFeedbackEl.style.color = "#ff4422"; quizFeedbackEl.innerText = `Oops! That's ${focusedPlanet.data.name}. Try again!`;
                         speakSafely(`Oops! That is ${focusedPlanet.data.name}. Try again!`);
                     }
                 }
 
-                // Normal Info Panel Update
                 titleEl.innerHTML = `${focusedPlanet.data.emoji} ${focusedPlanet.data.name} <span class="audio-icon" id="audio-indicator">🔊</span>`;
-                nicknameEl.innerText = focusedPlanet.data.nickname;
-                nicknameEl.style.display = 'block';
-                descEl.innerText = focusedPlanet.data.info;
-                funfactTextEl.innerText = focusedPlanet.data.funfact; 
-                detailsEl.innerHTML = focusedPlanet.data.details; 
-                
-                detailsEl.style.display = 'block';
+                nicknameEl.innerText = focusedPlanet.data.nickname; nicknameEl.style.display = 'block';
+                descEl.innerText = focusedPlanet.data.info; funfactTextEl.innerText = focusedPlanet.data.funfact; 
+                detailsEl.innerHTML = focusedPlanet.data.details; detailsEl.style.display = 'block';
                 resetBtn.style.display = 'block';
 
                 if (!quizActive) {
@@ -446,6 +396,7 @@
 
         resetBtn.onclick = function() {
             focusedPlanet = null;
+            returningToCenter = true; // Tell the camera to fly back home!
             stopAudioSafely();
 
             titleEl.innerHTML = `☀️ The Sun <span class="audio-icon" id="audio-indicator">🔊</span>`;
@@ -468,16 +419,23 @@
                 p.mesh.rotation.y += (0.01 * globalSpeed); 
             });
 
+            // The New Unlocked Camera Logic
             if (focusedPlanet) {
                 const pPos = focusedPlanet.mesh.position;
-                const offset = focusedPlanet.data.size * 2.5;
+                const offset = focusedPlanet.data.size * 2.8; // Adjusted offset for bigger planets
                 targetCamPos.set(pPos.x + offset + 2, pPos.y + offset + 1, pPos.z + offset + 3);
                 
                 camera.position.lerp(targetCamPos, 0.05);
                 controls.target.lerp(pPos, 0.05);
-            } else {
-                camera.position.lerp(defaultCamPos, 0.04);
-                controls.target.lerp(defaultTarget, 0.04);
+            } else if (returningToCenter) {
+                // Fly back to the middle
+                camera.position.lerp(defaultCamPos, 0.05);
+                controls.target.lerp(defaultTarget, 0.05);
+                
+                // Once we are close enough to the center, turn off the autopilot so the user can spin freely!
+                if (camera.position.distanceTo(defaultCamPos) < 1.0) {
+                    returningToCenter = false;
+                }
             }
 
             stars.rotation.y += (globalSpeed === 0 ? 0 : 0.0001 * globalSpeed); 
