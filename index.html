@@ -193,7 +193,8 @@
         const sunLight = new THREE.PointLight(0xffffff, 2, 300);
         scene.add(sunLight);
 
-        // --- 3. BACKGROUND STARS ---
+        // --- 3. BACKGROUND STARS & MILKY WAY ---
+        // Floating particles for depth
         const starGeom = new THREE.BufferGeometry();
         const starCount = 2000;
         const starPosArray = new Float32Array(starCount * 3);
@@ -204,6 +205,19 @@
         const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true, opacity: 0.6 });
         const stars = new THREE.Points(starGeom, starMat);
         scene.add(stars);
+
+        // Milky Way Sky Sphere
+        const milkyWayTexture = textureLoader.load('textures/milkyway.jpg'); 
+        const skySphere = new THREE.Mesh(
+            new THREE.SphereGeometry(500, 64, 64), 
+            new THREE.MeshBasicMaterial({ 
+                map: milkyWayTexture, 
+                side: THREE.BackSide, 
+                transparent: true,
+                opacity: 0.6 
+            })
+        );
+        scene.add(skySphere);
 
         // --- 4. DATA & REALISTIC OBJECTS ---
         const sunTexture = textureLoader.load('textures/sun.jpg');
@@ -486,7 +500,9 @@
                 }
             }
 
+            // Rotate background stars and Milky Way sphere
             stars.rotation.y += (globalSpeed === 0 ? 0 : 0.0001 * globalSpeed); 
+            skySphere.rotation.y += (globalSpeed === 0 ? 0 : 0.00005 * globalSpeed); 
 
             controls.update();
             renderer.render(scene, camera);
