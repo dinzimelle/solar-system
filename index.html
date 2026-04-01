@@ -156,6 +156,21 @@
         #btn-quiz-exit:hover { background: #dd3311; }
 
         .hint { position: absolute; bottom: 35px; width: 100%; text-align: center; color: #888; font-size: 0.9rem; pointer-events: none; z-index: 5;}
+
+        /* Matrix Green Footer Signature */
+        .matrix-footer { 
+            position: absolute; 
+            bottom: 35px; 
+            right: 20px; 
+            color: #00ff00; 
+            font-family: 'Courier New', Courier, monospace; 
+            font-weight: normal; /* Removed bold for a thinner, authentic terminal look */
+            font-size: 0.75rem;  /* Shrunk down from 1rem */
+            text-align: right; 
+            z-index: 15; 
+            pointer-events: none; 
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.8); /* Slightly softened the glow to match the thin font */
+        }
         
         /* Copyright Notice */
         #copyright-notice {
@@ -219,6 +234,8 @@
             <button id="btn-quiz-exit">Exit Quiz 🛑</button>
         </div>
     </div>
+
+    <div class="matrix-footer">Project created by dinzimelle</div>
 
     <div id="info-panel">
         <div class="panel-header">
