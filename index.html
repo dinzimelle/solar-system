@@ -10,6 +10,20 @@
 
     <style>
         body { margin: 0; background-color: #030303 !important; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; }
+
+        /* Copyright Notice */
+        #copyright-notice {
+            position: absolute; 
+            bottom: 10px; 
+            width: 100%; 
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5); /* Lighter, semi-transparent white */
+            font-size: 0.65rem; /* Small font size */
+            pointer-events: none; 
+            z-index: 5; 
+            letter-spacing: 0.5px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
         
         /* Welcome Screen Overlay */
         #welcome-overlay {
@@ -235,6 +249,8 @@
     </div>
 
     <div class="hint">Left Click + Drag to Rotate • Scroll to Zoom • Click Planets</div>
+
+    <div id="copyright-notice">© 2026 solarsystem3d.space. All Rights Reserved. This software and its source code may not be copied, distributed, or modified without express written permission.</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js" integrity="sha512-OWjUR2x9gBIRwr3XoaFoDXJzmEnVBXMj32nSjd701AcX852h17fmwreGY3Ne/BuLN4bemMBrnE+RAtLekdUqZg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
