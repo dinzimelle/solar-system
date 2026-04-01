@@ -164,12 +164,12 @@
             right: 20px; 
             color: #00ff00; 
             font-family: 'Courier New', Courier, monospace; 
-            font-weight: normal; /* Removed bold for a thinner, authentic terminal look */
-            font-size: 0.75rem;  /* Shrunk down from 1rem */
+            font-weight: normal; 
+            font-size: 0.75rem;  
             text-align: right; 
             z-index: 15; 
             pointer-events: none; 
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.8); /* Slightly softened the glow to match the thin font */
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.8); 
         }
         
         /* Copyright Notice */
@@ -208,7 +208,7 @@
 
     <div id="news-ticker-container">
         <div id="ticker-text">
-            🚀 SYSTEM UPDATE V2.3.0 LIVE: GLOBAL EDGE CACHING ENABLED (CLOUDFLARE CDN) • SUPPLY CHAIN SECURITY PATCH APPLIED (SRI HASHING) • UNIFIED DRAGGABLE TIME WARP DASHBOARD ADDED • UI POLISH & COPYRIGHT PROTECTION INTEGRATED • HOLOGRAPHIC PLANETARY LABELS • SMART TOGGLE ZOOM • 4 NEW MULTI-SET QUIZZES • PHOTOREALISTIC 2K TEXTURES & MILKY WAY SKYBOX • WELCOME, EXPLORER! 👩‍🚀
+            🚀 SYSTEM UPDATE V2.4.0 LIVE: MAJESTIC KUIPER BELT ADDED (3,000+ PARTICLE ICY DEBRIS FIELD) • GLOBAL EDGE CACHING ENABLED (CLOUDFLARE CDN) • SUPPLY CHAIN SECURITY PATCH APPLIED (SRI HASHING) • UNIFIED DRAGGABLE TIME WARP DASHBOARD • HOLOGRAPHIC PLANETARY LABELS • SMART TOGGLE ZOOM • 4 NEW MULTI-SET QUIZZES • WELCOME, EXPLORER! 👩‍🚀
         </div>
     </div>
 
@@ -406,6 +406,34 @@
             })
         );
         scene.add(skySphere);
+
+        // --- 3.5. THE KUIPER BELT (Particle System) ---
+        const kuiperGeom = new THREE.BufferGeometry();
+        const kuiperCount = 3000;
+        const kuiperPosArray = new Float32Array(kuiperCount * 3);
+
+        const innerRadius = 85; 
+        const outerRadius = 115; 
+
+        for(let i = 0; i < kuiperCount; i++) {
+            const theta = Math.random() * Math.PI * 2;
+            const r = innerRadius + Math.random() * (outerRadius - innerRadius);
+            kuiperPosArray[i * 3] = r * Math.cos(theta);
+            kuiperPosArray[i * 3 + 1] = (Math.random() - 0.5) * 4; 
+            kuiperPosArray[i * 3 + 2] = r * Math.sin(theta);
+        }
+
+        kuiperGeom.setAttribute('position', new THREE.BufferAttribute(kuiperPosArray, 3));
+        
+        const kuiperMat = new THREE.PointsMaterial({ 
+            color: 0x88ccff, 
+            size: 0.15, 
+            transparent: true, 
+            opacity: 0.5 
+        });
+        
+        const kuiperBelt = new THREE.Points(kuiperGeom, kuiperMat);
+        scene.add(kuiperBelt);
 
         // --- 4. DATA & REALISTIC OBJECTS ---
         const sunTexture = textureLoader.load('textures/sun.jpg');
@@ -883,6 +911,9 @@
 
             stars.rotation.y += (globalSpeed === 0 ? 0 : 0.0001 * globalSpeed); 
             skySphere.rotation.y += (globalSpeed === 0 ? 0 : 0.00005 * globalSpeed); 
+            
+            // Rotate the Kuiper Belt slowly, respecting the Time Warp controls
+            kuiperBelt.rotation.y += (globalSpeed === 0 ? 0 : 0.00015 * globalSpeed);
 
             controls.update();
             renderer.render(scene, camera);
