@@ -1,4 +1,4 @@
-# 🪐 Solar System 3D (v2.1 - Production)
+# 🪐 Solar System 3D (v2.2 - Production)
 **An Interactive, Photorealistic EdTech Universe Built for the Next Generation of Explorers.**
 
 🚀 **Live Site:** [solarsystem3d.space](https://solarsystem3d.space)
@@ -8,15 +8,14 @@
 ## 📖 Project Overview
 Solar System 3D is a high-performance, web-based astronomical simulation designed to bridge the gap between static textbooks and immersive learning. Developed as a Progressive Web App (PWA), it combines real-world orbital physics with cinematic 3D graphics to provide an accessible STEM tool for students of all ages.
 
-## 🚀 What's New in Version 2.1
-The leap from MVP to our V2 production build introduces massive graphical and UX upgrades:
-* **Photorealistic Textures:** Upgraded from low-poly colors to high-resolution 2K planetary maps.
-* **Milky Way Skybox:** Replaced the static black background with a massive, slow-drifting galactic sphere.
-* **Cinematic Welcome Screen:** Bypasses browser autoplay policies for a seamless Text-to-Speech entrance.
-* **News Ticker Marquee:** A sleek, auto-scrolling black-and-white release notes banner that cleanly dismisses after one cycle.
-* **Dynamic Knowledge Engine:** Expanded the database to include 10 facts for the Sun and 5 for each planet, randomized on every click to increase replayability.
-* **Multi-Set Quiz System:** Upgraded the "Cosmic Quiz" to randomly select from 4 different question banks per session.
-* **Mobile-Optimized UI:** Both the Info Panel and Quiz Panel are now fully draggable and feature minimize/collapse toggles to free up screen real estate.
+## 🚀 What's New in Version 2.2
+Our latest production build focuses on immersive HUD elements and seamless mobile UX:
+* **Holographic Planetary Labels:** Added 3D, camera-facing sci-fi sprites with high-visibility, kid-friendly bold neon text for effortless navigation.
+* **Smart Toggle Zoom:** Streamlined mobile UX. Users can now simply tap a focused planet a second time to instantly zoom back out to the full solar system view.
+* **Cinematic News Ticker:** A sleek, black-and-white auto-scrolling release notes marquee that provides updates and automatically dismisses after one cycle.
+* **Dynamic Knowledge Engine:** Features 10 facts for the Sun and 5 for each planet, randomly shuffling on every click to increase replayability and discovery.
+* **Multi-Set Quiz System:** The "Cosmic Quiz" now randomly selects from 4 different question banks per session.
+* **Photorealistic Environment:** Features 2K planetary maps, a massive drifting Milky Way skybox, and dynamic point-lighting for accurate day/night shadows.
 
 ## 🛠️ Technical Stack
 * **Engine:** Three.js (WebGL) for 60fps 3D rendering.
@@ -26,8 +25,8 @@ The leap from MVP to our V2 production build introduces massive graphical and UX
 * **Telemetry:** GoatCounter (Privacy-First, Cookie-Free Analytics).
 
 ## ✨ Core Features
-* **Dynamic Lighting & Shadows:** Utilizing `MeshStandardMaterial` and a central `PointLight` to simulate realistic sunlight behavior and day/night planetary cycles.
-* **AI Narrator:** Integrated Web Speech API for an interactive, audio-guided tour of the planets.
+* **Draggable & Collapsible UI:** Info and Quiz panels can be minimized and dragged anywhere on the screen to free up space on mobile devices.
+* **AI Narrator:** Integrated Web Speech API for an interactive, audio-guided tour of the planets (safely gated behind an "Enter Universe" airlock to comply with browser autoplay policies).
 * **Gamified Learning:** A "Cosmic Quiz" module with randomized logic and celebratory confetti visual feedback.
 * **Time Simulation:** User-controlled orbital velocity (Pause, Normal, 8x Speed).
 
@@ -54,7 +53,7 @@ This project followed a full **SDLC (Software Development Life Cycle)**:
 1.  **Phase 1 (MVP):** Basic 3D spherical geometry and orbital math.
 2.  **Phase 2 (UX):** Adding TTS audio, the Cosmic Quiz, and the draggable UI.
 3.  **Phase 3 (DevOps):** Custom domain routing, SSL enforcement, and PWA configuration.
-4.  **Phase 4 (Production):** Implementing PBR textures, dynamic lighting, skybox integration, and scalable JSON data structures.
+4.  **Phase 4 (Production V2):** Implementing PBR textures, dynamic lighting, skybox integration, 2D Canvas Sprites for HUD labels, and scalable JSON data structures.
 
 ---
 
