@@ -193,7 +193,7 @@
 
     <div id="news-ticker-container">
         <div id="ticker-text">
-            🚀 SYSTEM UPDATE V2.2 LIVE: HOLOGRAPHIC PLANETARY LABELS ADDED • SMART TOGGLE ZOOM ENABLED (CLICK A PLANET AGAIN TO RETURN TO ORBIT) • CINEMATIC NEWS TICKER INTEGRATED • DYNAMIC RANDOMIZED FACTS ENGINE • 4 NEW MULTI-SET QUIZZES • PHOTOREALISTIC 2K TEXTURES & MILKY WAY SKYBOX • WELCOME, EXPLORER! 👩‍🚀
+            🚀 SYSTEM UPDATE V2.2.1 LIVE: Supply Chain Protection Patch Applied • HOLOGRAPHIC PLANETARY LABELS ADDED • SMART TOGGLE ZOOM ENABLED (CLICK A PLANET AGAIN TO RETURN TO ORBIT) • CINEMATIC NEWS TICKER INTEGRATED • DYNAMIC RANDOMIZED FACTS ENGINE • 4 NEW MULTI-SET QUIZZES • PHOTOREALISTIC 2K TEXTURES & MILKY WAY SKYBOX • WELCOME, EXPLORER! 👩‍🚀
         </div>
     </div>
 
@@ -330,8 +330,7 @@
         const sunLight = new THREE.PointLight(0xffffff, 2, 300);
         scene.add(sunLight);
 
-        // --- NEW: SCI-FI LABEL CREATOR FUNCTION ---
-        // Generates a kid-friendly holographic label that always faces the camera
+        // --- SCI-FI LABEL CREATOR FUNCTION ---
         function createSciFiLabel(text, entitySize) {
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
@@ -339,7 +338,6 @@
             canvas.height = 128;
 
             const neonCyanGreen = "#00ffcc"; 
-            // Using bold font for kid-friendly readability
             const fontStack = "bold 80px 'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
             context.shadowColor = neonCyanGreen;
@@ -561,7 +559,6 @@
         // --- 5. MINIMIZE PANEL LOGIC ---
         const infoMinBtn = document.getElementById('info-min-btn');
         const infoContent = document.getElementById('info-content');
-        const infoPanelEl = document.getElementById('info-panel');
 
         infoMinBtn.addEventListener('click', () => {
             infoContent.classList.toggle('collapsed-content');
