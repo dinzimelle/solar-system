@@ -183,7 +183,7 @@
 
     <div id="news-ticker-container">
         <div id="ticker-text">
-            🚀 WHAT'S NEW IN V2.1: PHOTOREALISTIC PLANETARY TEXTURES ADDED • MILKY WAY GALAXY SKYBOX INTEGRATED • DRAGGABLE & COLLAPSIBLE MOBILE UI PANELS • 4 NEW RANDOMIZED COSMIC QUIZ SETS • 10 NEW FACTS FOR THE SUN • AI TEXT-TO-SPEECH NARRATOR ENHANCED • PERFORMANCE OPTIMIZATIONS COMPLETE • WELCOME EXPLORER! 👩‍🚀
+            🚀 WHAT'S NEW IN V2.0: PHOTOREALISTIC PLANETARY TEXTURES ADDED • MILKY WAY GALAXY SKYBOX INTEGRATED • DRAGGABLE & COLLAPSIBLE MOBILE UI PANELS • 4 NEW RANDOMIZED COSMIC QUIZ SETS • 10 NEW FACTS FOR THE SUN • AI TEXT-TO-SPEECH NARRATOR ENHANCED • PERFORMANCE OPTIMIZATIONS COMPLETE • WELCOME EXPLORER! 👩‍🚀
         </div>
     </div>
 
@@ -277,16 +277,13 @@
             setTimeout(() => { 
                 welcomeOverlay.style.display = 'none'; 
                 
-                // Show the ticker and start the animation
                 tickerContainer.style.display = 'flex';
-                // 35 seconds makes it slow and highly readable
                 tickerText.style.animation = 'tickerScroll 35s linear forwards';
                 
             }, 500);
             speakSafely("The core of our solar system. A Yellow Dwarf star made of hot plasma. Click on the planets to get more information.");
         });
 
-        // Listen for the exact moment the ticker animation finishes, then hide it completely
         tickerText.addEventListener('animationend', () => {
             tickerContainer.style.display = 'none';
         });
@@ -674,6 +671,25 @@
             returningToCenter = false; 
         });
 
+        // NEW: Reusable function to handle returning to orbit
+        function returnToOrbit() {
+            focusedPlanet = null;
+            returningToCenter = true; 
+            stopAudioSafely();
+
+            const randomSunFact = sunFunFacts[Math.floor(Math.random() * sunFunFacts.length)];
+
+            titleEl.innerHTML = `☀️ The Sun <span class="audio-icon" id="audio-indicator">🔊</span>`;
+            nicknameEl.innerText = "The Heart of our System";
+            descEl.innerText = "The core of our solar system. A Yellow Dwarf star made of hot plasma. Click any planet to zoom in and read its astronomical data.";
+            funfactTextEl.innerText = randomSunFact;
+            detailsEl.style.display = 'none';
+            resetBtn.style.display = 'none';
+        }
+
+        // Attach the function to the existing Return button
+        resetBtn.onclick = returnToOrbit;
+
         renderer.domElement.addEventListener('pointerdown', (event) => {
             if (welcomeOverlay.style.display !== 'none') return;
 
@@ -686,7 +702,15 @@
             const intersects = raycaster.intersectObjects(planets.map(p => p.mesh));
 
             if (intersects.length > 0) {
-                focusedPlanet = planets.find(p => p.mesh === intersects[0].object);
+                const clickedPlanet = planets.find(p => p.mesh === intersects[0].object);
+                
+                // NEW: If clicking the planet we are already looking at, toggle back to orbit!
+                if (focusedPlanet === clickedPlanet) {
+                    returnToOrbit();
+                    return; 
+                }
+
+                focusedPlanet = clickedPlanet;
                 returningToCenter = false; 
                 
                 if (infoContent.classList.contains('collapsed-content')) infoMinBtn.click();
@@ -717,21 +741,6 @@
                 }
             }
         });
-
-        resetBtn.onclick = function() {
-            focusedPlanet = null;
-            returningToCenter = true; 
-            stopAudioSafely();
-
-            const randomSunFact = sunFunFacts[Math.floor(Math.random() * sunFunFacts.length)];
-
-            titleEl.innerHTML = `☀️ The Sun <span class="audio-icon" id="audio-indicator">🔊</span>`;
-            nicknameEl.innerText = "The Heart of our System";
-            descEl.innerText = "The core of our solar system. A Yellow Dwarf star made of hot plasma. Click any planet to zoom in and read its astronomical data.";
-            funfactTextEl.innerText = randomSunFact;
-            detailsEl.style.display = 'none';
-            resetBtn.style.display = 'none';
-        };
 
         // --- 9. ANIMATION LOOP ---
         const targetCamPos = new THREE.Vector3();
