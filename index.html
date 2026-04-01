@@ -6,24 +6,10 @@
     <meta name="color-scheme" content="light dark">
     <title>3D Solar System</title>
 
-    <script data-goatcounter="https://dinzimelle.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <script data-goatcounter="https://YOURNAME.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
     <style>
         body { margin: 0; background-color: #030303 !important; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; }
-
-        /* Copyright Notice */
-        #copyright-notice {
-            position: absolute; 
-            bottom: 10px; 
-            width: 100%; 
-            text-align: center;
-            color: rgba(255, 255, 255, 0.5); /* Lighter, semi-transparent white */
-            font-size: 0.65rem; /* Small font size */
-            pointer-events: none; 
-            z-index: 5; 
-            letter-spacing: 0.5px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
         
         /* Welcome Screen Overlay */
         #welcome-overlay {
@@ -63,7 +49,7 @@
             100% { transform: translateX(-150%); } 
         }
 
-        /* Draggable Info Panel */
+        /* Draggable Panels */
         #info-panel { 
             position: absolute; top: 55px; left: 20px; 
             background: rgba(15, 15, 15, 0.85); padding: 15px 25px 25px 25px; 
@@ -75,7 +61,6 @@
             transition: padding-bottom 0.2s;
         }
 
-        /* Draggable Quiz Panel */
         #quiz-panel {
             position: absolute; top: 55px; right: 20px; 
             background: rgba(15, 15, 15, 0.85); padding: 15px 20px 20px 20px; 
@@ -85,17 +70,26 @@
             transition: padding-bottom 0.2s;
         }
 
+        #time-controls {
+            position: absolute; bottom: 50px; left: 20px; 
+            background: rgba(15, 15, 15, 0.85); padding: 15px 20px 20px 20px; 
+            border-radius: 12px; border: 1px solid #444; 
+            width: 220px; z-index: 10; backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: padding-bottom 0.2s;
+        }
+
         /* Panel Header & Minimize UI */
         .panel-header {
             display: flex; align-items: center; justify-content: space-between;
             border-bottom: 1px solid #444; margin-bottom: 10px; padding-bottom: 5px;
         }
         
-        #drag-handle, #quiz-drag-handle {
+        #drag-handle, #quiz-drag-handle, #time-drag-handle {
             flex-grow: 1; text-align: left; color: #888; font-size: 1.2rem;
             cursor: grab; touch-action: none;
         }
-        #drag-handle:active, #quiz-drag-handle:active { cursor: grabbing; }
+        #drag-handle:active, #quiz-drag-handle:active, #time-drag-handle:active { cursor: grabbing; }
 
         .minimize-btn {
             background: none; border: none; color: #ffcc00; font-size: 1.5rem;
@@ -105,7 +99,7 @@
 
         /* Collapse States */
         .collapsed-content { display: none !important; }
-        #info-panel.collapsed, #quiz-panel.collapsed { padding-bottom: 15px; }
+        #info-panel.collapsed, #quiz-panel.collapsed, #time-controls.collapsed { padding-bottom: 15px; }
 
         /* Typography & UI Elements */
         h2 { color: #ffcc00; margin: 0 0 5px 0; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between;}
@@ -134,12 +128,9 @@
         }
         button.action-btn:hover { background: #e6b800; }
         
-        /* Time Warp Controls */
-        #time-controls {
-            position: absolute; bottom: 20px; left: 20px; 
-            display: flex; gap: 15px; background: rgba(20, 20, 20, 0.85); 
-            padding: 10px 20px; border-radius: 30px; border: 1px solid #444;
-            backdrop-filter: blur(5px); z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        /* Time Warp Controls Inner */
+        #time-content {
+            display: flex; gap: 15px; justify-content: center;
         }
         
         .time-btn {
@@ -166,15 +157,20 @@
 
         .hint { position: absolute; bottom: 35px; width: 100%; text-align: center; color: #888; font-size: 0.9rem; pointer-events: none; z-index: 5;}
         
-        /* Matrix Green Footer Signature */
-        .matrix-footer { 
-            position: absolute; bottom: 20px; right: 20px; 
-            color: #00ff00; font-family: 'Courier New', Courier, monospace; 
-            font-weight: bold; font-size: 1rem; text-align: right; 
-            z-index: 5; pointer-events: none; 
-            text-shadow: 0 0 8px rgba(0, 255, 0, 0.8); 
+        /* Copyright Notice */
+        #copyright-notice {
+            position: absolute; 
+            bottom: 10px; 
+            width: 100%; 
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5); 
+            font-size: 0.65rem; 
+            pointer-events: none; 
+            z-index: 5; 
+            letter-spacing: 0.5px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         #error-log { position: absolute; top: 0; left: 0; width: 100%; background: rgba(255,0,0,0.8); color: white; padding: 10px; font-family: monospace; z-index: 9999; display: none; text-align: center; font-weight: bold; }
         canvas { display: block !important; }
         .fact-label { color: #ffcc00; font-weight: bold; }
@@ -197,7 +193,7 @@
 
     <div id="news-ticker-container">
         <div id="ticker-text">
-            🚀 SYSTEM UPDATE V2.2.1 LIVE: Supply Chain Protection Patch Applied • HOLOGRAPHIC PLANETARY LABELS ADDED • SMART TOGGLE ZOOM ENABLED (CLICK A PLANET AGAIN TO RETURN TO ORBIT) • CINEMATIC NEWS TICKER INTEGRATED • DYNAMIC RANDOMIZED FACTS ENGINE • 4 NEW MULTI-SET QUIZZES • PHOTOREALISTIC 2K TEXTURES & MILKY WAY SKYBOX • WELCOME, EXPLORER! 👩‍🚀
+            🚀 SYSTEM UPDATE V2.2 LIVE: HOLOGRAPHIC PLANETARY LABELS ADDED • SMART TOGGLE ZOOM ENABLED (CLICK A PLANET AGAIN TO RETURN TO ORBIT) • CINEMATIC NEWS TICKER INTEGRATED • DYNAMIC RANDOMIZED FACTS ENGINE • 4 NEW MULTI-SET QUIZZES • PHOTOREALISTIC 2K TEXTURES & MILKY WAY SKYBOX • WELCOME, EXPLORER! 👩‍🚀
         </div>
     </div>
 
@@ -224,8 +220,6 @@
         </div>
     </div>
 
-    <div class="matrix-footer">Project created by dinzimelle</div>
-
     <div id="info-panel">
         <div class="panel-header">
             <div id="drag-handle" title="Drag to move panel">☰ Drag</div>
@@ -243,13 +237,19 @@
     </div>
 
     <div id="time-controls">
-        <button class="time-btn" id="btn-pause" title="Pause">⏸️</button>
-        <button class="time-btn active" id="btn-normal" title="Normal Speed">▶️</button>
-        <button class="time-btn" id="btn-fast" title="Fast Forward">⏩</button>
+        <div class="panel-header">
+            <div id="time-drag-handle" title="Drag to move time controls">☰ Time Warp</div>
+            <button class="minimize-btn" id="time-min-btn" title="Minimize Panel">−</button>
+        </div>
+        <div id="time-content">
+            <button class="time-btn" id="btn-pause" title="Pause">⏸️</button>
+            <button class="time-btn active" id="btn-normal" title="Normal Speed">▶️</button>
+            <button class="time-btn" id="btn-fast" title="Fast Forward">⏩</button>
+        </div>
     </div>
 
     <div class="hint">Left Click + Drag to Rotate • Scroll to Zoom • Click Planets</div>
-
+    
     <div id="copyright-notice">© 2026 solarsystem3d.space. All Rights Reserved. This software and its source code may not be copied, distributed, or modified without express written permission.</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -257,7 +257,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" integrity="sha512-zT0ICbCP9FvtkNA1dsPyGK5HkLUe47KbE2BF2aUeN+jQFBYPfIaYohOGnEEwxMk9vLL+bLEdFs/xDxUY/2CLIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
-        
         // --- 0. AUDIO ENGINE, WELCOME SCREEN & TICKER ---
         const infoPanelEl = document.getElementById('info-panel');
         
@@ -339,11 +338,10 @@
             canvas.width = 512; 
             canvas.height = 128;
 
-            // Define modern/sci-fi green color scheme
             const neonCyanGreen = "#00ffcc"; 
+            // Using bold font for kid-friendly readability
             const fontStack = "bold 80px 'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
-            // Add faint neon glow effect
             context.shadowColor = neonCyanGreen;
             context.shadowBlur = 15;
             context.fillStyle = neonCyanGreen;
@@ -351,26 +349,20 @@
             context.textAlign = 'center';
             context.textBaseline = 'middle';
 
-            // Draw text onto the hidden canvas
             context.fillText(text, 256, 64);
 
-            // Turn canvas into THREE.js texture
             const texture = new THREE.CanvasTexture(canvas);
             texture.needsUpdate = true;
 
-            // Sprites always face the camera automatically
             const spriteMaterial = new THREE.SpriteMaterial({ 
                 map: texture, 
                 transparent: true, 
-                depthTest: true, // Labels obey occlusions (sit behind closer planets)
-                sizeAttenuation: true // Labels shrink as you zoom out
+                depthTest: true, 
+                sizeAttenuation: true 
             });
             const sprite = new THREE.Sprite(spriteMaterial);
 
-            // Scale sprite based on planet size to prevent dynamic labels
             sprite.scale.set(10, 2.5, 1); 
-            
-            // Offset position vertically above the planet center
             sprite.position.y = entitySize + 2.5; 
 
             return sprite;
@@ -408,7 +400,6 @@
             new THREE.MeshBasicMaterial({ map: sunTexture })
         );
 
-        // NEW: Add sci-fi label to Sun
         const sunLabel = createSciFiLabel("THE SUN ☀️", sunSize);
         sun.add(sunLabel); 
         scene.add(sun);
@@ -483,7 +474,7 @@
                     "The Great Red Spot is a giant storm larger than Earth that has raged for hundreds of years.",
                     "It is so massive that it doesn't actually orbit the Sun; they both orbit a point just outside the Sun's surface!",
                     "Jupiter has faint rings made of dust, not ice like Saturn.",
-                    "If Jupiter were about 80 times more massive, it would have ignited to become star!"
+                    "If Jupiter were about 80 times more massive, it would have ignited to become a star!"
                 ],
                 details: "<span class='fact-label'>Type:</span> Gas Giant<br><span class='fact-label'>Moons:</span> 95 confirmed" 
             },
@@ -560,7 +551,6 @@
                 mesh.add(saturnRing); 
             }
 
-            // NEW: Add sci-fi label to Planet
             const pLabel = createSciFiLabel(data.label, data.size);
             mesh.add(pLabel);
 
@@ -571,7 +561,7 @@
         // --- 5. MINIMIZE PANEL LOGIC ---
         const infoMinBtn = document.getElementById('info-min-btn');
         const infoContent = document.getElementById('info-content');
-        const quizPanelEl = document.getElementById('quiz-panel');
+        const infoPanelEl = document.getElementById('info-panel');
 
         infoMinBtn.addEventListener('click', () => {
             infoContent.classList.toggle('collapsed-content');
@@ -581,11 +571,22 @@
 
         const quizMinBtn = document.getElementById('quiz-min-btn');
         const quizContent = document.getElementById('quiz-content');
+        const quizPanelEl = document.getElementById('quiz-panel');
 
         quizMinBtn.addEventListener('click', () => {
             quizContent.classList.toggle('collapsed-content');
             quizPanelEl.classList.toggle('collapsed');
             quizMinBtn.innerText = quizContent.classList.contains('collapsed-content') ? '+' : '−';
+        });
+
+        const timeMinBtn = document.getElementById('time-min-btn');
+        const timeContent = document.getElementById('time-content');
+        const timeControlsEl = document.getElementById('time-controls');
+
+        timeMinBtn.addEventListener('click', () => {
+            timeContent.classList.toggle('collapsed-content');
+            timeControlsEl.classList.toggle('collapsed');
+            timeMinBtn.innerText = timeContent.classList.contains('collapsed-content') ? '+' : '−';
         });
 
         // --- 6. DRAGGABLE PANEL LOGIC ---
@@ -634,15 +635,62 @@
         });
         window.addEventListener('pointerup', () => { isQuizDragging = false; });
 
+        const timeDragHandle = document.getElementById('time-drag-handle');
+        let isTimeDragging = false;
+        let timeDragOffsetX = 0; let timeDragOffsetY = 0;
+
+        timeDragHandle.addEventListener('pointerdown', (e) => {
+            isTimeDragging = true;
+            const rect = timeControlsEl.getBoundingClientRect();
+            timeDragOffsetX = e.clientX - rect.left; 
+            timeDragOffsetY = e.clientY - rect.top;
+            e.stopPropagation(); 
+        });
+
+        window.addEventListener('pointermove', (e) => {
+            if (!isTimeDragging) return;
+            let newLeft = e.clientX - timeDragOffsetX;
+            let newTop = e.clientY - timeDragOffsetY;
+            
+            newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - timeControlsEl.offsetWidth));
+            newTop = Math.max(0, Math.min(newTop, window.innerHeight - timeControlsEl.offsetHeight));
+            
+            timeControlsEl.style.bottom = 'auto'; 
+            timeControlsEl.style.left = `${newLeft}px`; 
+            timeControlsEl.style.top = `${newTop}px`;
+        });
+        window.addEventListener('pointerup', () => { isTimeDragging = false; });
+
         // --- 7. COSMIC QUIZ LOGIC (4 Sets of 5 Questions) ---
-        const quizQuestions = [
-            { q: "Can you find the hottest planet in the Solar System?", answer: "Venus" },
-            { q: "Which planet is known as the Red Planet?", answer: "Mars" },
-            { q: "Find the planet with the most spectacular rings!", answer: "Saturn" },
-            { q: "Which planet is known as our Blue Marble?", answer: "Earth" },
-            { q: "Can you find the largest planet in our solar system?", answer: "Jupiter" },
-            { q: "Which planet is famous for rolling on its side?", answer: "Uranus" },
-            { q: "Find the tiny Dwarf Planet out in the Kuiper Belt!", answer: "Pluto" }
+        const quizSets = [
+            [
+                { q: "Can you find the hottest planet in the Solar System?", answer: "Venus" },
+                { q: "Which planet is known as the Red Planet?", answer: "Mars" },
+                { q: "Find the planet with the most spectacular rings!", answer: "Saturn" },
+                { q: "Which planet is known as our Blue Marble?", answer: "Earth" },
+                { q: "Can you find the largest planet in our solar system?", answer: "Jupiter" }
+            ],
+            [
+                { q: "Which planet rolls around the Sun on its side?", answer: "Uranus" },
+                { q: "Find the tiny Dwarf Planet out in the Kuiper Belt!", answer: "Pluto" },
+                { q: "Which planet is the smallest and closest to the Sun?", answer: "Mercury" },
+                { q: "Can you find the windiest planet in our solar system?", answer: "Neptune" },
+                { q: "Which planet has the shortest year, lasting only 88 Earth days?", answer: "Mercury" }
+            ],
+            [
+                { q: "Which planet is the only known harbor of life?", answer: "Earth" },
+                { q: "Find the planet that spins backwards compared to most others!", answer: "Venus" },
+                { q: "Which Gas Giant has a famous Great Red Spot?", answer: "Jupiter" },
+                { q: "Can you find the Ice Giant that is farthest from the Sun?", answer: "Neptune" },
+                { q: "Which planet's moons include Phobos and Deimos?", answer: "Mars" }
+            ],
+            [
+                { q: "Which ringed planet is so light it could float in water?", answer: "Saturn" },
+                { q: "Find the only planet NOT named after a mythological god or goddess.", answer: "Earth" },
+                { q: "Which icy planet was the first to be discovered using a telescope?", answer: "Uranus" },
+                { q: "Which dwarf planet is actually smaller than Earth's moon?", answer: "Pluto" },
+                { q: "Which planet has a day that lasts longer than its year?", answer: "Venus" }
+            ]
         ];
         
         let quizActive = false; let currentQuestion = null; let questionQueue = [];
@@ -658,7 +706,11 @@
             
             if (quizContent.classList.contains('collapsed-content')) quizMinBtn.click();
             
-            questionQueue = [...quizQuestions].sort(() => Math.random() - 0.5); nextQuestion();
+            const randomSetIndex = Math.floor(Math.random() * quizSets.length);
+            const selectedSet = quizSets[randomSetIndex];
+            questionQueue = [...selectedSet].sort(() => Math.random() - 0.5); 
+            
+            nextQuestion();
         };
 
         btnQuizExit.onclick = function() {
@@ -717,7 +769,6 @@
             returningToCenter = false; 
         });
 
-        // Reusable function to handle returning to orbit
         function returnToOrbit() {
             focusedPlanet = null;
             returningToCenter = true; 
@@ -749,7 +800,6 @@
             if (intersects.length > 0) {
                 const clickedPlanet = planets.find(p => p.mesh === intersects[0].object);
                 
-                // If clicking the planet we are already looking at, toggle back to orbit!
                 if (focusedPlanet === clickedPlanet) {
                     returnToOrbit();
                     return; 
