@@ -314,6 +314,51 @@
         const sunLight = new THREE.PointLight(0xffffff, 2, 300);
         scene.add(sunLight);
 
+        // --- NEW: SCI-FI LABEL CREATOR FUNCTION ---
+        // Generates a kid-friendly holographic label that always faces the camera
+        function createSciFiLabel(text, entitySize) {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = 512; 
+            canvas.height = 128;
+
+            // Define modern/sci-fi green color scheme
+            const neonCyanGreen = "#00ffcc"; 
+            const fontStack = "bold 80px 'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+
+            // Add faint neon glow effect
+            context.shadowColor = neonCyanGreen;
+            context.shadowBlur = 15;
+            context.fillStyle = neonCyanGreen;
+            context.font = fontStack;
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+
+            // Draw text onto the hidden canvas
+            context.fillText(text, 256, 64);
+
+            // Turn canvas into THREE.js texture
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.needsUpdate = true;
+
+            // Sprites always face the camera automatically
+            const spriteMaterial = new THREE.SpriteMaterial({ 
+                map: texture, 
+                transparent: true, 
+                depthTest: true, // Labels obey occlusions (sit behind closer planets)
+                sizeAttenuation: true // Labels shrink as you zoom out
+            });
+            const sprite = new THREE.Sprite(spriteMaterial);
+
+            // Scale sprite based on planet size to prevent dynamic labels
+            sprite.scale.set(10, 2.5, 1); 
+            
+            // Offset position vertically above the planet center
+            sprite.position.y = entitySize + 2.5; 
+
+            return sprite;
+        }
+
         // --- 3. BACKGROUND STARS & MILKY WAY ---
         const starGeom = new THREE.BufferGeometry();
         const starCount = 2000;
@@ -340,10 +385,15 @@
 
         // --- 4. DATA & REALISTIC OBJECTS ---
         const sunTexture = textureLoader.load('textures/sun.jpg');
+        const sunSize = 6;
         const sun = new THREE.Mesh(
-            new THREE.SphereGeometry(6, 64, 64), 
+            new THREE.SphereGeometry(sunSize, 64, 64), 
             new THREE.MeshBasicMaterial({ map: sunTexture })
         );
+
+        // NEW: Add sci-fi label to Sun
+        const sunLabel = createSciFiLabel("THE SUN ☀️", sunSize);
+        sun.add(sunLabel); 
         scene.add(sun);
 
         const sunFunFacts = [
@@ -361,7 +411,7 @@
 
         const planetsData = [
             { 
-                name: "Mercury", textureUrl: 'textures/mercury.jpg', emoji: "🪨", nickname: "The Swift Planet", dist: 12, speed: 0.02, size: 1.2, 
+                name: "Mercury", label: "MERCURY 🪨", textureUrl: 'textures/mercury.jpg', emoji: "🪨", nickname: "The Swift Planet", dist: 12, speed: 0.02, size: 1.2, 
                 info: "The smallest planet and closest to the Sun.", 
                 funfacts: [
                     "A year on Mercury is just 88 days, but a single day lasts 176 Earth days!",
@@ -373,7 +423,7 @@
                 details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" 
             },
             { 
-                name: "Venus", textureUrl: 'textures/venus.jpg', emoji: "🔥", nickname: "The Morning Star", dist: 18, speed: 0.015, size: 1.8, 
+                name: "Venus", label: "VENUS 🔥", textureUrl: 'textures/venus.jpg', emoji: "🔥", nickname: "The Morning Star", dist: 18, speed: 0.015, size: 1.8, 
                 info: "The hottest planet in our solar system.", 
                 funfacts: [
                     "Venus spins backwards! The Sun rises in the west and sets in the east.",
@@ -385,7 +435,7 @@
                 details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" 
             },
             { 
-                name: "Earth", textureUrl: 'textures/earth.jpg', emoji: "🌍", nickname: "The Blue Marble", dist: 25, speed: 0.01, size: 2.0, 
+                name: "Earth", label: "EARTH 🌍", textureUrl: 'textures/earth.jpg', emoji: "🌍", nickname: "The Blue Marble", dist: 25, speed: 0.01, size: 2.0, 
                 info: "Our home planet and the only known harbor of life.", 
                 funfacts: [
                     "Earth is the only planet not named after a mythological god or goddess.",
@@ -397,7 +447,7 @@
                 details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 1" 
             },
             { 
-                name: "Mars", textureUrl: 'textures/mars.jpg', emoji: "🔴", nickname: "The Red Planet", dist: 32, speed: 0.008, size: 1.5, 
+                name: "Mars", label: "MARS 🔴", textureUrl: 'textures/mars.jpg', emoji: "🔴", nickname: "The Red Planet", dist: 32, speed: 0.008, size: 1.5, 
                 info: "Often called the 'Red Planet' due to iron oxide on its surface.", 
                 funfacts: [
                     "Mars has lower gravity, so if you weigh 100 lbs on Earth, you'd only weigh 38 lbs on Mars!",
@@ -409,19 +459,19 @@
                 details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 2" 
             },
             { 
-                name: "Jupiter", textureUrl: 'textures/jupiter.jpg', emoji: "🌩️", nickname: "The Gas Giant", dist: 45, speed: 0.005, size: 3.5, 
+                name: "Jupiter", label: "JUPITER 🌩️", textureUrl: 'textures/jupiter.jpg', emoji: "🌩️", nickname: "The Gas Giant", dist: 45, speed: 0.005, size: 3.5, 
                 info: "The largest planet in our solar system.", 
                 funfacts: [
                     "Jupiter spins so fast that a day is only 10 hours long, but a year takes 12 Earth years!",
                     "The Great Red Spot is a giant storm larger than Earth that has raged for hundreds of years.",
                     "It is so massive that it doesn't actually orbit the Sun; they both orbit a point just outside the Sun's surface!",
                     "Jupiter has faint rings made of dust, not ice like Saturn.",
-                    "If Jupiter were about 80 times more massive, it would have ignited to become a star!"
+                    "If Jupiter were about 80 times more massive, it would have ignited to become star!"
                 ],
                 details: "<span class='fact-label'>Type:</span> Gas Giant<br><span class='fact-label'>Moons:</span> 95 confirmed" 
             },
             { 
-                name: "Saturn", textureUrl: 'textures/saturn.jpg', emoji: "🪐", nickname: "The Ringed Jewel", dist: 58, speed: 0.003, size: 3.0, 
+                name: "Saturn", label: "SATURN 🪐", textureUrl: 'textures/saturn.jpg', emoji: "🪐", nickname: "The Ringed Jewel", dist: 58, speed: 0.003, size: 3.0, 
                 info: "Famous for its stunning, complex ring system.", 
                 funfacts: [
                     "Saturn is so light and airy that if you had a bathtub big enough, it would float!",
@@ -433,7 +483,7 @@
                 details: "<span class='fact-label'>Type:</span> Gas Giant<br><span class='fact-label'>Moons:</span> 146 confirmed" 
             },
             { 
-                name: "Uranus", textureUrl: 'textures/uranus.jpg', emoji: "🧊", nickname: "The Ice Giant", dist: 70, speed: 0.002, size: 2.5, 
+                name: "Uranus", label: "URANUS 🧊", textureUrl: 'textures/uranus.jpg', emoji: "🧊", nickname: "The Ice Giant", dist: 70, speed: 0.002, size: 2.5, 
                 info: "The only planet that spins on its side.", 
                 funfacts: [
                     "Uranus rolls around the Sun on its side like a giant blue barrel!",
@@ -445,7 +495,7 @@
                 details: "<span class='fact-label'>Type:</span> Ice Giant<br><span class='fact-label'>Moons:</span> 28" 
             },
             { 
-                name: "Neptune", textureUrl: 'textures/neptune.jpg', emoji: "🌪️", nickname: "The Windy Planet", dist: 82, speed: 0.0015, size: 2.4, 
+                name: "Neptune", label: "NEPTUNE 🌪️", textureUrl: 'textures/neptune.jpg', emoji: "🌪️", nickname: "The Windy Planet", dist: 82, speed: 0.0015, size: 2.4, 
                 info: "The windiest and most distant major planet.", 
                 funfacts: [
                     "Winds on Neptune blow faster than a fighter jet, reaching 1,200 miles per hour!",
@@ -457,7 +507,7 @@
                 details: "<span class='fact-label'>Type:</span> Ice Giant<br><span class='fact-label'>Moons:</span> 16" 
             },
             { 
-                name: "Pluto", textureUrl: 'textures/pluto.jpg', emoji: "❄️", nickname: "The Dwarf Planet", dist: 92, speed: 0.001, size: 0.9, 
+                name: "Pluto", label: "PLUTO ❄️", textureUrl: 'textures/pluto.jpg', emoji: "❄️", nickname: "The Dwarf Planet", dist: 92, speed: 0.001, size: 0.9, 
                 info: "A famous resident of the Kuiper Belt.", 
                 funfacts: [
                     "Pluto is so small that it is actually smaller than Earth's moon!",
@@ -492,6 +542,10 @@
                 saturnRing.rotation.x = Math.PI / 2.2; 
                 mesh.add(saturnRing); 
             }
+
+            // NEW: Add sci-fi label to Planet
+            const pLabel = createSciFiLabel(data.label, data.size);
+            mesh.add(pLabel);
 
             scene.add(mesh);
             planets.push({ mesh, data, angle: Math.random() * Math.PI * 2 });
@@ -564,35 +618,14 @@
         window.addEventListener('pointerup', () => { isQuizDragging = false; });
 
         // --- 7. COSMIC QUIZ LOGIC (4 Sets of 5 Questions) ---
-        const quizSets = [
-            [
-                { q: "Can you find the hottest planet in the Solar System?", answer: "Venus" },
-                { q: "Which planet is known as the Red Planet?", answer: "Mars" },
-                { q: "Find the planet with the most spectacular rings!", answer: "Saturn" },
-                { q: "Which planet is known as our Blue Marble?", answer: "Earth" },
-                { q: "Can you find the largest planet in our solar system?", answer: "Jupiter" }
-            ],
-            [
-                { q: "Which planet rolls around the Sun on its side?", answer: "Uranus" },
-                { q: "Find the tiny Dwarf Planet out in the Kuiper Belt!", answer: "Pluto" },
-                { q: "Which planet is the smallest and closest to the Sun?", answer: "Mercury" },
-                { q: "Can you find the windiest planet in our solar system?", answer: "Neptune" },
-                { q: "Which planet has the shortest year, lasting only 88 Earth days?", answer: "Mercury" }
-            ],
-            [
-                { q: "Which planet is the only known harbor of life?", answer: "Earth" },
-                { q: "Find the planet that spins backwards compared to most others!", answer: "Venus" },
-                { q: "Which Gas Giant has a famous Great Red Spot?", answer: "Jupiter" },
-                { q: "Can you find the Ice Giant that is farthest from the Sun?", answer: "Neptune" },
-                { q: "Which planet's moons include Phobos and Deimos?", answer: "Mars" }
-            ],
-            [
-                { q: "Which ringed planet is so light it could float in water?", answer: "Saturn" },
-                { q: "Find the only planet NOT named after a mythological god or goddess.", answer: "Earth" },
-                { q: "Which icy planet was the first to be discovered using a telescope?", answer: "Uranus" },
-                { q: "Which dwarf planet is actually smaller than Earth's moon?", answer: "Pluto" },
-                { q: "Which planet has a day that lasts longer than its year?", answer: "Venus" }
-            ]
+        const quizQuestions = [
+            { q: "Can you find the hottest planet in the Solar System?", answer: "Venus" },
+            { q: "Which planet is known as the Red Planet?", answer: "Mars" },
+            { q: "Find the planet with the most spectacular rings!", answer: "Saturn" },
+            { q: "Which planet is known as our Blue Marble?", answer: "Earth" },
+            { q: "Can you find the largest planet in our solar system?", answer: "Jupiter" },
+            { q: "Which planet is famous for rolling on its side?", answer: "Uranus" },
+            { q: "Find the tiny Dwarf Planet out in the Kuiper Belt!", answer: "Pluto" }
         ];
         
         let quizActive = false; let currentQuestion = null; let questionQueue = [];
@@ -608,11 +641,7 @@
             
             if (quizContent.classList.contains('collapsed-content')) quizMinBtn.click();
             
-            const randomSetIndex = Math.floor(Math.random() * quizSets.length);
-            const selectedSet = quizSets[randomSetIndex];
-            questionQueue = [...selectedSet].sort(() => Math.random() - 0.5); 
-            
-            nextQuestion();
+            questionQueue = [...quizQuestions].sort(() => Math.random() - 0.5); nextQuestion();
         };
 
         btnQuizExit.onclick = function() {
@@ -671,7 +700,7 @@
             returningToCenter = false; 
         });
 
-        // NEW: Reusable function to handle returning to orbit
+        // Reusable function to handle returning to orbit
         function returnToOrbit() {
             focusedPlanet = null;
             returningToCenter = true; 
@@ -687,7 +716,6 @@
             resetBtn.style.display = 'none';
         }
 
-        // Attach the function to the existing Return button
         resetBtn.onclick = returnToOrbit;
 
         renderer.domElement.addEventListener('pointerdown', (event) => {
@@ -704,7 +732,7 @@
             if (intersects.length > 0) {
                 const clickedPlanet = planets.find(p => p.mesh === intersects[0].object);
                 
-                // NEW: If clicking the planet we are already looking at, toggle back to orbit!
+                // If clicking the planet we are already looking at, toggle back to orbit!
                 if (focusedPlanet === clickedPlanet) {
                     returnToOrbit();
                     return; 
