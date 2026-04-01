@@ -1,4 +1,4 @@
-# 🪐 Solar System 3D (v2.0 - Production)
+# 🪐 Solar System 3D (v2.1 - Production)
 **An Interactive, Photorealistic EdTech Universe Built for the Next Generation of Explorers.**
 
 🚀 **Live Site:** [solarsystem3d.space](https://solarsystem3d.space)
@@ -8,18 +8,27 @@
 ## 📖 Project Overview
 Solar System 3D is a high-performance, web-based astronomical simulation designed to bridge the gap between static textbooks and immersive learning. Developed as a Progressive Web App (PWA), it combines real-world orbital physics with cinematic 3D graphics to provide an accessible STEM tool for students of all ages.
 
-## 🛠️ Technical Stack
-* **Engine:** Three.js (WebGL)
-* **Frontend:** Vanilla JavaScript (ES6+), HTML5, CSS3
-* **Deployment:** GitHub Pages + Namecheap DNS
-* **Architecture:** PWA (Service Workers, Manifest API)
-* **Assets:** 2K PBR (Physically Based Rendering) Textures
+## 🚀 What's New in Version 2.1
+The leap from MVP to our V2 production build introduces massive graphical and UX upgrades:
+* **Photorealistic Textures:** Upgraded from low-poly colors to high-resolution 2K planetary maps.
+* **Milky Way Skybox:** Replaced the static black background with a massive, slow-drifting galactic sphere.
+* **Cinematic Welcome Screen:** Bypasses browser autoplay policies for a seamless Text-to-Speech entrance.
+* **News Ticker Marquee:** A sleek, auto-scrolling black-and-white release notes banner that cleanly dismisses after one cycle.
+* **Dynamic Knowledge Engine:** Expanded the database to include 10 facts for the Sun and 5 for each planet, randomized on every click to increase replayability.
+* **Multi-Set Quiz System:** Upgraded the "Cosmic Quiz" to randomly select from 4 different question banks per session.
+* **Mobile-Optimized UI:** Both the Info Panel and Quiz Panel are now fully draggable and feature minimize/collapse toggles to free up screen real estate.
 
-## ✨ Key Features
-* **Dynamic Lighting & Shadows:** Utilizing `MeshStandardMaterial` and `PointLight` to simulate realistic sunlight behavior.
+## 🛠️ Technical Stack
+* **Engine:** Three.js (WebGL) for 60fps 3D rendering.
+* **Frontend:** Vanilla JavaScript (ES6+), HTML5, CSS3.
+* **Deployment:** GitHub Pages + Namecheap DNS.
+* **Architecture:** PWA (Service Workers, Manifest API).
+* **Telemetry:** GoatCounter (Privacy-First, Cookie-Free Analytics).
+
+## ✨ Core Features
+* **Dynamic Lighting & Shadows:** Utilizing `MeshStandardMaterial` and a central `PointLight` to simulate realistic sunlight behavior and day/night planetary cycles.
 * **AI Narrator:** Integrated Web Speech API for an interactive, audio-guided tour of the planets.
-* **Gamified Learning:** A "Cosmic Quiz" module with randomized logic and celebratory visual feedback.
-* **Mobile-First UX:** A custom-coded **Draggable Info Panel** to solve screen real-estate challenges on mobile devices.
+* **Gamified Learning:** A "Cosmic Quiz" module with randomized logic and celebratory confetti visual feedback.
 * **Time Simulation:** User-controlled orbital velocity (Pause, Normal, 8x Speed).
 
 ---
@@ -42,10 +51,10 @@ While officially classified as a Dwarf Planet, Pluto remains a significant part 
 
 ## 🚀 Development Journey
 This project followed a full **SDLC (Software Development Life Cycle)**:
-1.  **Phase 1 (MVP):** Basic 3D shapes and orbital math.
+1.  **Phase 1 (MVP):** Basic 3D spherical geometry and orbital math.
 2.  **Phase 2 (UX):** Adding TTS audio, the Cosmic Quiz, and the draggable UI.
 3.  **Phase 3 (DevOps):** Custom domain routing, SSL enforcement, and PWA configuration.
-4.  **Phase 4 (Refining):** Transitioning from Low-Poly colors to Photorealistic PBR Textures.
+4.  **Phase 4 (Production):** Implementing PBR textures, dynamic lighting, skybox integration, and scalable JSON data structures.
 
 ---
 
