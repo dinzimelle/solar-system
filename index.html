@@ -337,7 +337,7 @@
 
     <div id="news-ticker-container">
         <div id="ticker-text">
-            🚀 SYSTEM UPDATE V2.6.0 LIVE: PERSONALIZED AI ONBOARDING ENGINE (CUSTOM EXPLORER TITLES) • NATIVE MOBILE RESPONSIVENESS • MAJESTIC KUIPER BELT ADDED (3,000+ PARTICLE FIELD) • GLOBAL EDGE CACHING ENABLED • SUPPLY CHAIN SECURITY PATCH • WELCOME TO THE UNIVERSE! 👩‍🚀
+            🚀 SYSTEM UPDATE V2.7.0 LIVE: ANDROMEDA GALAXY ADDED (DEEP SPACE BACKGROUND) • PERSONALIZED AI ONBOARDING ENGINE (CUSTOM EXPLORER TITLES) • NATIVE MOBILE RESPONSIVENESS • MAJESTIC KUIPER BELT ADDED (3,000+ PARTICLE FIELD) • WELCOME TO THE UNIVERSE! 👩‍🚀
         </div>
     </div>
 
@@ -641,6 +641,26 @@
         
         const kuiperBelt = new THREE.Points(kuiperGeom, kuiperMat);
         scene.add(kuiperBelt);
+
+        // --- 3.8. THE ANDROMEDA GALAXY ---
+        const andromedaTexture = textureLoader.load('textures/andromeda.jpg');
+        const andromedaGeom = new THREE.PlaneGeometry(250, 150); // Make it massive
+        const andromedaMat = new THREE.MeshBasicMaterial({
+            map: andromedaTexture,
+            transparent: true,
+            opacity: 0.7,
+            blending: THREE.AdditiveBlending, // This makes the dark edges invisible and the bright stars glow!
+            depthWrite: false, // Prevents it from clipping through the Kuiper Belt
+            side: THREE.DoubleSide
+        });
+        const andromeda = new THREE.Mesh(andromedaGeom, andromedaMat);
+        
+        // Position it far away in the deep deep background
+        andromeda.position.set(-300, 120, -350); 
+        // Give it a cinematic tilt
+        andromeda.rotation.set(Math.PI / 8, Math.PI / 6, 0); 
+        
+        scene.add(andromeda);
 
         // --- 4. DATA & REALISTIC OBJECTS ---
         const sunTexture = textureLoader.load('textures/sun.jpg');
@@ -1130,6 +1150,9 @@
             stars.rotation.y += (globalSpeed === 0 ? 0 : 0.0001 * globalSpeed); 
             skySphere.rotation.y += (globalSpeed === 0 ? 0 : 0.00005 * globalSpeed); 
             
+            // Majestic, slow rotation for the Andromeda Galaxy
+            andromeda.rotation.z += (globalSpeed === 0 ? 0 : 0.0002 * globalSpeed);
+
             // Rotate the Kuiper Belt slowly, respecting the Time Warp controls
             kuiperBelt.rotation.y += (globalSpeed === 0 ? 0 : 0.00015 * globalSpeed);
 
