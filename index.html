@@ -249,6 +249,53 @@
             .time-btn { width: 35px; height: 35px; font-size: 1rem; }
             #ticker-text { font-size: 0.75rem; }
         }
+        
+
+        /* ========================================= */
+        /* 📱 MOBILE LANDSCAPE DESIGN (Short Screens)*/
+        /* ========================================= */
+        @media (max-height: 500px) and (orientation: landscape) {
+            /* 1. Shrink Welcome Text for tiny heights */
+            .welcome-box h1 { font-size: 1.5rem; margin-bottom: 5px; }
+            .welcome-box p { font-size: 0.85rem; margin-bottom: 15px; }
+            #btn-enter-universe { padding: 8px 20px; font-size: 1rem; }
+
+            /* 2. Hide Non-Essentials entirely to save vertical space */
+            .matrix-footer, .hint, #copyright-notice { display: none !important; }
+
+            /* 3. Dock Info Panel cleanly to the Left */
+            #info-panel { 
+                width: 250px !important; 
+                left: 10px !important; 
+                top: 45px !important; 
+                max-height: 75vh; 
+            }
+
+            /* 4. Dock Quiz Panel cleanly to the Right */
+            #quiz-panel { 
+                width: 220px !important; 
+                right: 10px !important; 
+                left: auto !important;
+                top: 45px !important; 
+            }
+
+            /* 5. Shrink & Dock Time Controls Bottom Center */
+            #time-controls { 
+                width: 200px !important; 
+                left: 50% !important; 
+                transform: translateX(-50%);
+                bottom: 10px !important; 
+                top: auto !important; 
+                padding: 10px 15px 15px 15px; 
+            }
+
+            /* 6. Indicate Panels are Docked */
+            .panel-header { margin-bottom: 5px; padding-bottom: 2px; }
+            #drag-handle::after, #quiz-drag-handle::after, #time-drag-handle::after { 
+                content: " (Docked)"; font-size: 0.7rem; font-weight: normal;
+            }
+            .time-btn { width: 35px; height: 35px; font-size: 1rem; }
+        }
 
         
     </style>
