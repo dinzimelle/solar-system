@@ -1,4 +1,4 @@
-# 🪐 Solar System 3D (v2.6.0 - Production)
+# 🪐 Solar System 3D (v2.7.0 - Production)
 **An Interactive, Photorealistic EdTech Universe Built for the Next Generation of Explorers.**
 
 🚀 **Live Site:** [solarsystem3d.space](https://solarsystem3d.space)
@@ -11,6 +11,9 @@ Solar System 3D is a high-performance, web-based astronomical simulation designe
 ---
 
 ## 📜 Version History & Changelog
+
+### 🌌 v2.7.0 (The Deep Space Update)
+* **Andromeda Galaxy Integration:** Implemented an external `THREE.PlaneGeometry` mesh featuring the Andromeda Galaxy in the deep background. Uses `THREE.AdditiveBlending` for an organic, glowing telescope effect and a slow cinematic rotation tied to the global Time Warp engine.
 
 ### 🧑‍🚀 v2.6.0 (The Personalized Journey Update)
 * **Dynamic AI Onboarding:** Added an interactive welcome terminal that captures the user's name, gender (generating dynamic boy/girl avatar emojis), and future STEM role (Doctor, Engineer, Commander).
@@ -66,6 +69,7 @@ Solar System 3D is a high-performance, web-based astronomical simulation designe
 7.  **Phase 7 (Expansion):** Implementing the Kuiper Belt particle system.
 8.  **Phase 8 (Mobile Excellence):** Advanced CSS viewport docking and touch-scroll optimization.
 9.  **Phase 9 (Gamification & Retention):** Personalized AI onboarding, customized audio praise, and dynamic role-playing avatars.
+10. **Phase 10 (Deep Space):** Addition of the Andromeda Galaxy via additive blending.
 
 ---
 
