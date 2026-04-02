@@ -20,15 +20,36 @@
         }
         .welcome-box { max-width: 500px; padding: 20px; }
         .welcome-box h1 { color: #ffcc00; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; font-size: 2.5rem;}
-        .welcome-box p { color: #ccc; margin-bottom: 30px; font-size: 1.1rem; line-height: 1.5; }
+        .welcome-box p { color: #ccc; margin-bottom: 20px; font-size: 1.1rem; line-height: 1.5; }
+        
+        /* Onboarding Form Styles */
+        #user-name, #user-gender {
+            width: 100%; padding: 12px; margin-bottom: 15px;
+            border-radius: 8px; border: 2px solid #444; background: rgba(20, 20, 20, 0.9); color: #fff;
+            font-size: 1rem; box-sizing: border-box; font-family: inherit; transition: 0.3s;
+        }
+        #user-name:focus, #user-gender:focus { border-color: #ffcc00; outline: none; }
+        
+        .role-selection { display: flex; gap: 10px; margin-bottom: 25px; justify-content: center;}
+        .role-card {
+            background: rgba(20, 20, 20, 0.9); border: 2px solid #444; border-radius: 8px;
+            padding: 10px; cursor: pointer; width: 30%; transition: 0.2s; user-select: none;
+        }
+        .role-card:hover { border-color: #88ccff; transform: translateY(-3px); }
+        .role-card.selected { border-color: #ffcc00; background: rgba(255, 204, 0, 0.15); box-shadow: 0 0 10px rgba(255,204,0,0.4); }
+        
+        .role-emoji { font-size: 2.5rem; margin-bottom: 5px; }
+        .role-text { font-size: 0.85rem; font-weight: bold; color: #ddd; }
+        
         #btn-enter-universe {
             background: #ffcc00; color: #000; border: none; padding: 15px 35px;
             border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer;
             transition: 0.2s; box-shadow: 0 4px 15px rgba(255, 204, 0, 0.3);
         }
-        #btn-enter-universe:hover { background: #fff; transform: scale(1.05); box-shadow: 0 4px 20px rgba(255, 255, 255, 0.6); }
+        #btn-enter-universe:hover:not(:disabled) { background: #fff; transform: scale(1.05); box-shadow: 0 4px 20px rgba(255, 255, 255, 0.6); }
+        #btn-enter-universe:disabled { background: #444; color: #777; cursor: not-allowed; box-shadow: none; transform: none; }
 
-        /* ONE-TIME AUTO-SCROLLING NEWS TICKER (Black & White) */
+        /* ONE-TIME AUTO-SCROLLING NEWS TICKER */
         #news-ticker-container {
             position: absolute; top: 0; left: 0; width: 100%; height: 35px;
             background: rgba(10, 10, 10, 0.95); color: #ffffff; 
@@ -193,97 +214,84 @@
         #info-panel::-webkit-scrollbar-track, #quiz-panel::-webkit-scrollbar-track { background: transparent; }
         #info-panel::-webkit-scrollbar-thumb, #quiz-panel::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
 
-
         /* ========================================= */
         /* 📱 MOBILE RESPONSIVE DESIGN (Media Query) */
         /* ========================================= */
         @media (max-width: 768px) {
-            /* 1. Shrink Welcome Text */
             .welcome-box h1 { font-size: 1.8rem; }
             .welcome-box p { font-size: 0.95rem; margin-bottom: 20px; }
             #btn-enter-universe { padding: 12px 25px; font-size: 1rem; }
 
-            /* 2. Hide Non-Essentials to clear the view */
             .matrix-footer, .hint { display: none !important; }
             #copyright-notice { font-size: 0.5rem; bottom: 2px; }
 
-            /* 3. Dock & Resize Info Panel (Top) */
             #info-panel { 
                 width: 85vw !important; 
                 left: 50% !important; 
-                transform: translateX(-50%); /* Centers the panel perfectly */
+                transform: translateX(-50%); 
                 top: 45px !important; 
                 max-height: 40vh; 
                 padding: 10px 15px 15px 15px; 
             }
 
-            /* 4. Dock & Resize Time Controls (Bottom) */
             #time-controls { 
                 width: 85vw !important; 
                 left: 50% !important; 
                 transform: translateX(-50%);
                 bottom: 25px !important; 
-                top: auto !important; /* Overrides JS drag logic */
+                top: auto !important; 
                 padding: 10px 15px 15px 15px; 
             }
 
-            /* 5. Dock & Resize Quiz Panel (Middle Stack) */
             #quiz-panel { 
                 width: 85vw !important; 
                 left: 50% !important; 
                 transform: translateX(-50%);
                 top: auto !important; 
-                bottom: 110px !important; /* Sits cleanly above the time controls */
+                bottom: 110px !important; 
                 right: auto !important;
             }
 
-            /* 6. Adjust Button & Header Sizes for Touch */
             .panel-header { margin-bottom: 5px; padding-bottom: 2px; }
             #drag-handle, #quiz-drag-handle, #time-drag-handle { font-size: 1rem; color: #555; }
-            
-            /* Visually tell the user the panels are locked on mobile */
             #drag-handle::after, #quiz-drag-handle::after, #time-drag-handle::after { 
                 content: " (Docked)"; font-size: 0.7rem; font-weight: normal;
             }
 
             .time-btn { width: 35px; height: 35px; font-size: 1rem; }
             #ticker-text { font-size: 0.75rem; }
+            .role-emoji { font-size: 1.8rem; }
         }
-        
 
-       /* ========================================= */
+        /* ========================================= */
         /* 📱 MOBILE LANDSCAPE DESIGN (Short Screens)*/
         /* ========================================= */
         @media (max-height: 500px) and (orientation: landscape) {
-            /* 1. Shrink Welcome Text for tiny heights */
+            .welcome-box { max-height: 90vh; overflow-y: auto; padding: 15px; }
             .welcome-box h1 { font-size: 1.5rem; margin-bottom: 5px; }
-            .welcome-box p { font-size: 0.85rem; margin-bottom: 15px; }
+            .welcome-box p { font-size: 0.85rem; margin-bottom: 10px; }
             #btn-enter-universe { padding: 8px 20px; font-size: 1rem; }
 
-            /* 2. Hide Non-Essentials entirely to save vertical space */
             .matrix-footer, .hint, #copyright-notice { display: none !important; }
 
-            /* 3. Dock Info Panel Left & Set Flex Container */
             #info-panel { 
                 width: 260px !important; 
                 left: 10px !important; 
-                top: 10px !important; /* Moved up */
+                top: 10px !important; 
                 max-height: 90vh !important; 
                 display: flex !important;
                 flex-direction: column;
                 padding: 10px 15px !important;
             }
 
-            /* 4. Scroll the INNER CONTENT, not the wrapper */
             #info-content {
                 overflow-y: auto !important;
                 -webkit-overflow-scrolling: touch !important;
-                overscroll-behavior: contain; /* Prevents background from scrolling */
+                overscroll-behavior: contain; 
                 touch-action: auto !important;
                 padding-right: 5px;
             }
 
-            /* 5. Dock Quiz Panel Right & Set Flex Container */
             #quiz-panel { 
                 width: 220px !important; 
                 right: 10px !important; 
@@ -302,13 +310,11 @@
                 touch-action: auto !important;
             }
 
-            /* 6. Shrink Typography to fit the short screen */
             h2 { font-size: 1.1rem; margin-bottom: 2px; }
             .nickname { font-size: 0.75rem; margin-bottom: 5px; }
             p { font-size: 0.8rem; margin-bottom: 8px; line-height: 1.3; }
             .fun-fact-box { padding: 8px; font-size: 0.75rem; margin-bottom: 8px; }
 
-            /* 7. Shrink & Dock Time Controls Bottom Center */
             #time-controls { 
                 width: 200px !important; 
                 left: 50% !important; 
@@ -318,30 +324,55 @@
                 padding: 10px 15px 15px 15px; 
             }
 
-            /* 8. Indicate Panels are Docked */
             .panel-header { margin-bottom: 5px; padding-bottom: 2px; }
             #drag-handle::after, #quiz-drag-handle::after, #time-drag-handle::after { 
                 content: " (Docked)"; font-size: 0.7rem; font-weight: normal;
             }
             .time-btn { width: 35px; height: 35px; font-size: 1rem; }
+            .role-emoji { font-size: 1.5rem; }
         }
-
-        
     </style>
 </head>
 <body>
 
     <div id="news-ticker-container">
         <div id="ticker-text">
-            🚀 SYSTEM UPDATE V2.5.0 LIVE: NATIVE MOBILE RESPONSIVENESS (SMART PORTRAIT & LANDSCAPE DOCKING) • MAJESTIC KUIPER BELT ADDED (3,000+ PARTICLE FIELD) • GLOBAL EDGE CACHING ENABLED • SUPPLY CHAIN SECURITY PATCH • UNIFIED DRAGGABLE DASHBOARD • WELCOME, EXPLORER! 👩‍🚀
+            🚀 SYSTEM UPDATE V2.6.0 LIVE: PERSONALIZED AI ONBOARDING ENGINE (CUSTOM EXPLORER TITLES) • NATIVE MOBILE RESPONSIVENESS • MAJESTIC KUIPER BELT ADDED (3,000+ PARTICLE FIELD) • GLOBAL EDGE CACHING ENABLED • SUPPLY CHAIN SECURITY PATCH • WELCOME TO THE UNIVERSE! 👩‍🚀
         </div>
     </div>
 
     <div id="welcome-overlay">
-        <div class="welcome-box">
+        <div class="welcome-box" id="onboarding-step">
             <h1>Solar System 3D</h1>
-            <p>Welcome Explorer. Turn on your volume for the best experience.</p>
-            <button id="btn-enter-universe">Enter Universe 🚀</button>
+            <p>Welcome Explorer. Tell us about yourself to begin your journey!</p>
+            
+            <input type="text" id="user-name" placeholder="Enter your Name or Alias..." autocomplete="off">
+            
+            <select id="user-gender">
+                <option value="" disabled selected>Select Gender...</option>
+                <option value="boy">Boy</option>
+                <option value="girl">Girl</option>
+                <option value="other">Prefer not to say</option>
+            </select>
+
+            <p style="margin-bottom: 10px; color: #ffcc00; font-weight: bold; font-size: 0.9rem;">What do you want to be when you grow up?</p>
+            
+            <div class="role-selection">
+                <div class="role-card" data-role="Doctor">
+                    <div class="role-emoji" id="emoji-doctor">🧑‍⚕️</div>
+                    <div class="role-text">Doctor</div>
+                </div>
+                <div class="role-card" data-role="Engineer">
+                    <div class="role-emoji" id="emoji-engineer">🧑‍🔧</div>
+                    <div class="role-text">Engineer</div>
+                </div>
+                <div class="role-card" data-role="Commander">
+                    <div class="role-emoji" id="emoji-commander">🧑‍🚀</div>
+                    <div class="role-text">Commander</div>
+                </div>
+            </div>
+
+            <button id="btn-enter-universe" disabled>Enter Universe 🚀</button>
         </div>
     </div>
 
@@ -430,17 +461,67 @@
         const tickerContainer = document.getElementById('news-ticker-container');
         const tickerText = document.getElementById('ticker-text');
 
+        // Form Elements
+        const inputName = document.getElementById('user-name');
+        const selectGender = document.getElementById('user-gender');
+        const roleCards = document.querySelectorAll('.role-card');
+        let selectedRole = "";
+        let formattedUserName = "Explorer";
+
+        // Dynamically change Avatars based on Gender selection
+        selectGender.addEventListener('change', (e) => {
+            const gender = e.target.value;
+            document.getElementById('emoji-doctor').innerText = gender === 'girl' ? '👩‍⚕️' : (gender === 'boy' ? '👨‍⚕️' : '🧑‍⚕️');
+            document.getElementById('emoji-engineer').innerText = gender === 'girl' ? '👩‍🔧' : (gender === 'boy' ? '👨‍🔧' : '🧑‍🔧');
+            document.getElementById('emoji-commander').innerText = gender === 'girl' ? '👩‍🚀' : (gender === 'boy' ? '👨‍🚀' : '🧑‍🚀');
+            validateForm();
+        });
+
+        // Handle Role Selection
+        roleCards.forEach(card => {
+            card.addEventListener('click', () => {
+                roleCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedRole = card.getAttribute('data-role');
+                validateForm();
+            });
+        });
+
+        inputName.addEventListener('input', validateForm);
+
+        // Unlock the Enter button only when all fields are filled
+        function validateForm() {
+            if (inputName.value.trim() !== "" && selectGender.value !== "" && selectedRole !== "") {
+                btnEnterUniverse.disabled = false;
+            } else {
+                btnEnterUniverse.disabled = true;
+            }
+        }
+
+        // The Grand Entrance
         btnEnterUniverse.addEventListener('click', () => {
             welcomeOverlay.style.opacity = '0';
+            
+            // Format the user's title
+            const userName = inputName.value.trim();
+            let titlePrefix = "";
+            if (selectedRole === "Doctor") titlePrefix = "Dr. ";
+            if (selectedRole === "Engineer") titlePrefix = "Engineer ";
+            if (selectedRole === "Commander") titlePrefix = "Commander ";
+
+            // SAVE IT GLOBALLY
+            formattedUserName = `${titlePrefix}${userName}`;
+
             setTimeout(() => { 
                 welcomeOverlay.style.display = 'none'; 
-                
                 tickerContainer.style.display = 'flex';
                 tickerText.style.animation = 'tickerScroll 35s linear forwards';
-                
             }, 500);
-            // Combined Intro + Sun Narration
-            speakSafely("Our solar system consists of the Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune, and Pluto. Enjoy your exploration, future young scientist! The Sun is the core of our solar system. A Yellow Dwarf star made of hot plasma. Click on the planets to get more information.");
+
+            // The dynamically generated custom greeting
+            const customGreeting = `Welcome to the solar system, ${formattedUserName}! Our solar system consists of the Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune, and Pluto. Enjoy your exploration, future young scientist! The Sun is the core of our solar system. A Yellow Dwarf star made of hot plasma. Click on the planets to get more information.`;
+            
+            speakSafely(customGreeting);
         });
 
         tickerText.addEventListener('animationend', () => {
@@ -891,9 +972,20 @@
         function nextQuestion() {
             if (!quizActive) return; 
             if (questionQueue.length === 0) {
-                quizQuestionEl.innerText = "You found them all! You are a Space Expert! 🏆";
+                // Array of personalized praises
+                const praises = [
+                    `Great job, ${formattedUserName}!`,
+                    `You are excellent, ${formattedUserName}!`,
+                    `Mission accomplished, ${formattedUserName}!`,
+                    `Outstanding work, ${formattedUserName}! You are a Space Expert!`
+                ];
+                // Pick a random praise
+                const randomPraise = praises[Math.floor(Math.random() * praises.length)];
+
+                quizQuestionEl.innerText = `${randomPraise} 🏆`;
                 quizFeedbackEl.innerText = "";
-                speakSafely("You found them all! You are a Space Expert!");
+                speakSafely(randomPraise);
+                
                 confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
                 setTimeout(() => {
                     quizActive = false; btnQuizExit.style.display = 'none';
