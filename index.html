@@ -186,7 +186,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        #error-log { position: absolute; top: 0; left: 0; width: 100%; background: rgba(255,0,0,0.8); color: white; padding: 10px; font-family: monospace; z-index: 9999; display: none; text-align: center; font-weight: bold; }
         canvas { display: block !important; }
         .fact-label { color: #ffcc00; font-weight: bold; }
         
@@ -196,15 +195,6 @@
     </style>
 </head>
 <body>
-
-    <div id="error-log"></div>
-    <script>
-        window.onerror = function(message, source, lineno, colno, error) {
-            const errDiv = document.getElementById('error-log');
-            errDiv.style.display = 'block';
-            errDiv.innerHTML = "SYSTEM ERROR: " + message + " (Line: " + lineno + ")";
-        };
-    </script>
 
     <div id="news-ticker-container">
         <div id="ticker-text">
