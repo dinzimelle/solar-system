@@ -1,4 +1,4 @@
-# 🪐 Solar System 3D (v2.5.0 - Production)
+# 🪐 Solar System 3D (v2.6.0 - Production)
 **An Interactive, Photorealistic EdTech Universe Built for the Next Generation of Explorers.**
 
 🚀 **Live Site:** [solarsystem3d.space](https://solarsystem3d.space)
@@ -11,6 +11,11 @@ Solar System 3D is a high-performance, web-based astronomical simulation designe
 ---
 
 ## 📜 Version History & Changelog
+
+### 🧑‍🚀 v2.6.0 (The Personalized Journey Update)
+* **Dynamic AI Onboarding:** Added an interactive welcome terminal that captures the user's name, gender (generating dynamic boy/girl avatar emojis), and future STEM role (Doctor, Engineer, Commander).
+* **Personalized AI Narration:** The Web Speech API now greets users by their formal chosen title (e.g., "Commander Alex") and delivers a cinematic introduction to the full solar system before zooming in on the Sun.
+* **Gamified Praise System:** The Cosmic Quiz now celebrates quiz completions with personalized, randomized audio praises combined with the particle confetti system, creating a powerful positive feedback loop.
 
 ### 📱 v2.5.0 (The Mobile UX Update)
 * **Native Mobile Responsiveness:** Implemented advanced CSS media queries for flawless performance on mobile devices.
@@ -60,6 +65,7 @@ Solar System 3D is a high-performance, web-based astronomical simulation designe
 6.  **Phase 6 (Infrastructure):** Migrating to Cloudflare for infinite scalability.
 7.  **Phase 7 (Expansion):** Implementing the Kuiper Belt particle system.
 8.  **Phase 8 (Mobile Excellence):** Advanced CSS viewport docking and touch-scroll optimization.
+9.  **Phase 9 (Gamification & Retention):** Personalized AI onboarding, customized audio praise, and dynamic role-playing avatars.
 
 ---
 
