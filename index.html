@@ -192,6 +192,65 @@
         #info-panel::-webkit-scrollbar, #quiz-panel::-webkit-scrollbar { width: 6px; }
         #info-panel::-webkit-scrollbar-track, #quiz-panel::-webkit-scrollbar-track { background: transparent; }
         #info-panel::-webkit-scrollbar-thumb, #quiz-panel::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
+
+
+        /* ========================================= */
+        /* 📱 MOBILE RESPONSIVE DESIGN (Media Query) */
+        /* ========================================= */
+        @media (max-width: 768px) {
+            /* 1. Shrink Welcome Text */
+            .welcome-box h1 { font-size: 1.8rem; }
+            .welcome-box p { font-size: 0.95rem; margin-bottom: 20px; }
+            #btn-enter-universe { padding: 12px 25px; font-size: 1rem; }
+
+            /* 2. Hide Non-Essentials to clear the view */
+            .matrix-footer, .hint { display: none !important; }
+            #copyright-notice { font-size: 0.5rem; bottom: 2px; }
+
+            /* 3. Dock & Resize Info Panel (Top) */
+            #info-panel { 
+                width: 85vw !important; 
+                left: 50% !important; 
+                transform: translateX(-50%); /* Centers the panel perfectly */
+                top: 45px !important; 
+                max-height: 40vh; 
+                padding: 10px 15px 15px 15px; 
+            }
+
+            /* 4. Dock & Resize Time Controls (Bottom) */
+            #time-controls { 
+                width: 85vw !important; 
+                left: 50% !important; 
+                transform: translateX(-50%);
+                bottom: 25px !important; 
+                top: auto !important; /* Overrides JS drag logic */
+                padding: 10px 15px 15px 15px; 
+            }
+
+            /* 5. Dock & Resize Quiz Panel (Middle Stack) */
+            #quiz-panel { 
+                width: 85vw !important; 
+                left: 50% !important; 
+                transform: translateX(-50%);
+                top: auto !important; 
+                bottom: 110px !important; /* Sits cleanly above the time controls */
+                right: auto !important;
+            }
+
+            /* 6. Adjust Button & Header Sizes for Touch */
+            .panel-header { margin-bottom: 5px; padding-bottom: 2px; }
+            #drag-handle, #quiz-drag-handle, #time-drag-handle { font-size: 1rem; color: #555; }
+            
+            /* Visually tell the user the panels are locked on mobile */
+            #drag-handle::after, #quiz-drag-handle::after, #time-drag-handle::after { 
+                content: " (Docked)"; font-size: 0.7rem; font-weight: normal;
+            }
+
+            .time-btn { width: 35px; height: 35px; font-size: 1rem; }
+            #ticker-text { font-size: 0.75rem; }
+        }
+
+        
     </style>
 </head>
 <body>
