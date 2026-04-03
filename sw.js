@@ -9,6 +9,7 @@ const urlsToCache = [
   '/textures/mercury.jpg',
   '/textures/venus.jpg',
   '/textures/earth.jpg',
+  '/textures/moon.jpg',
   '/textures/mars.jpg',
   '/textures/jupiter.jpg',
   '/textures/saturn.jpg',
