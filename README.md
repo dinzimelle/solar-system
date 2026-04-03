@@ -1,4 +1,4 @@
-# 🪐 Solar System 3D (v3.0.2 - Production)
+# 🪐 Solar System 3D (v3.1.0 - Production)
 **An Interactive, Photorealistic EdTech Universe Built for the Next Generation of Explorers.**
 
 🚀 **Live Site:** [solarsystem3d.space](https://solarsystem3d.space)
@@ -12,21 +12,25 @@ Solar System 3D is a high-performance, web-based astronomical simulation designe
 
 ## 📜 Version History & Changelog
 
+### 🌔 v3.1.0 (The Moon Update)
+* **Hierarchical Scene Graph:** Upgraded the 3D physics engine to support relative sub-orbits, allowing moons to dynamically orbit their host planets while the planets orbit the Sun.
+* **Luna Integration:** Added Earth's Moon with custom textures, scale, and orbital mechanics.
+* **Expanded Gamification:** Increased the Toddler Track discovery maximum to 11 celestial bodies, adding new confetti and audio triggers for finding the Moon.
+* **Massive Trivia Expansion:** Fully integrated the expanded knowledge database, featuring 20 unique facts for the Sun and multiple randomized facts for every planet and moon.
+
 ### 📱 v3.0.2 (The PWA & Mobile Polish Patch)
 * **Full PWA Offline Support:** Completely integrated `manifest.json` and `sw.js` Service Worker. Users can now install the app natively on iOS (Safari), Android (Chrome), and Desktop for a 100% offline, fullscreen experience.
 * **Bento Grid Landing Page:** Re-architected the entry point (`index.html`) into a modern marketing landing page featuring CSS-generated twinkling stars and glassmorphism cards.
 * **Notch Dodging:** Integrated Apple's `env(safe-area-inset)` CSS variables so the UI elegantly dodges physical camera notches on modern devices (like the iPhone 16 Pro) in landscape mode.
-* **Auto-Minimize Viewport:** On devices smaller than 850px, all UI panels now automatically start in a collapsed state to maximize the 3D viewing area on load.
-* **Ticker Animation Fix:** Re-engineered the news ticker CSS keyframes to use precise `100vw` to `-100%` transforms, ensuring the bar hides at the exact millisecond the text leaves the screen.
+* **Auto-Minimize Viewport:** On devices smaller than 950px, all UI panels now automatically start in a collapsed state to maximize the 3D viewing area on load.
 
 ### 🏆 v3.0.1 (The HUD Polish Update)
 * **Draggable Profile HUD:** The new Profile HUD now utilizes the unified draggable panel architecture.
 * **Landscape Flexbox Scroll:** Fixed CSS overflow behaviors to trigger hardware-accelerated touch scrolling inside panels when viewing long text on short landscape screens.
-* **Expanded Data Engine:** Upgraded the planet database to include 5 randomized facts per planet, and 20 randomized facts for the Sun.
 
 ### 🎮 v3.0.0 (The Gamification Update)
 * **Dual-Track Progression Engine:** Introduced a two-tier reward system to accommodate all age groups:
-  * **Toddler Discovery Track:** Awards Gold Stars (⭐) and confetti for clicking and discovering celestial bodies (Max: 10 Stars).
+  * **Toddler Discovery Track:** Awards Gold Stars (⭐) and confetti for clicking and discovering celestial bodies.
   * **Learner XP Track:** Awards XP for correct quiz answers, allowing students to rank up through 5 progressive tiers.
 * **Persistent Browser Saves:** Integrated `localStorage` to save progression with zero backend requirements.
 * **Social Web Share API:** Added an interactive "Share Achievement" button that hooks into native mobile share sheets.
