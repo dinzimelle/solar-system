@@ -70,14 +70,18 @@
             100% { transform: translateX(-150%); } 
         }
 
-        /* 🏆 V3.0 PROFILE HUD */
-        #profile-hud {
-            position: absolute; top: 55px; right: 20px;
-            background: rgba(15, 15, 15, 0.85); border: 1px solid #444; border-radius: 12px;
-            padding: 12px 15px; width: 250px; z-index: 10;
-            backdrop-filter: blur(5px); box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            display: none; flex-direction: column; text-align: center;
+        /* Draggable Panels Framework */
+        .panel-base {
+            position: absolute; 
+            background: rgba(15, 15, 15, 0.85); 
+            border-radius: 12px; border: 1px solid #444; 
+            z-index: 10; backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: padding-bottom 0.2s;
         }
+
+        /* 🏆 V3.0 PROFILE HUD */
+        #profile-hud { top: 55px; right: 20px; width: 250px; padding: 15px 20px; display: none; flex-direction: column; text-align: center; }
         #hud-name { font-weight: bold; color: #ffcc00; font-size: 1rem; margin-bottom: 2px;}
         #hud-rank { font-size: 0.85rem; color: #88ccff; margin-bottom: 8px; font-weight: bold;}
         #hud-xp-bar { background: #333; height: 8px; border-radius: 4px; margin-bottom: 5px; overflow: hidden; position: relative; }
@@ -87,50 +91,26 @@
         
         #btn-share {
             background: #88ccff; color: #000; border: none; padding: 6px; border-radius: 6px;
-            font-weight: bold; cursor: pointer; font-size: 0.8rem; transition: 0.2s;
+            font-weight: bold; cursor: pointer; font-size: 0.8rem; transition: 0.2s; width: 100%;
         }
         #btn-share:hover { background: #fff; }
 
-        /* Draggable Panels */
-        #info-panel { 
-            position: absolute; top: 55px; left: 20px; 
-            background: rgba(15, 15, 15, 0.85); padding: 15px 25px 25px 25px; 
-            border-radius: 12px; border: 1px solid #444; 
-            width: 300px; z-index: 10; 
-            backdrop-filter: blur(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            max-height: 70vh; overflow-y: auto;
-            transition: padding-bottom 0.2s;
-        }
-
-        #quiz-panel {
-            position: absolute; top: 215px; right: 20px; /* Moved down to fit HUD */
-            background: rgba(15, 15, 15, 0.85); padding: 15px 20px 20px 20px; 
-            border-radius: 12px; border: 1px solid #444; 
-            width: 250px; z-index: 10; backdrop-filter: blur(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center;
-            transition: padding-bottom 0.2s;
-        }
-
-        #time-controls {
-            position: absolute; bottom: 50px; left: 20px; 
-            background: rgba(15, 15, 15, 0.85); padding: 15px 20px 20px 20px; 
-            border-radius: 12px; border: 1px solid #444; 
-            width: 220px; z-index: 10; backdrop-filter: blur(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: padding-bottom 0.2s;
-        }
+        /* Existing Panels */
+        #info-panel { top: 55px; left: 20px; width: 300px; padding: 15px 25px 25px 25px; max-height: 70vh; overflow-y: auto; }
+        #quiz-panel { top: 275px; right: 20px; width: 250px; padding: 15px 20px; text-align: center; }
+        #time-controls { bottom: 50px; left: 20px; width: 220px; padding: 15px 20px; }
 
         /* Panel Header & Minimize UI */
         .panel-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #444; margin-bottom: 10px; padding-bottom: 5px; }
-        #drag-handle, #quiz-drag-handle, #time-drag-handle { flex-grow: 1; text-align: left; color: #888; font-size: 1.2rem; cursor: grab; touch-action: none; }
-        #drag-handle:active, #quiz-drag-handle:active, #time-drag-handle:active { cursor: grabbing; }
+        .drag-handle-zone { flex-grow: 1; text-align: left; color: #888; font-size: 1.1rem; cursor: grab; touch-action: none; font-weight: bold; }
+        .drag-handle-zone:active { cursor: grabbing; }
         .minimize-btn { background: none; border: none; color: #ffcc00; font-size: 1.5rem; font-weight: bold; cursor: pointer; padding: 0 5px; line-height: 1; }
         .minimize-btn:hover { color: #fff; }
 
         .collapsed-content { display: none !important; }
-        #info-panel.collapsed, #quiz-panel.collapsed, #time-controls.collapsed { padding-bottom: 15px; }
+        .panel-base.collapsed { padding-bottom: 15px !important; }
 
+        /* Content Styling */
         h2 { color: #ffcc00; margin: 0 0 5px 0; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between;}
         .nickname { font-size: 0.85rem; color: #88ccff; display: block; margin-bottom: 10px; font-style: italic; }
         
@@ -171,9 +151,9 @@
         canvas { display: block !important; }
         .fact-label { color: #ffcc00; font-weight: bold; }
         
-        #info-panel::-webkit-scrollbar, #quiz-panel::-webkit-scrollbar { width: 6px; }
-        #info-panel::-webkit-scrollbar-track, #quiz-panel::-webkit-scrollbar-track { background: transparent; }
-        #info-panel::-webkit-scrollbar-thumb, #quiz-panel::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
+        #info-panel::-webkit-scrollbar, #quiz-panel::-webkit-scrollbar, #profile-hud::-webkit-scrollbar { width: 6px; }
+        #info-panel::-webkit-scrollbar-track, #quiz-panel::-webkit-scrollbar-track, #profile-hud::-webkit-scrollbar-track { background: transparent; }
+        #info-panel::-webkit-scrollbar-thumb, #quiz-panel::-webkit-scrollbar-thumb, #profile-hud::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
 
         /* ========================================= */
         /* 📱 MOBILE RESPONSIVE DESIGN (Media Query) */
@@ -185,16 +165,16 @@
             .matrix-footer, .hint { display: none !important; }
             #copyright-notice { font-size: 0.5rem; bottom: 2px; }
 
-            /* Mobile HUD Alignment */
-            #profile-hud { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: 45px !important; padding: 8px 10px; }
-            
-            #info-panel { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: 160px !important; max-height: 35vh; padding: 10px 15px 15px 15px; }
+            /* Mobile Stacked Docking */
+            #profile-hud { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: 45px !important; right: auto !important; padding: 10px 15px !important; }
+            #info-panel { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: 190px !important; max-height: 35vh; padding: 10px 15px 15px 15px; }
             #time-controls { width: 85vw !important; left: 50% !important; transform: translateX(-50%); bottom: 25px !important; top: auto !important; padding: 10px 15px 15px 15px; }
-            #quiz-panel { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: auto !important; bottom: 110px !important; right: auto !important; }
+            #quiz-panel { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: auto !important; bottom: 105px !important; right: auto !important; }
 
             .panel-header { margin-bottom: 5px; padding-bottom: 2px; }
-            #drag-handle, #quiz-drag-handle, #time-drag-handle { font-size: 1rem; color: #555; }
-            #drag-handle::after, #quiz-drag-handle::after, #time-drag-handle::after { content: " (Docked)"; font-size: 0.7rem; font-weight: normal; }
+            .drag-handle-zone { font-size: 1rem; color: #555; }
+            .drag-handle-zone::after { content: " (Docked)"; font-size: 0.7rem; font-weight: normal; }
+
             .time-btn { width: 35px; height: 35px; font-size: 1rem; }
             #ticker-text { font-size: 0.75rem; }
             .role-emoji { font-size: 1.8rem; }
@@ -211,10 +191,12 @@
 
             .matrix-footer, .hint, #copyright-notice { display: none !important; }
 
-            #profile-hud { top: 10px !important; left: 10px !important; width: 220px !important; padding: 5px; }
-            #info-panel { width: 260px !important; left: 10px !important; top: 110px !important; max-height: 70vh !important; display: flex !important; flex-direction: column; padding: 10px 15px !important; }
+            #profile-hud { width: 220px !important; right: 10px !important; left: auto !important; top: 10px !important; padding: 5px 15px !important; }
+            #quiz-panel { width: 220px !important; right: 10px !important; left: auto !important; top: 180px !important; max-height: 50vh !important; display: flex !important; flex-direction: column; padding: 10px !important; }
+            
+            #info-panel { width: 260px !important; left: 10px !important; top: 10px !important; max-height: 90vh !important; display: flex !important; flex-direction: column; padding: 10px 15px !important; }
             #info-content { overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; overscroll-behavior: contain; touch-action: auto !important; padding-right: 5px; }
-            #quiz-panel { width: 220px !important; right: 10px !important; left: auto !important; top: 10px !important; max-height: 90vh !important; display: flex !important; flex-direction: column; padding: 10px !important; }
+            
             #quiz-content { overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; overscroll-behavior: contain; touch-action: auto !important; }
 
             h2 { font-size: 1.1rem; margin-bottom: 2px; }
@@ -225,7 +207,7 @@
             #time-controls { width: 200px !important; left: 50% !important; transform: translateX(-50%); bottom: 10px !important; top: auto !important; padding: 10px 15px 15px 15px; }
 
             .panel-header { margin-bottom: 5px; padding-bottom: 2px; }
-            #drag-handle::after, #quiz-drag-handle::after, #time-drag-handle::after { content: " (Docked)"; font-size: 0.7rem; font-weight: normal; }
+            .drag-handle-zone::after { content: " (Docked)"; font-size: 0.7rem; font-weight: normal; }
             .time-btn { width: 35px; height: 35px; font-size: 1rem; }
             .role-emoji { font-size: 1.5rem; }
         }
@@ -239,13 +221,19 @@
         </div>
     </div>
 
-    <div id="profile-hud">
-        <div id="hud-name">Commander Alex</div>
-        <div id="hud-rank">Space Cadet 🚀</div>
-        <div id="hud-xp-bar"><div id="hud-xp-fill"></div></div>
-        <div id="hud-xp-text">XP: 0/5 to Next Rank</div>
-        <div id="hud-stars" title="Discovery Stars">☆☆☆☆☆☆☆☆☆☆</div>
-        <button id="btn-share">📤 Share Achievement</button>
+    <div id="profile-hud" class="panel-base">
+        <div class="panel-header">
+            <div id="hud-drag-handle" class="drag-handle-zone" title="Drag to move profile">☰ Profile</div>
+            <button class="minimize-btn" id="hud-min-btn" title="Minimize Panel">−</button>
+        </div>
+        <div id="hud-content">
+            <div id="hud-name">Commander Alex</div>
+            <div id="hud-rank">Space Cadet 🚀</div>
+            <div id="hud-xp-bar"><div id="hud-xp-fill"></div></div>
+            <div id="hud-xp-text">XP: 0/5 to Next Rank</div>
+            <div id="hud-stars" title="Discovery Stars">☆☆☆☆☆☆☆☆☆☆</div>
+            <button id="btn-share">📤 Share Achievement</button>
+        </div>
     </div>
 
     <div id="welcome-overlay">
@@ -283,9 +271,9 @@
         </div>
     </div>
 
-    <div id="quiz-panel">
+    <div id="quiz-panel" class="panel-base">
         <div class="panel-header">
-            <div id="quiz-drag-handle" title="Drag to move quiz">☰ Drag</div>
+            <div id="quiz-drag-handle" class="drag-handle-zone" title="Drag to move quiz">☰ Drag</div>
             <button class="minimize-btn" id="quiz-min-btn" title="Minimize Panel">−</button>
         </div>
         <div id="quiz-content">
@@ -299,9 +287,9 @@
 
     <div class="matrix-footer">Project created by dinzimelle</div>
 
-    <div id="info-panel">
+    <div id="info-panel" class="panel-base">
         <div class="panel-header">
-            <div id="drag-handle" title="Drag to move panel">☰ Drag</div>
+            <div id="drag-handle" class="drag-handle-zone" title="Drag to move panel">☰ Drag</div>
             <button class="minimize-btn" id="info-min-btn" title="Minimize Panel">−</button>
         </div>
         <div id="info-content">
@@ -314,9 +302,9 @@
         </div>
     </div>
 
-    <div id="time-controls">
+    <div id="time-controls" class="panel-base">
         <div class="panel-header">
-            <div id="time-drag-handle" title="Drag to move time controls">☰ Time Warp</div>
+            <div id="time-drag-handle" class="drag-handle-zone" title="Drag to move time controls">☰ Time Warp</div>
             <button class="minimize-btn" id="time-min-btn" title="Minimize Panel">−</button>
         </div>
         <div id="time-content">
@@ -557,15 +545,60 @@
         sun.add(createSciFiLabel("THE SUN ☀️", 6)); scene.add(sun);
 
         const planetsData = [
-            { name: "Mercury", label: "MERCURY 🪨", textureUrl: 'textures/mercury.jpg', emoji: "🪨", nickname: "The Swift Planet", dist: 12, speed: 0.02, size: 1.2, info: "The smallest planet and closest to the Sun.", funfacts: ["A year on Mercury is just 88 days!"], details: "Type: Terrestrial<br>Moons: 0" },
-            { name: "Venus", label: "VENUS 🔥", textureUrl: 'textures/venus.jpg', emoji: "🔥", nickname: "The Morning Star", dist: 18, speed: 0.015, size: 1.8, info: "The hottest planet in our solar system.", funfacts: ["Venus spins backwards!"], details: "Type: Terrestrial<br>Moons: 0" },
-            { name: "Earth", label: "EARTH 🌍", textureUrl: 'textures/earth.jpg', emoji: "🌍", nickname: "The Blue Marble", dist: 25, speed: 0.01, size: 2.0, info: "Our home planet and the only known harbor of life.", funfacts: ["Earth's core is as hot as the sun!"], details: "Type: Terrestrial<br>Moons: 1" },
-            { name: "Mars", label: "MARS 🔴", textureUrl: 'textures/mars.jpg', emoji: "🔴", nickname: "The Red Planet", dist: 32, speed: 0.008, size: 1.5, info: "The 'Red Planet' due to iron oxide on its surface.", funfacts: ["Mars is home to a volcano 3x taller than Everest!"], details: "Type: Terrestrial<br>Moons: 2" },
-            { name: "Jupiter", label: "JUPITER 🌩️", textureUrl: 'textures/jupiter.jpg', emoji: "🌩️", nickname: "The Gas Giant", dist: 45, speed: 0.005, size: 3.5, info: "The largest planet in our solar system.", funfacts: ["The Great Red Spot is a storm larger than Earth."], details: "Type: Gas Giant<br>Moons: 95" },
-            { name: "Saturn", label: "SATURN 🪐", textureUrl: 'textures/saturn.jpg', emoji: "🪐", nickname: "The Ringed Jewel", dist: 58, speed: 0.003, size: 3.0, info: "Famous for its stunning ring system.", funfacts: ["Saturn could float in water!"], details: "Type: Gas Giant<br>Moons: 146" },
-            { name: "Uranus", label: "URANUS 🧊", textureUrl: 'textures/uranus.jpg', emoji: "🧊", nickname: "The Ice Giant", dist: 70, speed: 0.002, size: 2.5, info: "The only planet that spins on its side.", funfacts: ["Uranus has 13 faint rings."], details: "Type: Ice Giant<br>Moons: 28" },
-            { name: "Neptune", label: "NEPTUNE 🌪️", textureUrl: 'textures/neptune.jpg', emoji: "🌪️", nickname: "The Windy Planet", dist: 82, speed: 0.0015, size: 2.4, info: "The windiest and most distant major planet.", funfacts: ["Winds here blow faster than a fighter jet!"], details: "Type: Ice Giant<br>Moons: 16" },
-            { name: "Pluto", label: "PLUTO ❄️", textureUrl: 'textures/pluto.jpg', emoji: "❄️", nickname: "The Dwarf Planet", dist: 92, speed: 0.001, size: 0.9, info: "A famous resident of the Kuiper Belt.", funfacts: ["Pluto is smaller than Earth's moon!"], details: "Type: Dwarf Planet<br>Moons: 5" }
+            { 
+                name: "Mercury", label: "MERCURY 🪨", textureUrl: 'textures/mercury.jpg', emoji: "🪨", nickname: "The Swift Planet", dist: 12, speed: 0.02, size: 1.2, 
+                info: "The smallest planet and closest to the Sun.", 
+                funfacts: ["A year on Mercury is just 88 days, but a single day lasts 176 Earth days!", "Despite being closest to the Sun, it's not the hottest planet (Venus is).", "Mercury has a huge iron core that makes up about 85% of its radius."], 
+                details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" 
+            },
+            { 
+                name: "Venus", label: "VENUS 🔥", textureUrl: 'textures/venus.jpg', emoji: "🔥", nickname: "The Morning Star", dist: 18, speed: 0.015, size: 1.8, 
+                info: "The hottest planet in our solar system.", 
+                funfacts: ["Venus spins backwards! The Sun rises in the west and sets in the east.", "It is the hottest planet, with surface temperatures hot enough to melt lead.", "A day on Venus is longer than a year on Venus!"], 
+                details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" 
+            },
+            { 
+                name: "Earth", label: "EARTH 🌍", textureUrl: 'textures/earth.jpg', emoji: "🌍", nickname: "The Blue Marble", dist: 25, speed: 0.01, size: 2.0, 
+                info: "Our home planet and the only known harbor of life.", 
+                funfacts: ["Earth is the only planet not named after a mythological god or goddess.", "Earth's inner core is about as hot as the surface of the sun.", "The Amazon rainforest produces about 20% of the world's oxygen."], 
+                details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 1" 
+            },
+            { 
+                name: "Mars", label: "MARS 🔴", textureUrl: 'textures/mars.jpg', emoji: "🔴", nickname: "The Red Planet", dist: 32, speed: 0.008, size: 1.5, 
+                info: "Often called the 'Red Planet' due to iron oxide on its surface.", 
+                funfacts: ["Mars has lower gravity, so if you weigh 100 lbs on Earth, you'd only weigh 38 lbs on Mars!", "It is home to Olympus Mons, a volcano three times taller than Mount Everest!", "Sunsets on Mars actually appear blue to the human eye!"], 
+                details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 2" 
+            },
+            { 
+                name: "Jupiter", label: "JUPITER 🌩️", textureUrl: 'textures/jupiter.jpg', emoji: "🌩️", nickname: "The Gas Giant", dist: 45, speed: 0.005, size: 3.5, 
+                info: "The largest planet in our solar system.", 
+                funfacts: ["Jupiter spins so fast that a day is only 10 hours long, but a year takes 12 Earth years!", "The Great Red Spot is a giant storm larger than Earth that has raged for hundreds of years.", "Jupiter has faint rings made of dust, not ice like Saturn."], 
+                details: "<span class='fact-label'>Type:</span> Gas Giant<br><span class='fact-label'>Moons:</span> 95 confirmed" 
+            },
+            { 
+                name: "Saturn", label: "SATURN 🪐", textureUrl: 'textures/saturn.jpg', emoji: "🪐", nickname: "The Ringed Jewel", dist: 58, speed: 0.003, size: 3.0, 
+                info: "Famous for its stunning, complex ring system.", 
+                funfacts: ["Saturn is so light and airy that if you had a bathtub big enough, it would float!", "Its rings are made mostly of chunks of water ice ranging from dust grains to mountains.", "Winds on Saturn can reach up to 1,100 miles per hour!"], 
+                details: "<span class='fact-label'>Type:</span> Gas Giant<br><span class='fact-label'>Moons:</span> 146 confirmed" 
+            },
+            { 
+                name: "Uranus", label: "URANUS 🧊", textureUrl: 'textures/uranus.jpg', emoji: "🧊", nickname: "The Ice Giant", dist: 70, speed: 0.002, size: 2.5, 
+                info: "The only planet that spins on its side.", 
+                funfacts: ["Uranus rolls around the Sun on its side like a giant blue barrel!", "It has the coldest planetary atmosphere in the solar system, dropping to -371 degrees Fahrenheit.", "Uranus actually has 13 faint rings made of dark, dusty material."], 
+                details: "<span class='fact-label'>Type:</span> Ice Giant<br><span class='fact-label'>Moons:</span> 28" 
+            },
+            { 
+                name: "Neptune", label: "NEPTUNE 🌪️", textureUrl: 'textures/neptune.jpg', emoji: "🌪️", nickname: "The Windy Planet", dist: 82, speed: 0.0015, size: 2.4, 
+                info: "The windiest and most distant major planet.", 
+                funfacts: ["Winds on Neptune blow faster than a fighter jet, reaching 1,200 miles per hour!", "Neptune has a storm called the Great Dark Spot, which is about the size of Earth.", "Scientists believe it literally rains solid diamonds deep inside Neptune's atmosphere!"], 
+                details: "<span class='fact-label'>Type:</span> Ice Giant<br><span class='fact-label'>Moons:</span> 16" 
+            },
+            { 
+                name: "Pluto", label: "PLUTO ❄️", textureUrl: 'textures/pluto.jpg', emoji: "❄️", nickname: "The Dwarf Planet", dist: 92, speed: 0.001, size: 0.9, 
+                info: "A famous resident of the Kuiper Belt.", 
+                funfacts: ["Pluto is so small that it is actually smaller than Earth's moon!", "Pluto has a giant heart-shaped glacier made of nitrogen and carbon monoxide ice.", "A person on Pluto would weigh only about 1/15th of what they weigh on Earth."], 
+                details: "<span class='fact-label'>Type:</span> Dwarf Planet<br><span class='fact-label'>Moons:</span> 5" 
+            }
         ];
 
         const planets = [];
@@ -582,20 +615,45 @@
             scene.add(mesh); planets.push({ mesh, data, angle: Math.random() * Math.PI * 2 });
         });
 
-        // --- PANEL MINIMIZE & DRAGGING (Combined for brevity) ---
-        ['info', 'quiz', 'time'].forEach(id => {
-            document.getElementById(`${id}-min-btn`).addEventListener('click', (e) => {
-                const content = document.getElementById(`${id}-content`);
+        // --- UNIFIED PANEL DRAGGING & MINIMIZE LOGIC ---
+        const panels = [
+            { id: 'info-panel', handle: 'drag-handle', min: 'info-min-btn', content: 'info-content' },
+            { id: 'quiz-panel', handle: 'quiz-drag-handle', min: 'quiz-min-btn', content: 'quiz-content' },
+            { id: 'time-controls', handle: 'time-drag-handle', min: 'time-min-btn', content: 'time-content' },
+            { id: 'profile-hud', handle: 'hud-drag-handle', min: 'hud-min-btn', content: 'hud-content' }
+        ];
+
+        panels.forEach(p => {
+            // Minimize Logic
+            document.getElementById(p.min).addEventListener('click', (e) => {
+                const content = document.getElementById(p.content);
+                const panel = document.getElementById(p.id);
                 content.classList.toggle('collapsed-content');
-                document.getElementById(`${id}-panel` || `${id}-controls`).classList.toggle('collapsed');
+                panel.classList.toggle('collapsed');
                 e.target.innerText = content.classList.contains('collapsed-content') ? '+' : '−';
             });
             
-            const handle = document.getElementById(id === 'info' ? 'drag-handle' : `${id}-drag-handle`);
-            const panel = document.getElementById(id === 'time' ? 'time-controls' : `${id}-panel`);
+            // Drag Logic
+            const handle = document.getElementById(p.handle);
+            const panel = document.getElementById(p.id);
             let isDragging = false, offsetX, offsetY;
-            handle.addEventListener('pointerdown', (e) => { isDragging = true; const rect = panel.getBoundingClientRect(); offsetX = e.clientX - rect.left; offsetY = e.clientY - rect.top; e.stopPropagation(); });
-            window.addEventListener('pointermove', (e) => { if (!isDragging) return; panel.style.left = `${Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - panel.offsetWidth))}px`; panel.style.top = `${Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - panel.offsetHeight))}px`; panel.style.bottom = 'auto'; panel.style.right = 'auto';});
+            
+            handle.addEventListener('pointerdown', (e) => { 
+                isDragging = true; 
+                const rect = panel.getBoundingClientRect(); 
+                offsetX = e.clientX - rect.left; 
+                offsetY = e.clientY - rect.top; 
+                e.stopPropagation(); 
+            });
+            
+            window.addEventListener('pointermove', (e) => { 
+                if (!isDragging) return; 
+                panel.style.left = `${Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - panel.offsetWidth))}px`; 
+                panel.style.top = `${Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - panel.offsetHeight))}px`; 
+                panel.style.bottom = 'auto'; 
+                panel.style.right = 'auto';
+            });
+            
             window.addEventListener('pointerup', () => isDragging = false);
         });
 
@@ -739,7 +797,11 @@
                     document.getElementById('p-name').innerHTML = `${objData.emoji} ${objData.name} <span class="audio-icon" id="audio-indicator">🔊</span>`;
                     document.getElementById('p-nickname').innerText = objData.nickname; document.getElementById('p-nickname').style.display = 'block';
                     document.getElementById('p-desc').innerText = objData.info; 
-                    document.getElementById('p-funfact-text').innerText = objData.funfacts[0]; 
+                    
+                    // Pick a random fun fact from the expanded array
+                    const randomFact = objData.funfacts[Math.floor(Math.random() * objData.funfacts.length)];
+                    document.getElementById('p-funfact-text').innerText = randomFact; 
+                    
                     document.getElementById('p-details').innerHTML = objData.details; document.getElementById('p-details').style.display = 'block';
                     document.getElementById('reset-btn').style.display = 'block';
                     if (!quizActive && discoveredBodies.includes(objName)) {
