@@ -1,4 +1,4 @@
-# 🪐 Solar System 3D (v2.7.0 - Production)
+# 🪐 Solar System 3D (v3.0.1 - Production)
 **An Interactive, Photorealistic EdTech Universe Built for the Next Generation of Explorers.**
 
 🚀 **Live Site:** [solarsystem3d.space](https://solarsystem3d.space)
@@ -12,64 +12,58 @@ Solar System 3D is a high-performance, web-based astronomical simulation designe
 
 ## 📜 Version History & Changelog
 
+### 🏆 v3.0.1 (The HUD Polish Update)
+* **Draggable Profile HUD:** The new Profile HUD now utilizes the unified draggable panel architecture, allowing users to reposition it freely.
+* **Minimizable HUD:** Added a minimize toggle (`−`/`+`) to the Profile HUD to save screen real estate.
+* **Advanced Mobile Docking:** Refactored CSS media queries to ensure the new HUD stacks cleanly on portrait screens and docks elegantly into the top-left corner on landscape screens without overlapping the Quiz or Info panels.
+
+### 🎮 v3.0.0 (The Gamification Update)
+* **Dual-Track Progression Engine:** Introduced a two-tier reward system to accommodate all age groups:
+  * **Toddler Discovery Track:** Awards Gold Stars (⭐) and confetti for clicking and discovering celestial bodies (Max: 10 Stars).
+  * **Learner XP Track:** Awards XP for correct quiz answers, allowing students to rank up through 5 progressive tiers (Space Cadet 🚀 ➔ Universe Master 👑).
+* **Persistent Browser Saves:** Integrated `localStorage` to save user names, avatars, XP, and discovered planets across sessions with zero backend requirements.
+* **Social Web Share API:** Added an interactive "Share Achievement" button that hooks into native mobile share sheets or desktop clipboards, allowing users to safely share their rank.
+
 ### 🌌 v2.7.0 (The Deep Space Update)
 * **Andromeda Galaxy Integration:** Implemented an external `THREE.PlaneGeometry` mesh featuring the Andromeda Galaxy in the deep background. Uses `THREE.AdditiveBlending` for an organic, glowing telescope effect and a slow cinematic rotation tied to the global Time Warp engine.
 
 ### 🧑‍🚀 v2.6.0 (The Personalized Journey Update)
-* **Dynamic AI Onboarding:** Added an interactive welcome terminal that captures the user's name, gender (generating dynamic boy/girl avatar emojis), and future STEM role (Doctor, Engineer, Commander).
-* **Personalized AI Narration:** The Web Speech API now greets users by their formal chosen title (e.g., "Commander Alex") and delivers a cinematic introduction to the full solar system before zooming in on the Sun.
-* **Gamified Praise System:** The Cosmic Quiz now celebrates quiz completions with personalized, randomized audio praises combined with the particle confetti system, creating a powerful positive feedback loop.
+* **Dynamic AI Onboarding:** Added an interactive welcome terminal that captures the user's name, gender, and future STEM role.
+* **Personalized AI Narration:** The Web Speech API now greets users by their formal chosen title (e.g., "Commander Alex").
+* **Gamified Praise System:** The Cosmic Quiz now celebrates completions with personalized, randomized audio praises.
 
 ### 📱 v2.5.0 (The Mobile UX Update)
-* **Native Mobile Responsiveness:** Implemented advanced CSS media queries for flawless performance on mobile devices.
-* **Smart Orientation Docking:** Panels now automatically detect Portrait or Landscape orientations, cleanly docking into the edges of the screen to maximize the 3D viewport.
-* **Hardware-Accelerated Scrolling:** Overhauled the landscape panel architecture with `-webkit-overflow-scrolling: touch` and isolated flex containers to ensure buttery-smooth touch swiping on iOS and modern Android devices.
+* **Native Mobile Responsiveness:** Smart Orientation Docking for Portrait/Landscape modes.
+* **Hardware-Accelerated Scrolling:** Buttery-smooth touch swiping for landscape UI panels.
 
 ### ☄️ v2.4.0 (The Outer Rim Update)
-* **Majestic Kuiper Belt:** Integrated a high-performance particle system rendering 3,000 icy debris bodies orbiting beyond Neptune. Optimized using `THREE.BufferGeometry` to ensure 60fps performance on all devices.
-* **Deep Space Animation:** Implemented independent orbital rotation for the Kuiper Belt, synchronized with the global Time Warp controller.
+* **Majestic Kuiper Belt:** Integrated a high-performance particle system rendering 3,000 icy debris bodies orbiting beyond Neptune.
 
 ### 🚀 v2.3.0 (Infrastructure & Scale)
-* **Global Edge Caching:** Integrated Cloudflare CDN to cache 2K photorealistic textures at the edge, reducing bandwidth consumption by 95% and ensuring zero-downtime scaling.
-* **Unified Draggable Dashboard:** Modularized the Time Warp controls into a draggable, collapsible widget.
+* **Global Edge Caching:** Integrated Cloudflare CDN.
+* **Unified Draggable Dashboard:** Modularized the Time Warp controls.
 
 ### 🛡️ v2.2.1 (Security Patch)
-* **Supply Chain Protection:** Implemented Subresource Integrity (SRI) cryptographic hashes on all external CDN libraries.
+* **Supply Chain Protection:** Implemented Subresource Integrity (SRI) cryptographic hashes.
 
 ### 🛸 v2.2.0 (The HUD Update)
-* **Holographic Planetary Labels:** Added 3D, camera-facing sci-fi sprites with neon text for effortless navigation.
-* **Smart Toggle Zoom:** Streamlined mobile UX; tap a focused planet a second time to return to the full orbit view.
+* **Holographic Planetary Labels & Smart Toggle Zoom.**
 
 ### 🌌 v2.0.0 (The Immersion Update)
-* **Photorealistic Environment:** Upgraded to high-definition 2K planetary maps and integrated a massive Milky Way skybox.
-* **Dynamic Knowledge Engine:** Randomly shuffling fact engine for the Sun and all planets.
-* **Multi-Set Quiz System:** Rebuilt the "Cosmic Quiz" with 4 randomized question banks.
+* **Photorealistic Environment:** 2K maps and Milky Way skybox.
+* **Dynamic Knowledge Engine & Multi-Set Quizzes.**
 
 ---
 
 ## 🛡️ Security, Privacy & Infrastructure
 * **High-Availability Scaling:** Proxied through Cloudflare for DDoS protection and global asset delivery.
-* **Zero-Backend Architecture:** Static web application with no server-side vulnerabilities.
+* **Zero-Backend Architecture:** Static web application with `localStorage` progression. No server-side vulnerabilities.
 * **COPPA & GDPR Compliant:** Cookie-free analytics via GoatCounter. No personal data tracking.
 
 ## 🛠️ Technical Stack
 * **Engine:** Three.js (WebGL)
 * **Infrastructure:** GitHub Pages + Cloudflare CDN
 * **Telemetry:** GoatCounter (Privacy-First)
-
----
-
-## 🚀 Development Journey
-1.  **Phase 1 (MVP):** Basic 3D spherical geometry and orbital math.
-2.  **Phase 2 (UX):** Adding TTS audio, the Cosmic Quiz, and the draggable UI.
-3.  **Phase 3 (DevOps):** Custom domain routing and PWA configuration.
-4.  **Phase 4 (Production V2):** PBR textures, dynamic lighting, and skybox integration.
-5.  **Phase 5 (Security):** Hardening external assets with SRI hashing.
-6.  **Phase 6 (Infrastructure):** Migrating to Cloudflare for infinite scalability.
-7.  **Phase 7 (Expansion):** Implementing the Kuiper Belt particle system.
-8.  **Phase 8 (Mobile Excellence):** Advanced CSS viewport docking and touch-scroll optimization.
-9.  **Phase 9 (Gamification & Retention):** Personalized AI onboarding, customized audio praise, and dynamic role-playing avatars.
-10. **Phase 10 (Deep Space):** Addition of the Andromeda Galaxy via additive blending.
 
 ---
 
