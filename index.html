@@ -540,7 +540,30 @@
         andromeda.position.set(-300, 120, -350); andromeda.rotation.set(Math.PI / 8, Math.PI / 6, 0); 
         scene.add(andromeda);
 
-        // --- PLANET DATA ---
+        // --- PLANET & SUN DATA ---
+        const sunFunFacts = [
+            "The Sun is so huge that 1.3 million Earths could fit inside it!",
+            "The Sun's core is around 27 million degrees Fahrenheit!",
+            "Light from the Sun takes about 8 minutes and 20 seconds to reach Earth.",
+            "The Sun accounts for 99.86% of the mass in the entire solar system!",
+            "The Sun rotates faster at its equator than it does at its poles.",
+            "The Sun is essentially a giant ball of glowing hydrogen and helium gas.",
+            "It takes the Sun about 230 million years to complete one orbit around the Milky Way galaxy!",
+            "The Sun has a powerful magnetic field that flips completely every 11 years.",
+            "Solar flares from the Sun can release as much energy as millions of nuclear bombs exploding at once.",
+            "At its core, the Sun fuses about 600 million tons of hydrogen into helium every single second!",
+            "A particle of light can take over 100,000 years to travel from the Sun's core to its surface!",
+            "The Sun is actually white! It only appears yellow to us because of Earth's atmosphere.",
+            "The Sun's gravity is 28 times stronger than Earth's. You would be 28 times heavier there!",
+            "The Sun doesn't have a solid surface anywhere. It is completely made of superheated gas and plasma.",
+            "Sound waves bounce around inside the Sun, causing the entire star to 'ring' like a giant bell!",
+            "The Sun produces a constant 'Solar Wind' which creates the beautiful Northern Lights on Earth.",
+            "The Sun is about 4.6 billion years old, meaning it is in the 'middle age' of its life.",
+            "If the Sun were the size of a typical front door, the Earth would be the size of a single nickel.",
+            "In about 5 billion years, the Sun will run out of hydrogen and expand into a massive Red Giant.",
+            "The Sun is moving through space at a speed of 450,000 miles per hour!"
+        ];
+
         const sun = new THREE.Mesh(new THREE.SphereGeometry(6, 64, 64), new THREE.MeshBasicMaterial({ map: textureLoader.load('textures/sun.jpg') }));
         sun.add(createSciFiLabel("THE SUN ☀️", 6)); scene.add(sun);
 
@@ -548,55 +571,109 @@
             { 
                 name: "Mercury", label: "MERCURY 🪨", textureUrl: 'textures/mercury.jpg', emoji: "🪨", nickname: "The Swift Planet", dist: 12, speed: 0.02, size: 1.2, 
                 info: "The smallest planet and closest to the Sun.", 
-                funfacts: ["A year on Mercury is just 88 days, but a single day lasts 176 Earth days!", "Despite being closest to the Sun, it's not the hottest planet (Venus is).", "Mercury has a huge iron core that makes up about 85% of its radius."], 
+                funfacts: [
+                    "A year on Mercury is just 88 days, but a single day lasts 176 Earth days!", 
+                    "Despite being closest to the Sun, it's not the hottest planet (Venus is).", 
+                    "Mercury has a huge iron core that makes up about 85% of its radius.",
+                    "Your weight on Mercury would be just 38% of your weight on Earth.",
+                    "It has a comet-like tail of sodium gas pushed away by solar wind!"
+                ], 
                 details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" 
             },
             { 
                 name: "Venus", label: "VENUS 🔥", textureUrl: 'textures/venus.jpg', emoji: "🔥", nickname: "The Morning Star", dist: 18, speed: 0.015, size: 1.8, 
                 info: "The hottest planet in our solar system.", 
-                funfacts: ["Venus spins backwards! The Sun rises in the west and sets in the east.", "It is the hottest planet, with surface temperatures hot enough to melt lead.", "A day on Venus is longer than a year on Venus!"], 
+                funfacts: [
+                    "Venus spins backwards! The Sun rises in the west and sets in the east.", 
+                    "It is the hottest planet, with surface temperatures hot enough to melt lead.", 
+                    "A day on Venus is longer than a year on Venus!",
+                    "The atmospheric pressure on Venus is 92 times greater than Earth's.",
+                    "It is the brightest natural object in Earth's night sky after the Moon."
+                ], 
                 details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" 
             },
             { 
                 name: "Earth", label: "EARTH 🌍", textureUrl: 'textures/earth.jpg', emoji: "🌍", nickname: "The Blue Marble", dist: 25, speed: 0.01, size: 2.0, 
                 info: "Our home planet and the only known harbor of life.", 
-                funfacts: ["Earth is the only planet not named after a mythological god or goddess.", "Earth's inner core is about as hot as the surface of the sun.", "The Amazon rainforest produces about 20% of the world's oxygen."], 
+                funfacts: [
+                    "Earth is the only planet not named after a mythological god or goddess.", 
+                    "Earth's inner core is about as hot as the surface of the sun.", 
+                    "The Amazon rainforest produces about 20% of the world's oxygen.",
+                    "Our planet is actually a squashed sphere, bulging slightly at the equator!",
+                    "A teaspoon of soil can contain more living organisms than there are humans on Earth."
+                ], 
                 details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 1" 
             },
             { 
                 name: "Mars", label: "MARS 🔴", textureUrl: 'textures/mars.jpg', emoji: "🔴", nickname: "The Red Planet", dist: 32, speed: 0.008, size: 1.5, 
                 info: "Often called the 'Red Planet' due to iron oxide on its surface.", 
-                funfacts: ["Mars has lower gravity, so if you weigh 100 lbs on Earth, you'd only weigh 38 lbs on Mars!", "It is home to Olympus Mons, a volcano three times taller than Mount Everest!", "Sunsets on Mars actually appear blue to the human eye!"], 
+                funfacts: [
+                    "Mars has lower gravity, so if you weigh 100 lbs on Earth, you'd only weigh 38 lbs on Mars!", 
+                    "It is home to Olympus Mons, a volcano three times taller than Mount Everest!", 
+                    "Sunsets on Mars actually appear blue to the human eye!",
+                    "Mars has the largest dust storms in the solar system, sometimes covering the entire planet.",
+                    "Pieces of Mars have actually fallen to Earth as meteorites."
+                ], 
                 details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 2" 
             },
             { 
                 name: "Jupiter", label: "JUPITER 🌩️", textureUrl: 'textures/jupiter.jpg', emoji: "🌩️", nickname: "The Gas Giant", dist: 45, speed: 0.005, size: 3.5, 
                 info: "The largest planet in our solar system.", 
-                funfacts: ["Jupiter spins so fast that a day is only 10 hours long, but a year takes 12 Earth years!", "The Great Red Spot is a giant storm larger than Earth that has raged for hundreds of years.", "Jupiter has faint rings made of dust, not ice like Saturn."], 
+                funfacts: [
+                    "Jupiter spins so fast that a day is only 10 hours long, but a year takes 12 Earth years!", 
+                    "The Great Red Spot is a giant storm larger than Earth that has raged for hundreds of years.", 
+                    "Jupiter has faint rings made of dust, not ice like Saturn.",
+                    "It is so massive that it doesn't actually orbit the Sun; they both orbit a point just outside the Sun's surface!",
+                    "If Jupiter were about 80 times more massive, it would have ignited to become a star!"
+                ], 
                 details: "<span class='fact-label'>Type:</span> Gas Giant<br><span class='fact-label'>Moons:</span> 95 confirmed" 
             },
             { 
                 name: "Saturn", label: "SATURN 🪐", textureUrl: 'textures/saturn.jpg', emoji: "🪐", nickname: "The Ringed Jewel", dist: 58, speed: 0.003, size: 3.0, 
                 info: "Famous for its stunning, complex ring system.", 
-                funfacts: ["Saturn is so light and airy that if you had a bathtub big enough, it would float!", "Its rings are made mostly of chunks of water ice ranging from dust grains to mountains.", "Winds on Saturn can reach up to 1,100 miles per hour!"], 
+                funfacts: [
+                    "Saturn is so light and airy that if you had a bathtub big enough, it would float!", 
+                    "Its rings are made mostly of chunks of water ice ranging from dust grains to mountains.", 
+                    "Winds on Saturn can reach up to 1,100 miles per hour!",
+                    "It takes roughly 29.4 Earth years for Saturn to orbit the Sun once.",
+                    "Sometimes, massive lightning storms on Saturn can be seen from Earth using a telescope!"
+                ], 
                 details: "<span class='fact-label'>Type:</span> Gas Giant<br><span class='fact-label'>Moons:</span> 146 confirmed" 
             },
             { 
                 name: "Uranus", label: "URANUS 🧊", textureUrl: 'textures/uranus.jpg', emoji: "🧊", nickname: "The Ice Giant", dist: 70, speed: 0.002, size: 2.5, 
                 info: "The only planet that spins on its side.", 
-                funfacts: ["Uranus rolls around the Sun on its side like a giant blue barrel!", "It has the coldest planetary atmosphere in the solar system, dropping to -371 degrees Fahrenheit.", "Uranus actually has 13 faint rings made of dark, dusty material."], 
+                funfacts: [
+                    "Uranus rolls around the Sun on its side like a giant blue barrel!", 
+                    "It has the coldest planetary atmosphere in the solar system, dropping to -371 degrees Fahrenheit.", 
+                    "Uranus actually has 13 faint rings made of dark, dusty material.",
+                    "A summer on Uranus's north pole lasts for 42 Earth years of continuous sunlight.",
+                    "It was the first planet discovered using a telescope (by William Herschel in 1781)."
+                ], 
                 details: "<span class='fact-label'>Type:</span> Ice Giant<br><span class='fact-label'>Moons:</span> 28" 
             },
             { 
                 name: "Neptune", label: "NEPTUNE 🌪️", textureUrl: 'textures/neptune.jpg', emoji: "🌪️", nickname: "The Windy Planet", dist: 82, speed: 0.0015, size: 2.4, 
                 info: "The windiest and most distant major planet.", 
-                funfacts: ["Winds on Neptune blow faster than a fighter jet, reaching 1,200 miles per hour!", "Neptune has a storm called the Great Dark Spot, which is about the size of Earth.", "Scientists believe it literally rains solid diamonds deep inside Neptune's atmosphere!"], 
+                funfacts: [
+                    "Winds on Neptune blow faster than a fighter jet, reaching 1,200 miles per hour!", 
+                    "Neptune has a storm called the Great Dark Spot, which is about the size of Earth.", 
+                    "Scientists believe it literally rains solid diamonds deep inside Neptune's atmosphere!",
+                    "It was the first planet located through mathematical calculations rather than telescope observations.",
+                    "It is so incredibly far away that it takes sunlight 4 hours to reach Neptune!"
+                ], 
                 details: "<span class='fact-label'>Type:</span> Ice Giant<br><span class='fact-label'>Moons:</span> 16" 
             },
             { 
                 name: "Pluto", label: "PLUTO ❄️", textureUrl: 'textures/pluto.jpg', emoji: "❄️", nickname: "The Dwarf Planet", dist: 92, speed: 0.001, size: 0.9, 
                 info: "A famous resident of the Kuiper Belt.", 
-                funfacts: ["Pluto is so small that it is actually smaller than Earth's moon!", "Pluto has a giant heart-shaped glacier made of nitrogen and carbon monoxide ice.", "A person on Pluto would weigh only about 1/15th of what they weigh on Earth."], 
+                funfacts: [
+                    "Pluto is so small that it is actually smaller than Earth's moon!", 
+                    "Pluto has a giant heart-shaped glacier made of nitrogen and carbon monoxide ice.", 
+                    "A person on Pluto would weigh only about 1/15th of what they weigh on Earth.",
+                    "Its orbit is so highly elliptical that sometimes it is closer to the Sun than Neptune.",
+                    "The sky on Pluto is blue, just like on Earth, but the surface is red."
+                ], 
                 details: "<span class='fact-label'>Type:</span> Dwarf Planet<br><span class='fact-label'>Moons:</span> 5" 
             }
         ];
@@ -716,10 +793,13 @@
         
         function returnToOrbit() {
             focusedPlanet = null; returningToCenter = true; stopAudioSafely();
+            
+            const randomSunFact = sunFunFacts[Math.floor(Math.random() * sunFunFacts.length)];
+            
             document.getElementById('p-name').innerHTML = `☀️ The Sun <span class="audio-icon" id="audio-indicator">🔊</span>`;
             document.getElementById('p-nickname').innerText = "The Heart of our System";
             document.getElementById('p-desc').innerText = "Click any planet to zoom in and read its astronomical data.";
-            document.getElementById('p-funfact-text').innerText = "The Sun is so huge that 1.3 million Earths could fit inside it!";
+            document.getElementById('p-funfact-text').innerText = randomSunFact;
             document.getElementById('p-details').style.display = 'none'; document.getElementById('reset-btn').style.display = 'none';
         }
         document.getElementById('reset-btn').onclick = returnToOrbit;
@@ -808,11 +888,17 @@
                         speakSafely(`You are looking at ${objData.name}. ${objData.info}`);
                     }
                 } else {
+                    const randomSunFact = sunFunFacts[Math.floor(Math.random() * sunFunFacts.length)];
                     document.getElementById('p-name').innerHTML = `☀️ The Sun <span class="audio-icon" id="audio-indicator">🔊</span>`;
                     document.getElementById('p-nickname').innerText = "The Heart of our System";
                     document.getElementById('p-desc').innerText = "The core of our solar system. A Yellow Dwarf star made of hot plasma.";
+                    document.getElementById('p-funfact-text').innerText = randomSunFact;
                     document.getElementById('p-details').style.display = 'none';
                     document.getElementById('reset-btn').style.display = 'block';
+                    
+                    if (!quizActive && discoveredBodies.includes("The Sun")) {
+                        speakSafely(`You are looking at The Sun. Fun fact: ${randomSunFact}`);
+                    }
                 }
             }
         });
