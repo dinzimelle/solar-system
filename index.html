@@ -70,6 +70,27 @@
             100% { transform: translateX(-150%); } 
         }
 
+        /* 🏆 V3.0 PROFILE HUD */
+        #profile-hud {
+            position: absolute; top: 55px; right: 20px;
+            background: rgba(15, 15, 15, 0.85); border: 1px solid #444; border-radius: 12px;
+            padding: 12px 15px; width: 250px; z-index: 10;
+            backdrop-filter: blur(5px); box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: none; flex-direction: column; text-align: center;
+        }
+        #hud-name { font-weight: bold; color: #ffcc00; font-size: 1rem; margin-bottom: 2px;}
+        #hud-rank { font-size: 0.85rem; color: #88ccff; margin-bottom: 8px; font-weight: bold;}
+        #hud-xp-bar { background: #333; height: 8px; border-radius: 4px; margin-bottom: 5px; overflow: hidden; position: relative; }
+        #hud-xp-fill { background: #44ff44; height: 100%; width: 0%; transition: width 0.5s ease; }
+        #hud-xp-text { font-size: 0.7rem; color: #aaa; margin-bottom: 10px; }
+        #hud-stars { color: #ffcc00; font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 10px; }
+        
+        #btn-share {
+            background: #88ccff; color: #000; border: none; padding: 6px; border-radius: 6px;
+            font-weight: bold; cursor: pointer; font-size: 0.8rem; transition: 0.2s;
+        }
+        #btn-share:hover { background: #fff; }
+
         /* Draggable Panels */
         #info-panel { 
             position: absolute; top: 55px; left: 20px; 
@@ -83,7 +104,7 @@
         }
 
         #quiz-panel {
-            position: absolute; top: 55px; right: 20px; 
+            position: absolute; top: 215px; right: 20px; /* Moved down to fit HUD */
             background: rgba(15, 15, 15, 0.85); padding: 15px 20px 20px 20px; 
             border-radius: 12px; border: 1px solid #444; 
             width: 250px; z-index: 10; backdrop-filter: blur(5px);
@@ -101,28 +122,15 @@
         }
 
         /* Panel Header & Minimize UI */
-        .panel-header {
-            display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 1px solid #444; margin-bottom: 10px; padding-bottom: 5px;
-        }
-        
-        #drag-handle, #quiz-drag-handle, #time-drag-handle {
-            flex-grow: 1; text-align: left; color: #888; font-size: 1.2rem;
-            cursor: grab; touch-action: none;
-        }
+        .panel-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #444; margin-bottom: 10px; padding-bottom: 5px; }
+        #drag-handle, #quiz-drag-handle, #time-drag-handle { flex-grow: 1; text-align: left; color: #888; font-size: 1.2rem; cursor: grab; touch-action: none; }
         #drag-handle:active, #quiz-drag-handle:active, #time-drag-handle:active { cursor: grabbing; }
-
-        .minimize-btn {
-            background: none; border: none; color: #ffcc00; font-size: 1.5rem;
-            font-weight: bold; cursor: pointer; padding: 0 5px; line-height: 1;
-        }
+        .minimize-btn { background: none; border: none; color: #ffcc00; font-size: 1.5rem; font-weight: bold; cursor: pointer; padding: 0 5px; line-height: 1; }
         .minimize-btn:hover { color: #fff; }
 
-        /* Collapse States */
         .collapsed-content { display: none !important; }
         #info-panel.collapsed, #quiz-panel.collapsed, #time-controls.collapsed { padding-bottom: 15px; }
 
-        /* Typography & UI Elements */
         h2 { color: #ffcc00; margin: 0 0 5px 0; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between;}
         .nickname { font-size: 0.85rem; color: #88ccff; display: block; margin-bottom: 10px; font-style: italic; }
         
@@ -134,78 +142,31 @@
         .details { color: #aaa; font-size: 0.9rem; display: none; margin-bottom: 15px; border-top: 1px solid #333; padding-top: 10px; line-height: 1.5;}
         
         .fun-fact-box {
-            background: linear-gradient(135deg, #ff4422, #ffcc00);
-            color: #000; padding: 12px; border-radius: 8px; 
-            font-weight: 800; font-size: 0.9rem; line-height: 1.4;
-            margin-bottom: 15px; box-shadow: 0 4px 10px rgba(255, 100, 0, 0.3);
+            background: linear-gradient(135deg, #ff4422, #ffcc00); color: #000; padding: 12px; border-radius: 8px; 
+            font-weight: 800; font-size: 0.9rem; line-height: 1.4; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(255, 100, 0, 0.3);
         }
         .fun-fact-title { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; opacity: 0.8; }
 
-        button.action-btn {
-            background: #ffcc00; color: #000; border: none; 
-            padding: 10px 15px; border-radius: 6px; font-weight: bold; 
-            cursor: pointer; width: 100%; display: none;
-            transition: background 0.2s; margin-top: 10px;
-        }
+        button.action-btn { background: #ffcc00; color: #000; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; display: none; transition: background 0.2s; margin-top: 10px; }
         button.action-btn:hover { background: #e6b800; }
         
-        /* Time Warp Controls Inner */
-        #time-content {
-            display: flex; gap: 15px; justify-content: center;
-        }
-        
-        .time-btn {
-            background: transparent; color: white; border: 2px solid #555; 
-            border-radius: 50%; width: 45px; height: 45px; font-size: 1.2rem;
-            cursor: pointer; transition: 0.2s ease; display: flex; align-items: center; justify-content: center;
-        }
+        #time-content { display: flex; gap: 15px; justify-content: center; }
+        .time-btn { background: transparent; color: white; border: 2px solid #555; border-radius: 50%; width: 45px; height: 45px; font-size: 1.2rem; cursor: pointer; transition: 0.2s ease; display: flex; align-items: center; justify-content: center; }
         .time-btn:hover { background: #333; transform: scale(1.1); }
         .time-btn.active { background: #ffcc00; color: #000; border-color: #ffcc00; }
 
-        /* Quiz UI Inner Elements */
         #quiz-title { color: #88ccff; margin: 0 0 10px 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;}
         #quiz-question { color: #fff; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.4; font-weight: bold;}
         #quiz-feedback { color: #ff4422; font-weight: bold; margin-bottom: 10px; min-height: 20px; }
-        
-        #btn-quiz-start, #btn-quiz-exit {
-            border: none; padding: 10px; border-radius: 6px; 
-            font-weight: bold; cursor: pointer; width: 100%; transition: 0.2s;
-        }
+        #btn-quiz-start, #btn-quiz-exit { border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.2s; }
         #btn-quiz-start { background: #88ccff; color: #000; }
         #btn-quiz-start:hover { background: #66b3ff; }
         #btn-quiz-exit { background: #ff4422; color: #fff; display: none; }
         #btn-quiz-exit:hover { background: #dd3311; }
 
         .hint { position: absolute; bottom: 35px; width: 100%; text-align: center; color: #888; font-size: 0.9rem; pointer-events: none; z-index: 5;}
-
-        /* Matrix Green Footer Signature */
-        .matrix-footer { 
-            position: absolute; 
-            bottom: 35px; 
-            right: 20px; 
-            color: #00ff00; 
-            font-family: 'Courier New', Courier, monospace; 
-            font-weight: normal; 
-            font-size: 0.75rem;  
-            text-align: right; 
-            z-index: 15; 
-            pointer-events: none; 
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.8); 
-        }
-        
-        /* Copyright Notice */
-        #copyright-notice {
-            position: absolute; 
-            bottom: 10px; 
-            width: 100%; 
-            text-align: center;
-            color: rgba(255, 255, 255, 0.5); 
-            font-size: 0.65rem; 
-            pointer-events: none; 
-            z-index: 5; 
-            letter-spacing: 0.5px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        .matrix-footer { position: absolute; bottom: 35px; right: 20px; color: #00ff00; font-family: 'Courier New', Courier, monospace; font-weight: normal; font-size: 0.75rem; text-align: right; z-index: 15; pointer-events: none; text-shadow: 0 0 5px rgba(0, 255, 0, 0.8); }
+        #copyright-notice { position: absolute; bottom: 10px; width: 100%; text-align: center; color: rgba(255, 255, 255, 0.5); font-size: 0.65rem; pointer-events: none; z-index: 5; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
         canvas { display: block !important; }
         .fact-label { color: #ffcc00; font-weight: bold; }
@@ -221,43 +182,19 @@
             .welcome-box h1 { font-size: 1.8rem; }
             .welcome-box p { font-size: 0.95rem; margin-bottom: 20px; }
             #btn-enter-universe { padding: 12px 25px; font-size: 1rem; }
-
             .matrix-footer, .hint { display: none !important; }
             #copyright-notice { font-size: 0.5rem; bottom: 2px; }
 
-            #info-panel { 
-                width: 85vw !important; 
-                left: 50% !important; 
-                transform: translateX(-50%); 
-                top: 45px !important; 
-                max-height: 40vh; 
-                padding: 10px 15px 15px 15px; 
-            }
-
-            #time-controls { 
-                width: 85vw !important; 
-                left: 50% !important; 
-                transform: translateX(-50%);
-                bottom: 25px !important; 
-                top: auto !important; 
-                padding: 10px 15px 15px 15px; 
-            }
-
-            #quiz-panel { 
-                width: 85vw !important; 
-                left: 50% !important; 
-                transform: translateX(-50%);
-                top: auto !important; 
-                bottom: 110px !important; 
-                right: auto !important;
-            }
+            /* Mobile HUD Alignment */
+            #profile-hud { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: 45px !important; padding: 8px 10px; }
+            
+            #info-panel { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: 160px !important; max-height: 35vh; padding: 10px 15px 15px 15px; }
+            #time-controls { width: 85vw !important; left: 50% !important; transform: translateX(-50%); bottom: 25px !important; top: auto !important; padding: 10px 15px 15px 15px; }
+            #quiz-panel { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: auto !important; bottom: 110px !important; right: auto !important; }
 
             .panel-header { margin-bottom: 5px; padding-bottom: 2px; }
             #drag-handle, #quiz-drag-handle, #time-drag-handle { font-size: 1rem; color: #555; }
-            #drag-handle::after, #quiz-drag-handle::after, #time-drag-handle::after { 
-                content: " (Docked)"; font-size: 0.7rem; font-weight: normal;
-            }
-
+            #drag-handle::after, #quiz-drag-handle::after, #time-drag-handle::after { content: " (Docked)"; font-size: 0.7rem; font-weight: normal; }
             .time-btn { width: 35px; height: 35px; font-size: 1rem; }
             #ticker-text { font-size: 0.75rem; }
             .role-emoji { font-size: 1.8rem; }
@@ -274,60 +211,21 @@
 
             .matrix-footer, .hint, #copyright-notice { display: none !important; }
 
-            #info-panel { 
-                width: 260px !important; 
-                left: 10px !important; 
-                top: 10px !important; 
-                max-height: 90vh !important; 
-                display: flex !important;
-                flex-direction: column;
-                padding: 10px 15px !important;
-            }
-
-            #info-content {
-                overflow-y: auto !important;
-                -webkit-overflow-scrolling: touch !important;
-                overscroll-behavior: contain; 
-                touch-action: auto !important;
-                padding-right: 5px;
-            }
-
-            #quiz-panel { 
-                width: 220px !important; 
-                right: 10px !important; 
-                left: auto !important;
-                top: 10px !important; 
-                max-height: 90vh !important; 
-                display: flex !important;
-                flex-direction: column;
-                padding: 10px !important;
-            }
-
-            #quiz-content {
-                overflow-y: auto !important;
-                -webkit-overflow-scrolling: touch !important;
-                overscroll-behavior: contain;
-                touch-action: auto !important;
-            }
+            #profile-hud { top: 10px !important; left: 10px !important; width: 220px !important; padding: 5px; }
+            #info-panel { width: 260px !important; left: 10px !important; top: 110px !important; max-height: 70vh !important; display: flex !important; flex-direction: column; padding: 10px 15px !important; }
+            #info-content { overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; overscroll-behavior: contain; touch-action: auto !important; padding-right: 5px; }
+            #quiz-panel { width: 220px !important; right: 10px !important; left: auto !important; top: 10px !important; max-height: 90vh !important; display: flex !important; flex-direction: column; padding: 10px !important; }
+            #quiz-content { overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; overscroll-behavior: contain; touch-action: auto !important; }
 
             h2 { font-size: 1.1rem; margin-bottom: 2px; }
             .nickname { font-size: 0.75rem; margin-bottom: 5px; }
             p { font-size: 0.8rem; margin-bottom: 8px; line-height: 1.3; }
             .fun-fact-box { padding: 8px; font-size: 0.75rem; margin-bottom: 8px; }
 
-            #time-controls { 
-                width: 200px !important; 
-                left: 50% !important; 
-                transform: translateX(-50%);
-                bottom: 10px !important; 
-                top: auto !important; 
-                padding: 10px 15px 15px 15px; 
-            }
+            #time-controls { width: 200px !important; left: 50% !important; transform: translateX(-50%); bottom: 10px !important; top: auto !important; padding: 10px 15px 15px 15px; }
 
             .panel-header { margin-bottom: 5px; padding-bottom: 2px; }
-            #drag-handle::after, #quiz-drag-handle::after, #time-drag-handle::after { 
-                content: " (Docked)"; font-size: 0.7rem; font-weight: normal;
-            }
+            #drag-handle::after, #quiz-drag-handle::after, #time-drag-handle::after { content: " (Docked)"; font-size: 0.7rem; font-weight: normal; }
             .time-btn { width: 35px; height: 35px; font-size: 1rem; }
             .role-emoji { font-size: 1.5rem; }
         }
@@ -337,8 +235,17 @@
 
     <div id="news-ticker-container">
         <div id="ticker-text">
-            🚀 SYSTEM UPDATE V2.7.0 LIVE: ANDROMEDA GALAXY ADDED (DEEP SPACE BACKGROUND) • PERSONALIZED AI ONBOARDING ENGINE (CUSTOM EXPLORER TITLES) • NATIVE MOBILE RESPONSIVENESS • MAJESTIC KUIPER BELT ADDED (3,000+ PARTICLE FIELD) • WELCOME TO THE UNIVERSE! 👩‍🚀
+            🚀 SYSTEM UPDATE V3.0.0 LIVE: GAMIFIED RANKING ENGINE ADDED • TODDLER DISCOVERY REWARDS • SOCIAL MEDIA SHARING API • PERSISTENT BROWSER SAVES • ANDROMEDA GALAXY ADDED • WELCOME TO THE UNIVERSE! 👩‍🚀
         </div>
+    </div>
+
+    <div id="profile-hud">
+        <div id="hud-name">Commander Alex</div>
+        <div id="hud-rank">Space Cadet 🚀</div>
+        <div id="hud-xp-bar"><div id="hud-xp-fill"></div></div>
+        <div id="hud-xp-text">XP: 0/5 to Next Rank</div>
+        <div id="hud-stars" title="Discovery Stars">☆☆☆☆☆☆☆☆☆☆</div>
+        <button id="btn-share">📤 Share Achievement</button>
     </div>
 
     <div id="welcome-overlay">
@@ -381,7 +288,6 @@
             <div id="quiz-drag-handle" title="Drag to move quiz">☰ Drag</div>
             <button class="minimize-btn" id="quiz-min-btn" title="Minimize Panel">−</button>
         </div>
-        
         <div id="quiz-content">
             <h3 id="quiz-title">🎯 Cosmic Quiz</h3>
             <div id="quiz-question">Ready to test your space knowledge?</div>
@@ -398,7 +304,6 @@
             <div id="drag-handle" title="Drag to move panel">☰ Drag</div>
             <button class="minimize-btn" id="info-min-btn" title="Minimize Panel">−</button>
         </div>
-
         <div id="info-content">
             <h2 id="p-name">☀️ The Sun <span class="audio-icon" id="audio-indicator">🔊</span></h2>
             <span id="p-nickname" class="nickname">The Heart of our System</span>
@@ -422,7 +327,6 @@
     </div>
 
     <div class="hint">Left Click + Drag to Rotate • Scroll to Zoom • Click Planets</div>
-    
     <div id="copyright-notice">© 2026 solarsystem3d.space. All Rights Reserved. This software and its source code may not be copied, distributed, or modified without express written permission.</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -430,9 +334,8 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" integrity="sha512-zT0ICbCP9FvtkNA1dsPyGK5HkLUe47KbE2BF2aUeN+jQFBYPfIaYohOGnEEwxMk9vLL+bLEdFs/xDxUY/2CLIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
-        // --- 0. AUDIO ENGINE, WELCOME SCREEN & TICKER ---
+        // --- 0. AUDIO ENGINE & UTILS ---
         const infoPanelEl = document.getElementById('info-panel');
-        
         function speakSafely(text) {
             try {
                 if (!('speechSynthesis' in window)) return;
@@ -446,29 +349,95 @@
                 synth.speak(utterance);
             } catch (error) { console.log("Audio skipped."); }
         }
-
         function stopAudioSafely() {
             try {
-                if ('speechSynthesis' in window && window.speechSynthesis.speaking) {
-                    window.speechSynthesis.cancel();
-                }
+                if ('speechSynthesis' in window && window.speechSynthesis.speaking) window.speechSynthesis.cancel();
                 infoPanelEl.classList.remove('speaking');
             } catch(e) {}
         }
 
+        // --- 0.5 LOCALSTORAGE SAVES & GAMIFICATION ENGINE ---
+        let formattedUserName = localStorage.getItem('solar_name') || "Explorer";
+        let quizXP = parseInt(localStorage.getItem('solar_xp')) || 0;
+        let discoveredBodies = JSON.parse(localStorage.getItem('solar_discovered')) || [];
+        
+        function getRankDetails(xp) {
+            if (xp >= 50) return { name: "Universe Master", icon: "👑", prev: 50, next: 50 }; // Max level
+            if (xp >= 30) return { name: "Galactic Commander", icon: "🎖️", prev: 30, next: 50 };
+            if (xp >= 15) return { name: "Star Pilot", icon: "🛸", prev: 15, next: 30 };
+            if (xp >= 5)  return { name: "Astrogator", icon: "🧭", prev: 5, next: 15 };
+            return { name: "Space Cadet", icon: "🚀", prev: 0, next: 5 };
+        }
+
+        function updateProfileUI() {
+            const hudName = document.getElementById('hud-name');
+            const hudRank = document.getElementById('hud-rank');
+            const hudXpFill = document.getElementById('hud-xp-fill');
+            const hudXpText = document.getElementById('hud-xp-text');
+            const hudStars = document.getElementById('hud-stars');
+
+            const rank = getRankDetails(quizXP);
+            hudName.innerText = formattedUserName;
+            hudRank.innerText = `${rank.name} ${rank.icon}`;
+
+            // Calculate XP Bar percentage
+            if (rank.name === "Universe Master") {
+                hudXpFill.style.width = "100%";
+                hudXpFill.style.background = "#ffcc00";
+                hudXpText.innerText = `Max Rank Achieved! (${quizXP} XP)`;
+            } else {
+                const pointsIntoLevel = quizXP - rank.prev;
+                const pointsRequired = rank.next - rank.prev;
+                const percentage = (pointsIntoLevel / pointsRequired) * 100;
+                hudXpFill.style.width = `${percentage}%`;
+                hudXpText.innerText = `XP: ${quizXP} / ${rank.next} to Next Rank`;
+            }
+
+            // Update Toddler Stars (Max 10)
+            let starString = "";
+            for (let i = 0; i < 10; i++) {
+                starString += (i < discoveredBodies.length) ? "★" : "☆";
+            }
+            hudStars.innerText = starString;
+        }
+
+        // --- SOCIAL SHARE API ---
+        document.getElementById('btn-share').addEventListener('click', () => {
+            const rank = getRankDetails(quizXP);
+            const shareText = `I just reached the rank of ${rank.name} ${rank.icon} and discovered ${discoveredBodies.length}/10 planets in Solar System 3D! Can you beat my score?`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Solar System 3D',
+                    text: shareText,
+                    url: 'https://solarsystem3d.space'
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(`${shareText} Play instantly at: https://solarsystem3d.space`);
+                alert("Awesome! Your achievement was copied to your clipboard. Paste it on Facebook, Reddit, or Twitter!");
+            }
+        });
+
+        // --- 1. WELCOME SCREEN & ONBOARDING ---
         const welcomeOverlay = document.getElementById('welcome-overlay');
         const btnEnterUniverse = document.getElementById('btn-enter-universe');
         const tickerContainer = document.getElementById('news-ticker-container');
         const tickerText = document.getElementById('ticker-text');
+        const profileHud = document.getElementById('profile-hud');
 
-        // Form Elements
         const inputName = document.getElementById('user-name');
         const selectGender = document.getElementById('user-gender');
         const roleCards = document.querySelectorAll('.role-card');
         let selectedRole = "";
-        let formattedUserName = "Explorer";
 
-        // Dynamically change Avatars based on Gender selection
+        // Auto-fill form if they played before
+        if (localStorage.getItem('solar_name_raw')) {
+            inputName.value = localStorage.getItem('solar_name_raw');
+            selectGender.value = localStorage.getItem('solar_gender') || "";
+            // Trigger gender change logic to update avatars
+            if(selectGender.value) selectGender.dispatchEvent(new Event('change'));
+        }
+
         selectGender.addEventListener('change', (e) => {
             const gender = e.target.value;
             document.getElementById('emoji-doctor').innerText = gender === 'girl' ? '👩‍⚕️' : (gender === 'boy' ? '👨‍⚕️' : '🧑‍⚕️');
@@ -477,7 +446,6 @@
             validateForm();
         });
 
-        // Handle Role Selection
         roleCards.forEach(card => {
             card.addEventListener('click', () => {
                 roleCards.forEach(c => c.classList.remove('selected'));
@@ -489,46 +457,46 @@
 
         inputName.addEventListener('input', validateForm);
 
-        // Unlock the Enter button only when all fields are filled
         function validateForm() {
-            if (inputName.value.trim() !== "" && selectGender.value !== "" && selectedRole !== "") {
-                btnEnterUniverse.disabled = false;
-            } else {
-                btnEnterUniverse.disabled = true;
-            }
+            btnEnterUniverse.disabled = !(inputName.value.trim() !== "" && selectGender.value !== "" && selectedRole !== "");
         }
+        
+        // Call validation on load in case it auto-filled
+        validateForm();
 
-        // The Grand Entrance
         btnEnterUniverse.addEventListener('click', () => {
             welcomeOverlay.style.opacity = '0';
             
-            // Format the user's title
-            const userName = inputName.value.trim();
+            const rawName = inputName.value.trim();
             let titlePrefix = "";
             if (selectedRole === "Doctor") titlePrefix = "Dr. ";
             if (selectedRole === "Engineer") titlePrefix = "Engineer ";
             if (selectedRole === "Commander") titlePrefix = "Commander ";
 
-            // SAVE IT GLOBALLY
-            formattedUserName = `${titlePrefix}${userName}`;
+            formattedUserName = `${titlePrefix}${rawName}`;
+            
+            // Save to LocalStorage
+            localStorage.setItem('solar_name', formattedUserName);
+            localStorage.setItem('solar_name_raw', rawName);
+            localStorage.setItem('solar_gender', selectGender.value);
+
+            // Initialize UI
+            updateProfileUI();
 
             setTimeout(() => { 
                 welcomeOverlay.style.display = 'none'; 
                 tickerContainer.style.display = 'flex';
                 tickerText.style.animation = 'tickerScroll 35s linear forwards';
+                profileHud.style.display = 'flex'; // Show the HUD
             }, 500);
 
-            // The dynamically generated custom greeting
-            const customGreeting = `Welcome to the solar system, ${formattedUserName}! Our solar system consists of the Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune, and Pluto. Enjoy your exploration, future young scientist! The Sun is the core of our solar system. A Yellow Dwarf star made of hot plasma. Click on the planets to get more information.`;
-            
+            const customGreeting = `Welcome back to the solar system, ${formattedUserName}! Our solar system consists of the Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune, and Pluto. Enjoy your exploration!`;
             speakSafely(customGreeting);
         });
 
-        tickerText.addEventListener('animationend', () => {
-            tickerContainer.style.display = 'none';
-        });
+        tickerText.addEventListener('animationend', () => { tickerContainer.style.display = 'none'; });
 
-        // --- 1. SETUP ---
+        // --- 2. THREE.JS SETUP ---
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
         const defaultCamPos = new THREE.Vector3(0, 50, 75);
@@ -540,591 +508,258 @@
         document.body.appendChild(renderer.domElement);
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05; 
-        controls.target.copy(defaultTarget);
-        controls.maxDistance = 250;
+        controls.enableDamping = true; controls.dampingFactor = 0.05; 
+        controls.target.copy(defaultTarget); controls.maxDistance = 250;
 
-        // --- 2. TEXTURE LOADER & LIGHTING ---
         const textureLoader = new THREE.TextureLoader();
+        scene.add(new THREE.AmbientLight(0x222222)); 
+        scene.add(new THREE.PointLight(0xffffff, 2, 300));
 
-        const ambientLight = new THREE.AmbientLight(0x222222); 
-        scene.add(ambientLight);
-
-        const sunLight = new THREE.PointLight(0xffffff, 2, 300);
-        scene.add(sunLight);
-
-        // --- SCI-FI LABEL CREATOR FUNCTION ---
         function createSciFiLabel(text, entitySize) {
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.width = 512; 
-            canvas.height = 128;
-
-            const neonCyanGreen = "#00ffcc"; 
-            const fontStack = "bold 80px 'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
-
-            context.shadowColor = neonCyanGreen;
-            context.shadowBlur = 15;
-            context.fillStyle = neonCyanGreen;
-            context.font = fontStack;
-            context.textAlign = 'center';
-            context.textBaseline = 'middle';
-
+            const canvas = document.createElement('canvas'); const context = canvas.getContext('2d');
+            canvas.width = 512; canvas.height = 128;
+            context.shadowColor = "#00ffcc"; context.shadowBlur = 15;
+            context.fillStyle = "#00ffcc"; context.font = "bold 80px 'Segoe UI', sans-serif";
+            context.textAlign = 'center'; context.textBaseline = 'middle';
             context.fillText(text, 256, 64);
-
-            const texture = new THREE.CanvasTexture(canvas);
-            texture.needsUpdate = true;
-
-            const spriteMaterial = new THREE.SpriteMaterial({ 
-                map: texture, 
-                transparent: true, 
-                depthTest: true, 
-                sizeAttenuation: true 
-            });
-            const sprite = new THREE.Sprite(spriteMaterial);
-
-            sprite.scale.set(10, 2.5, 1); 
-            sprite.position.y = entitySize + 2.5; 
-
+            const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(canvas), transparent: true }));
+            sprite.scale.set(10, 2.5, 1); sprite.position.y = entitySize + 2.5; 
             return sprite;
         }
 
-        // --- 3. BACKGROUND STARS & MILKY WAY ---
+        // --- BACKGROUNDS & PARTICLES ---
         const starGeom = new THREE.BufferGeometry();
-        const starCount = 2000;
-        const starPosArray = new Float32Array(starCount * 3);
-        for(let i = 0; i < starCount * 3; i++) {
-            starPosArray[i] = (Math.random() - 0.5) * 400; 
-        }
+        const starPosArray = new Float32Array(2000 * 3);
+        for(let i = 0; i < 6000; i++) starPosArray[i] = (Math.random() - 0.5) * 400; 
         starGeom.setAttribute('position', new THREE.BufferAttribute(starPosArray, 3));
-        const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true, opacity: 0.6 });
-        const stars = new THREE.Points(starGeom, starMat);
+        const stars = new THREE.Points(starGeom, new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true, opacity: 0.6 }));
         scene.add(stars);
 
-        const milkyWayTexture = textureLoader.load('textures/milkyway.jpg'); 
-        const skySphere = new THREE.Mesh(
-            new THREE.SphereGeometry(500, 64, 64), 
-            new THREE.MeshBasicMaterial({ 
-                map: milkyWayTexture, 
-                side: THREE.BackSide, 
-                transparent: true,
-                opacity: 0.6 
-            })
-        );
+        const skySphere = new THREE.Mesh(new THREE.SphereGeometry(500, 64, 64), new THREE.MeshBasicMaterial({ map: textureLoader.load('textures/milkyway.jpg'), side: THREE.BackSide, transparent: true, opacity: 0.6 }));
         scene.add(skySphere);
 
-        // --- 3.5. THE KUIPER BELT (Particle System) ---
         const kuiperGeom = new THREE.BufferGeometry();
-        const kuiperCount = 3000;
-        const kuiperPosArray = new Float32Array(kuiperCount * 3);
-
-        const innerRadius = 85; 
-        const outerRadius = 115; 
-
-        for(let i = 0; i < kuiperCount; i++) {
-            const theta = Math.random() * Math.PI * 2;
-            const r = innerRadius + Math.random() * (outerRadius - innerRadius);
-            kuiperPosArray[i * 3] = r * Math.cos(theta);
-            kuiperPosArray[i * 3 + 1] = (Math.random() - 0.5) * 4; 
-            kuiperPosArray[i * 3 + 2] = r * Math.sin(theta);
+        const kuiperPosArray = new Float32Array(3000 * 3);
+        for(let i = 0; i < 3000; i++) {
+            const theta = Math.random() * Math.PI * 2; const r = 85 + Math.random() * 30;
+            kuiperPosArray[i * 3] = r * Math.cos(theta); kuiperPosArray[i * 3 + 1] = (Math.random() - 0.5) * 4; kuiperPosArray[i * 3 + 2] = r * Math.sin(theta);
         }
-
         kuiperGeom.setAttribute('position', new THREE.BufferAttribute(kuiperPosArray, 3));
-        
-        const kuiperMat = new THREE.PointsMaterial({ 
-            color: 0x88ccff, 
-            size: 0.15, 
-            transparent: true, 
-            opacity: 0.5 
-        });
-        
-        const kuiperBelt = new THREE.Points(kuiperGeom, kuiperMat);
+        const kuiperBelt = new THREE.Points(kuiperGeom, new THREE.PointsMaterial({ color: 0x88ccff, size: 0.15, transparent: true, opacity: 0.5 }));
         scene.add(kuiperBelt);
 
-        // --- 3.8. THE ANDROMEDA GALAXY ---
-        const andromedaTexture = textureLoader.load('textures/andromeda.jpg');
-        const andromedaGeom = new THREE.PlaneGeometry(250, 150); // Make it massive
-        const andromedaMat = new THREE.MeshBasicMaterial({
-            map: andromedaTexture,
-            transparent: true,
-            opacity: 0.7,
-            blending: THREE.AdditiveBlending, // This makes the dark edges invisible and the bright stars glow!
-            depthWrite: false, // Prevents it from clipping through the Kuiper Belt
-            side: THREE.DoubleSide
-        });
-        const andromeda = new THREE.Mesh(andromedaGeom, andromedaMat);
-        
-        // Position it far away in the deep deep background
-        andromeda.position.set(-300, 120, -350); 
-        // Give it a cinematic tilt
-        andromeda.rotation.set(Math.PI / 8, Math.PI / 6, 0); 
-        
+        const andromeda = new THREE.Mesh(new THREE.PlaneGeometry(250, 150), new THREE.MeshBasicMaterial({ map: textureLoader.load('textures/andromeda.jpg'), transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
+        andromeda.position.set(-300, 120, -350); andromeda.rotation.set(Math.PI / 8, Math.PI / 6, 0); 
         scene.add(andromeda);
 
-        // --- 4. DATA & REALISTIC OBJECTS ---
-        const sunTexture = textureLoader.load('textures/sun.jpg');
-        const sunSize = 6;
-        const sun = new THREE.Mesh(
-            new THREE.SphereGeometry(sunSize, 64, 64), 
-            new THREE.MeshBasicMaterial({ map: sunTexture })
-        );
-
-        const sunLabel = createSciFiLabel("THE SUN ☀️", sunSize);
-        sun.add(sunLabel); 
-        scene.add(sun);
-
-        const sunFunFacts = [
-            "The Sun is so huge that 1.3 million Earths could fit inside it!",
-            "The Sun's core is around 27 million degrees Fahrenheit!",
-            "Light from the Sun takes about 8 minutes and 20 seconds to reach Earth.",
-            "The Sun accounts for 99.86% of the mass in the entire solar system!",
-            "The Sun rotates faster at its equator than it does at its poles.",
-            "The Sun is essentially a giant ball of glowing hydrogen and helium gas.",
-            "It takes the Sun about 230 million years to complete one orbit around the Milky Way galaxy!",
-            "The Sun has a powerful magnetic field that flips completely every 11 years.",
-            "Solar flares from the Sun can release as much energy as millions of nuclear bombs exploding at once.",
-            "At its core, the Sun fuses about 600 million tons of hydrogen into helium every single second!"
-        ];
+        // --- PLANET DATA ---
+        const sun = new THREE.Mesh(new THREE.SphereGeometry(6, 64, 64), new THREE.MeshBasicMaterial({ map: textureLoader.load('textures/sun.jpg') }));
+        sun.add(createSciFiLabel("THE SUN ☀️", 6)); scene.add(sun);
 
         const planetsData = [
-            { 
-                name: "Mercury", label: "MERCURY 🪨", textureUrl: 'textures/mercury.jpg', emoji: "🪨", nickname: "The Swift Planet", dist: 12, speed: 0.02, size: 1.2, 
-                info: "The smallest planet and closest to the Sun.", 
-                funfacts: [
-                    "A year on Mercury is just 88 days, but a single day lasts 176 Earth days!",
-                    "Despite being closest to the Sun, it's not the hottest planet (Venus is).",
-                    "Mercury has a huge iron core that makes up about 85% of its radius.",
-                    "Your weight on Mercury would be just 38% of your weight on Earth.",
-                    "It has a comet-like tail of sodium gas pushed away by solar wind!"
-                ],
-                details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" 
-            },
-            { 
-                name: "Venus", label: "VENUS 🔥", textureUrl: 'textures/venus.jpg', emoji: "🔥", nickname: "The Morning Star", dist: 18, speed: 0.015, size: 1.8, 
-                info: "The hottest planet in our solar system.", 
-                funfacts: [
-                    "Venus spins backwards! The Sun rises in the west and sets in the east.",
-                    "It is the hottest planet, with surface temperatures hot enough to melt lead.",
-                    "The atmospheric pressure on Venus is 92 times greater than Earth's.",
-                    "A day on Venus is longer than a year on Venus!",
-                    "It is the brightest natural object in Earth's night sky after the Moon."
-                ],
-                details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 0" 
-            },
-            { 
-                name: "Earth", label: "EARTH 🌍", textureUrl: 'textures/earth.jpg', emoji: "🌍", nickname: "The Blue Marble", dist: 25, speed: 0.01, size: 2.0, 
-                info: "Our home planet and the only known harbor of life.", 
-                funfacts: [
-                    "Earth is the only planet not named after a mythological god or goddess.",
-                    "Our planet is actually a squashed sphere, bulging slightly at the equator!",
-                    "A teaspoon of soil can contain more living organisms than there are humans on Earth.",
-                    "Earth's inner core is about as hot as the surface of the sun.",
-                    "The Amazon rainforest produces about 20% of the world's oxygen."
-                ],
-                details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 1" 
-            },
-            { 
-                name: "Mars", label: "MARS 🔴", textureUrl: 'textures/mars.jpg', emoji: "🔴", nickname: "The Red Planet", dist: 32, speed: 0.008, size: 1.5, 
-                info: "Often called the 'Red Planet' due to iron oxide on its surface.", 
-                funfacts: [
-                    "Mars has lower gravity, so if you weigh 100 lbs on Earth, you'd only weigh 38 lbs on Mars!",
-                    "It is home to Olympus Mons, a volcano three times taller than Mount Everest!",
-                    "Mars has the largest dust storms in the solar system, sometimes covering the entire planet.",
-                    "Sunsets on Mars actually appear blue to the human eye!",
-                    "Pieces of Mars have actually fallen to Earth as meteorites."
-                ],
-                details: "<span class='fact-label'>Type:</span> Terrestrial Planet<br><span class='fact-label'>Moons:</span> 2" 
-            },
-            { 
-                name: "Jupiter", label: "JUPITER 🌩️", textureUrl: 'textures/jupiter.jpg', emoji: "🌩️", nickname: "The Gas Giant", dist: 45, speed: 0.005, size: 3.5, 
-                info: "The largest planet in our solar system.", 
-                funfacts: [
-                    "Jupiter spins so fast that a day is only 10 hours long, but a year takes 12 Earth years!",
-                    "The Great Red Spot is a giant storm larger than Earth that has raged for hundreds of years.",
-                    "It is so massive that it doesn't actually orbit the Sun; they both orbit a point just outside the Sun's surface!",
-                    "Jupiter has faint rings made of dust, not ice like Saturn.",
-                    "If Jupiter were about 80 times more massive, it would have ignited to become a star!"
-                ],
-                details: "<span class='fact-label'>Type:</span> Gas Giant<br><span class='fact-label'>Moons:</span> 95 confirmed" 
-            },
-            { 
-                name: "Saturn", label: "SATURN 🪐", textureUrl: 'textures/saturn.jpg', emoji: "🪐", nickname: "The Ringed Jewel", dist: 58, speed: 0.003, size: 3.0, 
-                info: "Famous for its stunning, complex ring system.", 
-                funfacts: [
-                    "Saturn is so light and airy that if you had a bathtub big enough, it would float!",
-                    "Its rings are made mostly of chunks of water ice ranging from dust grains to mountains.",
-                    "Winds on Saturn can reach up to 1,100 miles per hour!",
-                    "It takes roughly 29.4 Earth years for Saturn to orbit the Sun once.",
-                    "Sometimes, massive lightning storms on Saturn can be seen from Earth using a telescope!"
-                ],
-                details: "<span class='fact-label'>Type:</span> Gas Giant<br><span class='fact-label'>Moons:</span> 146 confirmed" 
-            },
-            { 
-                name: "Uranus", label: "URANUS 🧊", textureUrl: 'textures/uranus.jpg', emoji: "🧊", nickname: "The Ice Giant", dist: 70, speed: 0.002, size: 2.5, 
-                info: "The only planet that spins on its side.", 
-                funfacts: [
-                    "Uranus rolls around the Sun on its side like a giant blue barrel!",
-                    "It has the coldest planetary atmosphere in the solar system, dropping to -371 degrees Fahrenheit.",
-                    "A summer on Uranus's north pole lasts for 42 Earth years of continuous sunlight.",
-                    "It was the first planet discovered using a telescope (by William Herschel in 1781).",
-                    "Uranus actually has 13 faint rings made of dark, dusty material."
-                ],
-                details: "<span class='fact-label'>Type:</span> Ice Giant<br><span class='fact-label'>Moons:</span> 28" 
-            },
-            { 
-                name: "Neptune", label: "NEPTUNE 🌪️", textureUrl: 'textures/neptune.jpg', emoji: "🌪️", nickname: "The Windy Planet", dist: 82, speed: 0.0015, size: 2.4, 
-                info: "The windiest and most distant major planet.", 
-                funfacts: [
-                    "Winds on Neptune blow faster than a fighter jet, reaching 1,200 miles per hour!",
-                    "It was the first planet located through mathematical calculations rather than telescope observations.",
-                    "Neptune has a storm called the Great Dark Spot, which is about the size of Earth.",
-                    "It is so incredibly far away that it takes sunlight 4 hours to reach Neptune!",
-                    "Scientists believe it literally rains solid diamonds deep inside Neptune's atmosphere!"
-                ],
-                details: "<span class='fact-label'>Type:</span> Ice Giant<br><span class='fact-label'>Moons:</span> 16" 
-            },
-            { 
-                name: "Pluto", label: "PLUTO ❄️", textureUrl: 'textures/pluto.jpg', emoji: "❄️", nickname: "The Dwarf Planet", dist: 92, speed: 0.001, size: 0.9, 
-                info: "A famous resident of the Kuiper Belt.", 
-                funfacts: [
-                    "Pluto is so small that it is actually smaller than Earth's moon!",
-                    "Its orbit is so highly elliptical that sometimes it is closer to the Sun than Neptune.",
-                    "Pluto has a giant heart-shaped glacier made of nitrogen and carbon monoxide ice.",
-                    "The sky on Pluto is blue, just like on Earth, but the surface is red.",
-                    "A person on Pluto would weigh only about 1/15th of what they weigh on Earth."
-                ],
-                details: "<span class='fact-label'>Type:</span> Dwarf Planet<br><span class='fact-label'>Moons:</span> 5" 
-            }
+            { name: "Mercury", label: "MERCURY 🪨", textureUrl: 'textures/mercury.jpg', emoji: "🪨", nickname: "The Swift Planet", dist: 12, speed: 0.02, size: 1.2, info: "The smallest planet and closest to the Sun.", funfacts: ["A year on Mercury is just 88 days!"], details: "Type: Terrestrial<br>Moons: 0" },
+            { name: "Venus", label: "VENUS 🔥", textureUrl: 'textures/venus.jpg', emoji: "🔥", nickname: "The Morning Star", dist: 18, speed: 0.015, size: 1.8, info: "The hottest planet in our solar system.", funfacts: ["Venus spins backwards!"], details: "Type: Terrestrial<br>Moons: 0" },
+            { name: "Earth", label: "EARTH 🌍", textureUrl: 'textures/earth.jpg', emoji: "🌍", nickname: "The Blue Marble", dist: 25, speed: 0.01, size: 2.0, info: "Our home planet and the only known harbor of life.", funfacts: ["Earth's core is as hot as the sun!"], details: "Type: Terrestrial<br>Moons: 1" },
+            { name: "Mars", label: "MARS 🔴", textureUrl: 'textures/mars.jpg', emoji: "🔴", nickname: "The Red Planet", dist: 32, speed: 0.008, size: 1.5, info: "The 'Red Planet' due to iron oxide on its surface.", funfacts: ["Mars is home to a volcano 3x taller than Everest!"], details: "Type: Terrestrial<br>Moons: 2" },
+            { name: "Jupiter", label: "JUPITER 🌩️", textureUrl: 'textures/jupiter.jpg', emoji: "🌩️", nickname: "The Gas Giant", dist: 45, speed: 0.005, size: 3.5, info: "The largest planet in our solar system.", funfacts: ["The Great Red Spot is a storm larger than Earth."], details: "Type: Gas Giant<br>Moons: 95" },
+            { name: "Saturn", label: "SATURN 🪐", textureUrl: 'textures/saturn.jpg', emoji: "🪐", nickname: "The Ringed Jewel", dist: 58, speed: 0.003, size: 3.0, info: "Famous for its stunning ring system.", funfacts: ["Saturn could float in water!"], details: "Type: Gas Giant<br>Moons: 146" },
+            { name: "Uranus", label: "URANUS 🧊", textureUrl: 'textures/uranus.jpg', emoji: "🧊", nickname: "The Ice Giant", dist: 70, speed: 0.002, size: 2.5, info: "The only planet that spins on its side.", funfacts: ["Uranus has 13 faint rings."], details: "Type: Ice Giant<br>Moons: 28" },
+            { name: "Neptune", label: "NEPTUNE 🌪️", textureUrl: 'textures/neptune.jpg', emoji: "🌪️", nickname: "The Windy Planet", dist: 82, speed: 0.0015, size: 2.4, info: "The windiest and most distant major planet.", funfacts: ["Winds here blow faster than a fighter jet!"], details: "Type: Ice Giant<br>Moons: 16" },
+            { name: "Pluto", label: "PLUTO ❄️", textureUrl: 'textures/pluto.jpg', emoji: "❄️", nickname: "The Dwarf Planet", dist: 92, speed: 0.001, size: 0.9, info: "A famous resident of the Kuiper Belt.", funfacts: ["Pluto is smaller than Earth's moon!"], details: "Type: Dwarf Planet<br>Moons: 5" }
         ];
 
         const planets = [];
         planetsData.forEach(data => {
-            const path = new THREE.Mesh(
-                new THREE.RingGeometry(data.dist - 0.08, data.dist + 0.08, 128),
-                new THREE.MeshBasicMaterial({ color: 0x555555, side: THREE.DoubleSide, transparent: true, opacity: 0.5 })
-            );
-            path.rotation.x = Math.PI / 2;
-            scene.add(path);
+            const path = new THREE.Mesh(new THREE.RingGeometry(data.dist - 0.08, data.dist + 0.08, 128), new THREE.MeshBasicMaterial({ color: 0x555555, side: THREE.DoubleSide, transparent: true, opacity: 0.5 }));
+            path.rotation.x = Math.PI / 2; scene.add(path);
 
-            const planetTexture = textureLoader.load(data.textureUrl);
-            const mesh = new THREE.Mesh(
-                new THREE.SphereGeometry(data.size, 64, 64), 
-                new THREE.MeshStandardMaterial({ map: planetTexture, roughness: 0.8, metalness: 0.1 })
-            );
-
+            const mesh = new THREE.Mesh(new THREE.SphereGeometry(data.size, 64, 64), new THREE.MeshStandardMaterial({ map: textureLoader.load(data.textureUrl), roughness: 0.8, metalness: 0.1 }));
             if (data.name === "Saturn") {
-                const ringGeom = new THREE.RingGeometry(data.size * 1.3, data.size * 2.2, 64);
-                const ringMat = new THREE.MeshBasicMaterial({ color: 0xccbb88, side: THREE.DoubleSide, transparent: true, opacity: 0.7 });
-                const saturnRing = new THREE.Mesh(ringGeom, ringMat);
-                saturnRing.rotation.x = Math.PI / 2.2; 
-                mesh.add(saturnRing); 
+                const saturnRing = new THREE.Mesh(new THREE.RingGeometry(data.size * 1.3, data.size * 2.2, 64), new THREE.MeshBasicMaterial({ color: 0xccbb88, side: THREE.DoubleSide, transparent: true, opacity: 0.7 }));
+                saturnRing.rotation.x = Math.PI / 2.2; mesh.add(saturnRing); 
             }
-
-            const pLabel = createSciFiLabel(data.label, data.size);
-            mesh.add(pLabel);
-
-            scene.add(mesh);
-            planets.push({ mesh, data, angle: Math.random() * Math.PI * 2 });
+            mesh.add(createSciFiLabel(data.label, data.size));
+            scene.add(mesh); planets.push({ mesh, data, angle: Math.random() * Math.PI * 2 });
         });
 
-        // --- 5. MINIMIZE PANEL LOGIC ---
-        const infoMinBtn = document.getElementById('info-min-btn');
-        const infoContent = document.getElementById('info-content');
-
-        infoMinBtn.addEventListener('click', () => {
-            infoContent.classList.toggle('collapsed-content');
-            infoPanelEl.classList.toggle('collapsed');
-            infoMinBtn.innerText = infoContent.classList.contains('collapsed-content') ? '+' : '−';
-        });
-
-        const quizMinBtn = document.getElementById('quiz-min-btn');
-        const quizContent = document.getElementById('quiz-content');
-        const quizPanelEl = document.getElementById('quiz-panel');
-
-        quizMinBtn.addEventListener('click', () => {
-            quizContent.classList.toggle('collapsed-content');
-            quizPanelEl.classList.toggle('collapsed');
-            quizMinBtn.innerText = quizContent.classList.contains('collapsed-content') ? '+' : '−';
-        });
-
-        const timeMinBtn = document.getElementById('time-min-btn');
-        const timeContent = document.getElementById('time-content');
-        const timeControlsEl = document.getElementById('time-controls');
-
-        timeMinBtn.addEventListener('click', () => {
-            timeContent.classList.toggle('collapsed-content');
-            timeControlsEl.classList.toggle('collapsed');
-            timeMinBtn.innerText = timeContent.classList.contains('collapsed-content') ? '+' : '−';
-        });
-
-        // --- 6. DRAGGABLE PANEL LOGIC ---
-        const dragHandle = document.getElementById('drag-handle');
-        let isDragging = false;
-        let dragOffsetX = 0; let dragOffsetY = 0;
-
-        dragHandle.addEventListener('pointerdown', (e) => {
-            isDragging = true;
-            const rect = infoPanelEl.getBoundingClientRect();
-            dragOffsetX = e.clientX - rect.left; dragOffsetY = e.clientY - rect.top;
-            e.stopPropagation(); 
-        });
-
-        window.addEventListener('pointermove', (e) => {
-            if (!isDragging) return;
-            let newLeft = e.clientX - dragOffsetX;
-            let newTop = e.clientY - dragOffsetY;
-            newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - infoPanelEl.offsetWidth));
-            newTop = Math.max(0, Math.min(newTop, window.innerHeight - infoPanelEl.offsetHeight));
-            infoPanelEl.style.left = `${newLeft}px`; infoPanelEl.style.top = `${newTop}px`;
-        });
-        window.addEventListener('pointerup', () => { isDragging = false; });
-
-        const quizDragHandle = document.getElementById('quiz-drag-handle');
-        let isQuizDragging = false;
-        let quizDragOffsetX = 0; let quizDragOffsetY = 0;
-
-        quizDragHandle.addEventListener('pointerdown', (e) => {
-            isQuizDragging = true;
-            const rect = quizPanelEl.getBoundingClientRect();
-            quizDragOffsetX = e.clientX - rect.left; 
-            quizDragOffsetY = e.clientY - rect.top;
-            e.stopPropagation(); 
-        });
-
-        window.addEventListener('pointermove', (e) => {
-            if (!isQuizDragging) return;
-            let newLeft = e.clientX - quizDragOffsetX;
-            let newTop = e.clientY - quizDragOffsetY;
-            newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - quizPanelEl.offsetWidth));
-            newTop = Math.max(0, Math.min(newTop, window.innerHeight - quizPanelEl.offsetHeight));
-            quizPanelEl.style.right = 'auto'; 
-            quizPanelEl.style.left = `${newLeft}px`; 
-            quizPanelEl.style.top = `${newTop}px`;
-        });
-        window.addEventListener('pointerup', () => { isQuizDragging = false; });
-
-        const timeDragHandle = document.getElementById('time-drag-handle');
-        let isTimeDragging = false;
-        let timeDragOffsetX = 0; let timeDragOffsetY = 0;
-
-        timeDragHandle.addEventListener('pointerdown', (e) => {
-            isTimeDragging = true;
-            const rect = timeControlsEl.getBoundingClientRect();
-            timeDragOffsetX = e.clientX - rect.left; 
-            timeDragOffsetY = e.clientY - rect.top;
-            e.stopPropagation(); 
-        });
-
-        window.addEventListener('pointermove', (e) => {
-            if (!isTimeDragging) return;
-            let newLeft = e.clientX - timeDragOffsetX;
-            let newTop = e.clientY - timeDragOffsetY;
+        // --- PANEL MINIMIZE & DRAGGING (Combined for brevity) ---
+        ['info', 'quiz', 'time'].forEach(id => {
+            document.getElementById(`${id}-min-btn`).addEventListener('click', (e) => {
+                const content = document.getElementById(`${id}-content`);
+                content.classList.toggle('collapsed-content');
+                document.getElementById(`${id}-panel` || `${id}-controls`).classList.toggle('collapsed');
+                e.target.innerText = content.classList.contains('collapsed-content') ? '+' : '−';
+            });
             
-            newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - timeControlsEl.offsetWidth));
-            newTop = Math.max(0, Math.min(newTop, window.innerHeight - timeControlsEl.offsetHeight));
-            
-            timeControlsEl.style.bottom = 'auto'; 
-            timeControlsEl.style.left = `${newLeft}px`; 
-            timeControlsEl.style.top = `${newTop}px`;
+            const handle = document.getElementById(id === 'info' ? 'drag-handle' : `${id}-drag-handle`);
+            const panel = document.getElementById(id === 'time' ? 'time-controls' : `${id}-panel`);
+            let isDragging = false, offsetX, offsetY;
+            handle.addEventListener('pointerdown', (e) => { isDragging = true; const rect = panel.getBoundingClientRect(); offsetX = e.clientX - rect.left; offsetY = e.clientY - rect.top; e.stopPropagation(); });
+            window.addEventListener('pointermove', (e) => { if (!isDragging) return; panel.style.left = `${Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - panel.offsetWidth))}px`; panel.style.top = `${Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - panel.offsetHeight))}px`; panel.style.bottom = 'auto'; panel.style.right = 'auto';});
+            window.addEventListener('pointerup', () => isDragging = false);
         });
-        window.addEventListener('pointerup', () => { isTimeDragging = false; });
 
-        // --- 7. COSMIC QUIZ LOGIC (4 Sets of 5 Questions) ---
+        // --- 7. V3 QUIZ LOGIC (XP LEARNER TRACK) ---
         const quizSets = [
-            [
-                { q: "Can you find the hottest planet in the Solar System?", answer: "Venus" },
-                { q: "Which planet is known as the Red Planet?", answer: "Mars" },
-                { q: "Find the planet with the most spectacular rings!", answer: "Saturn" },
-                { q: "Which planet is known as our Blue Marble?", answer: "Earth" },
-                { q: "Can you find the largest planet in our solar system?", answer: "Jupiter" }
-            ],
-            [
-                { q: "Which planet rolls around the Sun on its side?", answer: "Uranus" },
-                { q: "Find the tiny Dwarf Planet out in the Kuiper Belt!", answer: "Pluto" },
-                { q: "Which planet is the smallest and closest to the Sun?", answer: "Mercury" },
-                { q: "Can you find the windiest planet in our solar system?", answer: "Neptune" },
-                { q: "Which planet has the shortest year, lasting only 88 Earth days?", answer: "Mercury" }
-            ],
-            [
-                { q: "Which planet is the only known harbor of life?", answer: "Earth" },
-                { q: "Find the planet that spins backwards compared to most others!", answer: "Venus" },
-                { q: "Which Gas Giant has a famous Great Red Spot?", answer: "Jupiter" },
-                { q: "Can you find the Ice Giant that is farthest from the Sun?", answer: "Neptune" },
-                { q: "Which planet's moons include Phobos and Deimos?", answer: "Mars" }
-            ],
-            [
-                { q: "Which ringed planet is so light it could float in water?", answer: "Saturn" },
-                { q: "Find the only planet NOT named after a mythological god or goddess.", answer: "Earth" },
-                { q: "Which icy planet was the first to be discovered using a telescope?", answer: "Uranus" },
-                { q: "Which dwarf planet is actually smaller than Earth's moon?", answer: "Pluto" },
-                { q: "Which planet has a day that lasts longer than its year?", answer: "Venus" }
-            ]
+            [{ q: "Can you find the hottest planet in the Solar System?", answer: "Venus" }, { q: "Which planet is known as the Red Planet?", answer: "Mars" }, { q: "Find the planet with the most spectacular rings!", answer: "Saturn" }, { q: "Which planet is known as our Blue Marble?", answer: "Earth" }, { q: "Can you find the largest planet in our solar system?", answer: "Jupiter" }],
+            [{ q: "Which planet rolls around the Sun on its side?", answer: "Uranus" }, { q: "Find the tiny Dwarf Planet out in the Kuiper Belt!", answer: "Pluto" }, { q: "Which planet is the smallest and closest to the Sun?", answer: "Mercury" }, { q: "Can you find the windiest planet in our solar system?", answer: "Neptune" }, { q: "Which planet has the shortest year?", answer: "Mercury" }]
         ];
         
-        let quizActive = false; let currentQuestion = null; let questionQueue = [];
+        let quizActive = false, currentQuestion = null, questionQueue = [];
         const quizQuestionEl = document.getElementById('quiz-question');
         const quizFeedbackEl = document.getElementById('quiz-feedback');
-        const btnQuizStart = document.getElementById('btn-quiz-start');
-        const btnQuizExit = document.getElementById('btn-quiz-exit');
+        const btnQuizStart = document.getElementById('btn-quiz-start'), btnQuizExit = document.getElementById('btn-quiz-exit');
 
         btnQuizStart.onclick = function() {
-            quizActive = true; 
-            btnQuizStart.style.display = 'none'; 
-            btnQuizExit.style.display = 'block'; 
-            
-            if (quizContent.classList.contains('collapsed-content')) quizMinBtn.click();
-            
-            const randomSetIndex = Math.floor(Math.random() * quizSets.length);
-            const selectedSet = quizSets[randomSetIndex];
-            questionQueue = [...selectedSet].sort(() => Math.random() - 0.5); 
-            
+            quizActive = true; btnQuizStart.style.display = 'none'; btnQuizExit.style.display = 'block'; 
+            if (document.getElementById('quiz-content').classList.contains('collapsed-content')) document.getElementById('quiz-min-btn').click();
+            questionQueue = [...quizSets[Math.floor(Math.random() * quizSets.length)]].sort(() => Math.random() - 0.5); 
             nextQuestion();
         };
 
         btnQuizExit.onclick = function() {
-            quizActive = false; currentQuestion = null;
-            btnQuizExit.style.display = 'none'; btnQuizStart.style.display = 'block'; btnQuizStart.innerText = "Start Quiz!";
-            quizQuestionEl.innerText = "Ready to test your space knowledge?"; quizFeedbackEl.innerText = "";
-            stopAudioSafely();
+            quizActive = false; currentQuestion = null; btnQuizExit.style.display = 'none'; btnQuizStart.style.display = 'block'; btnQuizStart.innerText = "Start Quiz!";
+            quizQuestionEl.innerText = "Ready to test your space knowledge?"; quizFeedbackEl.innerText = ""; stopAudioSafely();
         };
 
         function nextQuestion() {
             if (!quizActive) return; 
             if (questionQueue.length === 0) {
-                // Array of personalized praises
-                const praises = [
-                    `Great job, ${formattedUserName}!`,
-                    `You are excellent, ${formattedUserName}!`,
-                    `Mission accomplished, ${formattedUserName}!`,
-                    `Outstanding work, ${formattedUserName}! You are a Space Expert!`
-                ];
-                // Pick a random praise
+                const praises = [`Great job, ${formattedUserName}!`, `You are excellent, ${formattedUserName}!`, `Outstanding work, ${formattedUserName}! You are a Space Expert!`];
                 const randomPraise = praises[Math.floor(Math.random() * praises.length)];
-
-                quizQuestionEl.innerText = `${randomPraise} 🏆`;
-                quizFeedbackEl.innerText = "";
-                speakSafely(randomPraise);
-                
+                quizQuestionEl.innerText = `${randomPraise} 🏆`; quizFeedbackEl.innerText = ""; speakSafely(randomPraise);
                 confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
-                setTimeout(() => {
-                    quizActive = false; btnQuizExit.style.display = 'none';
-                    btnQuizStart.innerText = "Play Again!"; btnQuizStart.style.display = 'block';
-                }, 4000);
+                setTimeout(() => { quizActive = false; btnQuizExit.style.display = 'none'; btnQuizStart.innerText = "Play Again!"; btnQuizStart.style.display = 'block'; }, 4000);
                 return;
             }
             currentQuestion = questionQueue.pop();
             quizQuestionEl.innerText = currentQuestion.q; quizFeedbackEl.innerText = ""; speakSafely(currentQuestion.q);
         }
 
-        // --- 8. INTERACTIVITY & CAMERA LOGIC ---
-        let focusedPlanet = null;
-        let globalSpeed = 1.0; 
-        let returningToCenter = false;
-
-        const titleEl = document.getElementById('p-name');
-        const nicknameEl = document.getElementById('p-nickname');
-        const descEl = document.getElementById('p-desc');
-        const detailsEl = document.getElementById('p-details');
-        const funfactTextEl = document.getElementById('p-funfact-text');
-        const resetBtn = document.getElementById('reset-btn');
-
-        const btnPause = document.getElementById('btn-pause');
-        const btnNormal = document.getElementById('btn-normal');
-        const btnFast = document.getElementById('btn-fast');
-
-        function updateTimeButtons(activeBtn) {
-            btnPause.classList.remove('active'); btnNormal.classList.remove('active'); btnFast.classList.remove('active');
-            activeBtn.classList.add('active');
+        function handleLevelUpCheck(oldRank) {
+            const newRank = getRankDetails(quizXP);
+            if (newRank.name !== oldRank.name) {
+                setTimeout(() => {
+                    confetti({ particleCount: 300, spread: 160, origin: { y: 0.4 }, colors: ['#ffcc00', '#88ccff', '#ffffff'] });
+                    speakSafely(`Incredible! You have been promoted to the rank of ${newRank.name}!`);
+                    quizFeedbackEl.style.color = "#ffcc00";
+                    quizFeedbackEl.innerText = `🌟 LEVEL UP! You are now a ${newRank.name}! 🌟`;
+                }, 2000); // Trigger after the correct answer logic
+            }
         }
 
-        btnPause.onclick = () => { globalSpeed = 0.0; updateTimeButtons(btnPause); };
-        btnNormal.onclick = () => { globalSpeed = 1.0; updateTimeButtons(btnNormal); };
-        btnFast.onclick = () => { globalSpeed = 8.0; updateTimeButtons(btnFast); };
+        // --- 8. CLICK & REWARD LOGIC (TODDLER + LEARNER) ---
+        let focusedPlanet = null, globalSpeed = 1.0, returningToCenter = false;
+        document.getElementById('btn-pause').onclick = (e) => { globalSpeed = 0.0; document.querySelectorAll('.time-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); };
+        document.getElementById('btn-normal').onclick = (e) => { globalSpeed = 1.0; document.querySelectorAll('.time-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); };
+        document.getElementById('btn-fast').onclick = (e) => { globalSpeed = 8.0; document.querySelectorAll('.time-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); };
 
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
-
-        controls.addEventListener('start', () => {
-            returningToCenter = false; 
-        });
-
+        const raycaster = new THREE.Raycaster(), mouse = new THREE.Vector2();
+        
         function returnToOrbit() {
-            focusedPlanet = null;
-            returningToCenter = true; 
-            stopAudioSafely();
-
-            const randomSunFact = sunFunFacts[Math.floor(Math.random() * sunFunFacts.length)];
-
-            titleEl.innerHTML = `☀️ The Sun <span class="audio-icon" id="audio-indicator">🔊</span>`;
-            nicknameEl.innerText = "The Heart of our System";
-            descEl.innerText = "The core of our solar system. A Yellow Dwarf star made of hot plasma. Click any planet to zoom in and read its astronomical data.";
-            funfactTextEl.innerText = randomSunFact;
-            detailsEl.style.display = 'none';
-            resetBtn.style.display = 'none';
+            focusedPlanet = null; returningToCenter = true; stopAudioSafely();
+            document.getElementById('p-name').innerHTML = `☀️ The Sun <span class="audio-icon" id="audio-indicator">🔊</span>`;
+            document.getElementById('p-nickname').innerText = "The Heart of our System";
+            document.getElementById('p-desc').innerText = "Click any planet to zoom in and read its astronomical data.";
+            document.getElementById('p-funfact-text').innerText = "The Sun is so huge that 1.3 million Earths could fit inside it!";
+            document.getElementById('p-details').style.display = 'none'; document.getElementById('reset-btn').style.display = 'none';
         }
+        document.getElementById('reset-btn').onclick = returnToOrbit;
 
-        resetBtn.onclick = returnToOrbit;
+        // Combine sun mesh and planet meshes for click detection
+        const clickableObjects = [sun, ...planets.map(p => p.mesh)];
 
         renderer.domElement.addEventListener('pointerdown', (event) => {
             if (welcomeOverlay.style.display !== 'none') return;
-
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1; mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera); raycaster.params.Points.threshold = 1; 
             
-            raycaster.setFromCamera(mouse, camera);
-            raycaster.params.Points.threshold = 1; 
-            
-            const intersects = raycaster.intersectObjects(planets.map(p => p.mesh));
+            const intersects = raycaster.intersectObjects(clickableObjects);
 
             if (intersects.length > 0) {
-                const clickedPlanet = planets.find(p => p.mesh === intersects[0].object);
+                const clickedObj = intersects[0].object;
                 
-                if (focusedPlanet === clickedPlanet) {
-                    returnToOrbit();
-                    return; 
+                // Identify if they clicked the Sun or a Planet
+                let objName = "The Sun";
+                let objData = null;
+                if (clickedObj === sun) {
+                    if (focusedPlanet === 'sun') { returnToOrbit(); return; }
+                    focusedPlanet = 'sun';
+                } else {
+                    const p = planets.find(p => p.mesh === clickedObj);
+                    if (focusedPlanet === p) { returnToOrbit(); return; }
+                    focusedPlanet = p;
+                    objName = p.data.name;
+                    objData = p.data;
                 }
 
-                focusedPlanet = clickedPlanet;
                 returningToCenter = false; 
+                if (document.getElementById('info-content').classList.contains('collapsed-content')) document.getElementById('info-min-btn').click();
                 
-                if (infoContent.classList.contains('collapsed-content')) infoMinBtn.click();
-                
-                if (quizActive && currentQuestion) {
-                    if (focusedPlanet.data.name === currentQuestion.answer) {
-                        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-                        quizFeedbackEl.style.color = "#44ff44"; quizFeedbackEl.innerText = `Correct! That's ${focusedPlanet.data.name}!`;
-                        speakSafely(`Correct! That is ${focusedPlanet.data.name}.`);
-                        setTimeout(() => { if (quizActive) nextQuestion(); }, 2500); 
-                    } else {
-                        quizFeedbackEl.style.color = "#ff4422"; quizFeedbackEl.innerText = `Oops! That's ${focusedPlanet.data.name}. Try again!`;
-                        speakSafely(`Oops! That is ${focusedPlanet.data.name}. Try again!`);
+                // --- V3 TODDLER DISCOVERY LOGIC ---
+                if (!discoveredBodies.includes(objName)) {
+                    discoveredBodies.push(objName);
+                    localStorage.setItem('solar_discovered', JSON.stringify(discoveredBodies));
+                    updateProfileUI(); // Update stars
+                    
+                    if (!quizActive) { // Prioritize quiz audio if active
+                        if (discoveredBodies.length === 10) {
+                            confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 } });
+                            speakSafely(`Amazing! You found all the planets! You are a Little Stargazer!`);
+                        } else {
+                            confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 } });
+                            speakSafely(`Wow! You discovered ${objName}!`);
+                        }
                     }
                 }
 
-                const randomFact = focusedPlanet.data.funfacts[Math.floor(Math.random() * focusedPlanet.data.funfacts.length)];
+                // --- V3 LEARNER QUIZ LOGIC ---
+                if (quizActive && currentQuestion) {
+                    if (objName === currentQuestion.answer) {
+                        const oldRank = getRankDetails(quizXP);
+                        quizXP++; // Increment XP
+                        localStorage.setItem('solar_xp', quizXP);
+                        updateProfileUI(); // Update HUD bar
 
-                titleEl.innerHTML = `${focusedPlanet.data.emoji} ${focusedPlanet.data.name} <span class="audio-icon" id="audio-indicator">🔊</span>`;
-                nicknameEl.innerText = focusedPlanet.data.nickname; nicknameEl.style.display = 'block';
-                descEl.innerText = focusedPlanet.data.info; 
-                funfactTextEl.innerText = randomFact; 
-                detailsEl.innerHTML = focusedPlanet.data.details; detailsEl.style.display = 'block';
-                resetBtn.style.display = 'block';
+                        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                        quizFeedbackEl.style.color = "#44ff44"; quizFeedbackEl.innerText = `Correct! That's ${objName}! (+1 XP)`;
+                        speakSafely(`Correct! That is ${objName}.`);
+                        
+                        handleLevelUpCheck(oldRank); // Check for promotion
 
-                if (!quizActive) {
-                    speakSafely(`You are looking at ${focusedPlanet.data.name}. ${focusedPlanet.data.info}. Fun fact! ${randomFact}`);
+                        setTimeout(() => { if (quizActive) nextQuestion(); }, 2500); 
+                    } else {
+                        quizFeedbackEl.style.color = "#ff4422"; quizFeedbackEl.innerText = `Oops! That's ${objName}. Try again!`;
+                        speakSafely(`Oops! That is ${objName}. Try again!`);
+                    }
+                }
+
+                // Update Info Panel UI
+                if (objData) {
+                    document.getElementById('p-name').innerHTML = `${objData.emoji} ${objData.name} <span class="audio-icon" id="audio-indicator">🔊</span>`;
+                    document.getElementById('p-nickname').innerText = objData.nickname; document.getElementById('p-nickname').style.display = 'block';
+                    document.getElementById('p-desc').innerText = objData.info; 
+                    document.getElementById('p-funfact-text').innerText = objData.funfacts[0]; 
+                    document.getElementById('p-details').innerHTML = objData.details; document.getElementById('p-details').style.display = 'block';
+                    document.getElementById('reset-btn').style.display = 'block';
+                    if (!quizActive && discoveredBodies.includes(objName)) {
+                        speakSafely(`You are looking at ${objData.name}. ${objData.info}`);
+                    }
+                } else {
+                    document.getElementById('p-name').innerHTML = `☀️ The Sun <span class="audio-icon" id="audio-indicator">🔊</span>`;
+                    document.getElementById('p-nickname').innerText = "The Heart of our System";
+                    document.getElementById('p-desc').innerText = "The core of our solar system. A Yellow Dwarf star made of hot plasma.";
+                    document.getElementById('p-details').style.display = 'none';
+                    document.getElementById('reset-btn').style.display = 'block';
                 }
             }
         });
 
         // --- 9. ANIMATION LOOP ---
         const targetCamPos = new THREE.Vector3();
-        
         function animate() {
             requestAnimationFrame(animate);
-
             sun.rotation.y += (0.005 * globalSpeed);
-
             planets.forEach(p => {
                 p.angle += (p.data.speed * globalSpeed);
                 p.mesh.position.set(Math.cos(p.angle) * p.data.dist, 0, Math.sin(p.angle) * p.data.dist);
@@ -1132,40 +767,23 @@
             });
 
             if (focusedPlanet) {
-                const pPos = focusedPlanet.mesh.position;
-                const offset = focusedPlanet.data.size * 2.8; 
+                const pPos = focusedPlanet === 'sun' ? sun.position : focusedPlanet.mesh.position;
+                const offset = focusedPlanet === 'sun' ? 18 : focusedPlanet.data.size * 2.8; 
                 targetCamPos.set(pPos.x + offset + 2, pPos.y + offset + 1, pPos.z + offset + 3);
-                
-                camera.position.lerp(targetCamPos, 0.05);
-                controls.target.lerp(pPos, 0.05);
+                camera.position.lerp(targetCamPos, 0.05); controls.target.lerp(pPos, 0.05);
             } else if (returningToCenter) {
-                camera.position.lerp(defaultCamPos, 0.05);
-                controls.target.lerp(defaultTarget, 0.05);
-                
-                if (camera.position.distanceTo(defaultCamPos) < 1.0) {
-                    returningToCenter = false;
-                }
+                camera.position.lerp(defaultCamPos, 0.05); controls.target.lerp(defaultTarget, 0.05);
+                if (camera.position.distanceTo(defaultCamPos) < 1.0) returningToCenter = false;
             }
 
             stars.rotation.y += (globalSpeed === 0 ? 0 : 0.0001 * globalSpeed); 
             skySphere.rotation.y += (globalSpeed === 0 ? 0 : 0.00005 * globalSpeed); 
-            
-            // Majestic, slow rotation for the Andromeda Galaxy
             andromeda.rotation.z += (globalSpeed === 0 ? 0 : 0.0002 * globalSpeed);
-
-            // Rotate the Kuiper Belt slowly, respecting the Time Warp controls
             kuiperBelt.rotation.y += (globalSpeed === 0 ? 0 : 0.00015 * globalSpeed);
 
-            controls.update();
-            renderer.render(scene, camera);
+            controls.update(); renderer.render(scene, camera);
         }
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
+        window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
         animate();
     </script>
 </body>
