@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>3D Solar System</title>
+
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#030303">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
+
     <script data-goatcounter="https://dinzimelle.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
     <style>
@@ -53,7 +54,7 @@
 
         /* ONE-TIME AUTO-SCROLLING NEWS TICKER */
         #news-ticker-container {
-            position: absolute; top: 0; left: 0; width: 100%; height: 35px;
+            position: absolute; top: env(safe-area-inset-top, 0); left: 0; width: 100%; height: 35px;
             background: rgba(10, 10, 10, 0.95); color: #ffffff; 
             border-bottom: 1px solid #333;
             z-index: 20; overflow: hidden; display: none;
@@ -62,14 +63,15 @@
         }
 
         #ticker-text {
-            white-space: nowrap; padding-left: 100%;
+            white-space: nowrap; display: inline-block;
             font-weight: 800; font-size: 0.95rem; text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1px; transform: translateX(100vw);
         }
 
+        /* Perfectly timed ticker animation */
         @keyframes tickerScroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-150%); } 
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); } 
         }
 
         /* Draggable Panels Framework */
@@ -148,7 +150,7 @@
 
         .hint { position: absolute; bottom: 35px; width: 100%; text-align: center; color: #888; font-size: 0.9rem; pointer-events: none; z-index: 5;}
         .matrix-footer { position: absolute; bottom: 35px; right: 20px; color: #00ff00; font-family: 'Courier New', Courier, monospace; font-weight: normal; font-size: 0.75rem; text-align: right; z-index: 15; pointer-events: none; text-shadow: 0 0 5px rgba(0, 255, 0, 0.8); }
-        #copyright-notice { position: absolute; bottom: 10px; width: 100%; text-align: center; color: rgba(255, 255, 255, 0.5); font-size: 0.65rem; pointer-events: none; z-index: 5; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        #copyright-notice { position: absolute; bottom: env(safe-area-inset-bottom, 10px); width: 100%; text-align: center; color: rgba(255, 255, 255, 0.5); font-size: 0.65rem; pointer-events: none; z-index: 5; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
         canvas { display: block !important; }
         .fact-label { color: #ffcc00; font-weight: bold; }
@@ -158,7 +160,7 @@
         #info-panel::-webkit-scrollbar-thumb, #quiz-panel::-webkit-scrollbar-thumb, #profile-hud::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
 
         /* ========================================= */
-        /* 📱 MOBILE RESPONSIVE DESIGN (Media Query) */
+        /* 📱 MOBILE RESPONSIVE DESIGN (Portrait)    */
         /* ========================================= */
         @media (max-width: 768px) {
             .welcome-box h1 { font-size: 1.8rem; }
@@ -168,10 +170,10 @@
             #copyright-notice { font-size: 0.5rem; bottom: 2px; }
 
             /* Mobile Stacked Docking */
-            #profile-hud { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: 45px !important; right: auto !important; padding: 10px 15px !important; }
-            #info-panel { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: 190px !important; max-height: 35vh; padding: 10px 15px 15px 15px; }
-            #time-controls { width: 85vw !important; left: 50% !important; transform: translateX(-50%); bottom: 25px !important; top: auto !important; padding: 10px 15px 15px 15px; }
-            #quiz-panel { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: auto !important; bottom: 105px !important; right: auto !important; }
+            #profile-hud { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: env(safe-area-inset-top, 45px) !important; right: auto !important; padding: 10px 15px !important; }
+            #info-panel { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: calc(env(safe-area-inset-top, 45px) + 70px) !important; max-height: 45vh; padding: 10px 15px 15px 15px; }
+            #time-controls { width: 85vw !important; left: 50% !important; transform: translateX(-50%); bottom: env(safe-area-inset-bottom, 25px) !important; top: auto !important; padding: 10px 15px 15px 15px; }
+            #quiz-panel { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: auto !important; bottom: calc(env(safe-area-inset-bottom, 25px) + 80px) !important; right: auto !important; }
 
             .panel-header { margin-bottom: 5px; padding-bottom: 2px; }
             .drag-handle-zone { font-size: 1rem; color: #555; }
@@ -183,9 +185,9 @@
         }
 
         /* ========================================= */
-        /* 📱 MOBILE LANDSCAPE DESIGN (Short Screens)*/
+        /* 📱 MOBILE LANDSCAPE DESIGN (All Phones)   */
         /* ========================================= */
-        @media (max-height: 500px) and (orientation: landscape) {
+        @media (max-width: 950px) and (orientation: landscape) {
             .welcome-box { max-height: 90vh; overflow-y: auto; padding: 15px; }
             .welcome-box h1 { font-size: 1.5rem; margin-bottom: 5px; }
             .welcome-box p { font-size: 0.85rem; margin-bottom: 10px; }
@@ -193,11 +195,11 @@
 
             .matrix-footer, .hint, #copyright-notice { display: none !important; }
 
-            #profile-hud { width: 220px !important; right: 10px !important; left: auto !important; top: 10px !important; padding: 5px 15px !important; }
-            
-            /* ADDED FLEX OVERFLOW FIX FOR LANDSCAPE SCROLLING */
-            #quiz-panel { width: 220px !important; right: 10px !important; left: auto !important; top: 180px !important; max-height: 50vh !important; display: flex !important; flex-direction: column; padding: 10px !important; overflow: hidden !important; }
-            #info-panel { width: 260px !important; left: 10px !important; top: 10px !important; max-height: 90vh !important; display: flex !important; flex-direction: column; padding: 10px 15px !important; overflow: hidden !important; }
+            /* Dodge the iPhone Notches */
+            #profile-hud { width: 220px !important; right: env(safe-area-inset-right, 10px) !important; left: auto !important; top: env(safe-area-inset-top, 10px) !important; padding: 5px 15px !important; }
+            #quiz-panel { width: 220px !important; right: env(safe-area-inset-right, 10px) !important; left: auto !important; top: auto !important; bottom: env(safe-area-inset-bottom, 10px) !important; max-height: 45vh !important; display: flex !important; flex-direction: column; padding: 10px !important; overflow: hidden !important; }
+            #info-panel { width: 260px !important; left: env(safe-area-inset-left, 10px) !important; top: env(safe-area-inset-top, 10px) !important; max-height: 85vh !important; display: flex !important; flex-direction: column; padding: 10px 15px !important; overflow: hidden !important; }
+            #time-controls { width: 200px !important; left: 50% !important; transform: translateX(-50%); bottom: env(safe-area-inset-bottom, 10px) !important; top: auto !important; padding: 10px 15px 15px 15px; }
             
             #info-content { flex: 1; min-height: 0; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; overscroll-behavior: contain; touch-action: auto !important; padding-right: 5px; }
             #quiz-content { flex: 1; min-height: 0; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; overscroll-behavior: contain; touch-action: auto !important; }
@@ -206,8 +208,6 @@
             .nickname { font-size: 0.75rem; margin-bottom: 5px; }
             p { font-size: 0.8rem; margin-bottom: 8px; line-height: 1.3; }
             .fun-fact-box { padding: 8px; font-size: 0.75rem; margin-bottom: 8px; }
-
-            #time-controls { width: 200px !important; left: 50% !important; transform: translateX(-50%); bottom: 10px !important; top: auto !important; padding: 10px 15px 15px 15px; }
 
             .panel-header { margin-bottom: 5px; padding-bottom: 2px; }
             .drag-handle-zone::after { content: " (Docked)"; font-size: 0.7rem; font-weight: normal; }
@@ -477,7 +477,8 @@
             setTimeout(() => { 
                 welcomeOverlay.style.display = 'none'; 
                 tickerContainer.style.display = 'flex';
-                tickerText.style.animation = 'tickerScroll 35s linear forwards';
+                // Trigger precise animation length
+                tickerText.style.animation = 'tickerScroll 25s linear forwards';
                 profileHud.style.display = 'flex'; // Show the HUD
             }, 500);
 
@@ -485,6 +486,7 @@
             speakSafely(customGreeting);
         });
 
+        // Hides precisely when the text is 100% off-screen
         tickerText.addEventListener('animationend', () => { tickerContainer.style.display = 'none'; });
 
         // --- 2. THREE.JS SETUP ---
@@ -737,6 +739,15 @@
             window.addEventListener('pointerup', () => isDragging = false);
         });
 
+        // --- AUTO MINIMIZE PANELS FOR MOBILE DEVICES ON LOAD ---
+        if (window.innerWidth <= 850) {
+            panels.forEach(p => {
+                document.getElementById(p.content).classList.add('collapsed-content');
+                document.getElementById(p.id).classList.add('collapsed');
+                document.getElementById(p.min).innerText = '+';
+            });
+        }
+
         // --- 7. V3 QUIZ LOGIC (XP LEARNER TRACK) ---
         const quizSets = [
             [{ q: "Can you find the hottest planet in the Solar System?", answer: "Venus" }, { q: "Which planet is known as the Red Planet?", answer: "Mars" }, { q: "Find the planet with the most spectacular rings!", answer: "Saturn" }, { q: "Which planet is known as our Blue Marble?", answer: "Earth" }, { q: "Can you find the largest planet in our solar system?", answer: "Jupiter" }],
@@ -835,6 +846,7 @@
                 }
 
                 returningToCenter = false; 
+                // Auto-expand Info Panel when a planet is clicked
                 if (document.getElementById('info-content').classList.contains('collapsed-content')) document.getElementById('info-min-btn').click();
                 
                 // --- V3 TODDLER DISCOVERY LOGIC ---
@@ -951,7 +963,5 @@
             });
         }
     </script>
-
-    
 </body>
 </html>
