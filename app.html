@@ -68,7 +68,6 @@
             letter-spacing: 1px; transform: translateX(100vw);
         }
 
-        /* Perfectly timed ticker animation */
         @keyframes tickerScroll {
             0% { transform: translateX(100vw); }
             100% { transform: translateX(-100%); } 
@@ -169,16 +168,14 @@
             .matrix-footer, .hint { display: none !important; }
             #copyright-notice { font-size: 0.5rem; bottom: 2px; }
 
-            /* Mobile Stacked Docking */
-            #profile-hud { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: env(safe-area-inset-top, 45px) !important; right: auto !important; padding: 10px 15px !important; }
-            #info-panel { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: calc(env(safe-area-inset-top, 45px) + 70px) !important; max-height: 45vh; padding: 10px 15px 15px 15px; }
-            #time-controls { width: 85vw !important; left: 50% !important; transform: translateX(-50%); bottom: env(safe-area-inset-bottom, 25px) !important; top: auto !important; padding: 10px 15px 15px 15px; }
-            #quiz-panel { width: 85vw !important; left: 50% !important; transform: translateX(-50%); top: auto !important; bottom: calc(env(safe-area-inset-bottom, 25px) + 80px) !important; right: auto !important; }
+            /* Removed !important from positions so JS drag can override them */
+            #profile-hud { width: 85vw !important; left: 50%; transform: translateX(-50%); top: env(safe-area-inset-top, 45px); padding: 10px 15px !important; }
+            #info-panel { width: 85vw !important; left: 50%; transform: translateX(-50%); top: calc(env(safe-area-inset-top, 45px) + 70px); max-height: 45vh; padding: 10px 15px 15px 15px; }
+            #time-controls { width: 85vw !important; left: 50%; transform: translateX(-50%); bottom: env(safe-area-inset-bottom, 25px); padding: 10px 15px 15px 15px; }
+            #quiz-panel { width: 85vw !important; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 25px) + 80px); }
 
             .panel-header { margin-bottom: 5px; padding-bottom: 2px; }
             .drag-handle-zone { font-size: 1rem; color: #555; }
-            .drag-handle-zone::after { content: " (Docked)"; font-size: 0.7rem; font-weight: normal; }
-
             .time-btn { width: 35px; height: 35px; font-size: 1rem; }
             #ticker-text { font-size: 0.75rem; }
             .role-emoji { font-size: 1.8rem; }
@@ -195,11 +192,11 @@
 
             .matrix-footer, .hint, #copyright-notice { display: none !important; }
 
-            /* Dodge the iPhone Notches */
-            #profile-hud { width: 220px !important; right: env(safe-area-inset-right, 10px) !important; left: auto !important; top: env(safe-area-inset-top, 10px) !important; padding: 5px 15px !important; }
-            #quiz-panel { width: 220px !important; right: env(safe-area-inset-right, 10px) !important; left: auto !important; top: auto !important; bottom: env(safe-area-inset-bottom, 10px) !important; max-height: 45vh !important; display: flex !important; flex-direction: column; padding: 10px !important; overflow: hidden !important; }
-            #info-panel { width: 260px !important; left: env(safe-area-inset-left, 10px) !important; top: env(safe-area-inset-top, 10px) !important; max-height: 85vh !important; display: flex !important; flex-direction: column; padding: 10px 15px !important; overflow: hidden !important; }
-            #time-controls { width: 200px !important; left: 50% !important; transform: translateX(-50%); bottom: env(safe-area-inset-bottom, 10px) !important; top: auto !important; padding: 10px 15px 15px 15px; }
+            /* Removed !important from positions so JS drag can override them */
+            #profile-hud { width: 220px !important; right: env(safe-area-inset-right, 10px); top: env(safe-area-inset-top, 10px); padding: 5px 15px !important; }
+            #quiz-panel { width: 220px !important; right: env(safe-area-inset-right, 10px); bottom: env(safe-area-inset-bottom, 10px); max-height: 45vh !important; display: flex !important; flex-direction: column; padding: 10px !important; overflow: hidden !important; }
+            #info-panel { width: 260px !important; left: env(safe-area-inset-left, 10px); top: env(safe-area-inset-top, 10px); max-height: 85vh !important; display: flex !important; flex-direction: column; padding: 10px 15px !important; overflow: hidden !important; }
+            #time-controls { width: 200px !important; left: 50%; transform: translateX(-50%); bottom: env(safe-area-inset-bottom, 10px); padding: 10px 15px 15px 15px; }
             
             #info-content { flex: 1; min-height: 0; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; overscroll-behavior: contain; touch-action: auto !important; padding-right: 5px; }
             #quiz-content { flex: 1; min-height: 0; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; overscroll-behavior: contain; touch-action: auto !important; }
@@ -210,7 +207,6 @@
             .fun-fact-box { padding: 8px; font-size: 0.75rem; margin-bottom: 8px; }
 
             .panel-header { margin-bottom: 5px; padding-bottom: 2px; }
-            .drag-handle-zone::after { content: " (Docked)"; font-size: 0.7rem; font-weight: normal; }
             .time-btn { width: 35px; height: 35px; font-size: 1rem; }
             .role-emoji { font-size: 1.5rem; }
         }
@@ -353,7 +349,7 @@
         let discoveredBodies = JSON.parse(localStorage.getItem('solar_discovered')) || [];
         
         function getRankDetails(xp) {
-            if (xp >= 50) return { name: "Universe Master", icon: "👑", prev: 50, next: 50 }; // Max level
+            if (xp >= 50) return { name: "Universe Master", icon: "👑", prev: 50, next: 50 };
             if (xp >= 30) return { name: "Galactic Commander", icon: "🎖️", prev: 30, next: 50 };
             if (xp >= 15) return { name: "Star Pilot", icon: "🛸", prev: 15, next: 30 };
             if (xp >= 5)  return { name: "Astrogator", icon: "🧭", prev: 5, next: 15 };
@@ -371,7 +367,6 @@
             hudName.innerText = formattedUserName;
             hudRank.innerText = `${rank.name} ${rank.icon}`;
 
-            // Calculate XP Bar percentage
             if (rank.name === "Universe Master") {
                 hudXpFill.style.width = "100%";
                 hudXpFill.style.background = "#ffcc00";
@@ -384,7 +379,6 @@
                 hudXpText.innerText = `XP: ${quizXP} / ${rank.next} to Next Rank`;
             }
 
-            // Update Toddler Stars (Max 10)
             let starString = "";
             for (let i = 0; i < 10; i++) {
                 starString += (i < discoveredBodies.length) ? "★" : "☆";
@@ -421,11 +415,9 @@
         const roleCards = document.querySelectorAll('.role-card');
         let selectedRole = "";
 
-        // Auto-fill form if they played before
         if (localStorage.getItem('solar_name_raw')) {
             inputName.value = localStorage.getItem('solar_name_raw');
             selectGender.value = localStorage.getItem('solar_gender') || "";
-            // Trigger gender change logic to update avatars
             if(selectGender.value) selectGender.dispatchEvent(new Event('change'));
         }
 
@@ -452,7 +444,6 @@
             btnEnterUniverse.disabled = !(inputName.value.trim() !== "" && selectGender.value !== "" && selectedRole !== "");
         }
         
-        // Call validation on load in case it auto-filled
         validateForm();
 
         btnEnterUniverse.addEventListener('click', () => {
@@ -466,27 +457,23 @@
 
             formattedUserName = `${titlePrefix}${rawName}`;
             
-            // Save to LocalStorage
             localStorage.setItem('solar_name', formattedUserName);
             localStorage.setItem('solar_name_raw', rawName);
             localStorage.setItem('solar_gender', selectGender.value);
 
-            // Initialize UI
             updateProfileUI();
 
             setTimeout(() => { 
                 welcomeOverlay.style.display = 'none'; 
                 tickerContainer.style.display = 'flex';
-                // Trigger precise animation length
                 tickerText.style.animation = 'tickerScroll 25s linear forwards';
-                profileHud.style.display = 'flex'; // Show the HUD
+                profileHud.style.display = 'flex'; 
             }, 500);
 
             const customGreeting = `Welcome back to the solar system, ${formattedUserName}! Our solar system consists of the Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune, and Pluto. Enjoy your exploration!`;
             speakSafely(customGreeting);
         });
 
-        // Hides precisely when the text is 100% off-screen
         tickerText.addEventListener('animationend', () => { tickerContainer.style.display = 'none'; });
 
         // --- 2. THREE.JS SETUP ---
@@ -723,6 +710,15 @@
             handle.addEventListener('pointerdown', (e) => { 
                 isDragging = true; 
                 const rect = panel.getBoundingClientRect(); 
+                
+                // 🛠️ The Fix: We grab the absolute screen position and strip away the CSS centering
+                // This allows the panel to be moved freely even if it was auto-docked by media queries
+                panel.style.left = rect.left + 'px';
+                panel.style.top = rect.top + 'px';
+                panel.style.bottom = 'auto'; 
+                panel.style.right = 'auto';
+                panel.style.transform = 'none';
+
                 offsetX = e.clientX - rect.left; 
                 offsetY = e.clientY - rect.top; 
                 e.stopPropagation(); 
@@ -739,8 +735,9 @@
             window.addEventListener('pointerup', () => isDragging = false);
         });
 
-        // --- AUTO MINIMIZE PANELS FOR MOBILE DEVICES ON LOAD ---
-        if (window.innerWidth <= 850) {
+        // --- 🛠️ THE FIX: AUTO MINIMIZE PANELS FOR ALL MOBILE/TABLET DEVICES ON LOAD ---
+        // Bumped threshold to 950px to catch iPhone 16 Pro and large phones in landscape mode
+        if (window.innerWidth <= 950 || window.innerHeight <= 600) {
             panels.forEach(p => {
                 document.getElementById(p.content).classList.add('collapsed-content');
                 document.getElementById(p.id).classList.add('collapsed');
@@ -793,7 +790,7 @@
                     speakSafely(`Incredible! You have been promoted to the rank of ${newRank.name}!`);
                     quizFeedbackEl.style.color = "#ffcc00";
                     quizFeedbackEl.innerText = `🌟 LEVEL UP! You are now a ${newRank.name}! 🌟`;
-                }, 2000); // Trigger after the correct answer logic
+                }, 2000); 
             }
         }
 
@@ -818,7 +815,6 @@
         }
         document.getElementById('reset-btn').onclick = returnToOrbit;
 
-        // Combine sun mesh and planet meshes for click detection
         const clickableObjects = [sun, ...planets.map(p => p.mesh)];
 
         renderer.domElement.addEventListener('pointerdown', (event) => {
@@ -831,7 +827,6 @@
             if (intersects.length > 0) {
                 const clickedObj = intersects[0].object;
                 
-                // Identify if they clicked the Sun or a Planet
                 let objName = "The Sun";
                 let objData = null;
                 if (clickedObj === sun) {
@@ -849,13 +844,12 @@
                 // Auto-expand Info Panel when a planet is clicked
                 if (document.getElementById('info-content').classList.contains('collapsed-content')) document.getElementById('info-min-btn').click();
                 
-                // --- V3 TODDLER DISCOVERY LOGIC ---
                 if (!discoveredBodies.includes(objName)) {
                     discoveredBodies.push(objName);
                     localStorage.setItem('solar_discovered', JSON.stringify(discoveredBodies));
-                    updateProfileUI(); // Update stars
+                    updateProfileUI(); 
                     
-                    if (!quizActive) { // Prioritize quiz audio if active
+                    if (!quizActive) { 
                         if (discoveredBodies.length === 10) {
                             confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 } });
                             speakSafely(`Amazing! You found all the planets! You are a Little Stargazer!`);
@@ -866,19 +860,18 @@
                     }
                 }
 
-                // --- V3 LEARNER QUIZ LOGIC ---
                 if (quizActive && currentQuestion) {
                     if (objName === currentQuestion.answer) {
                         const oldRank = getRankDetails(quizXP);
-                        quizXP++; // Increment XP
+                        quizXP++; 
                         localStorage.setItem('solar_xp', quizXP);
-                        updateProfileUI(); // Update HUD bar
+                        updateProfileUI(); 
 
                         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                         quizFeedbackEl.style.color = "#44ff44"; quizFeedbackEl.innerText = `Correct! That's ${objName}! (+1 XP)`;
                         speakSafely(`Correct! That is ${objName}.`);
                         
-                        handleLevelUpCheck(oldRank); // Check for promotion
+                        handleLevelUpCheck(oldRank); 
 
                         setTimeout(() => { if (quizActive) nextQuestion(); }, 2500); 
                     } else {
@@ -887,13 +880,11 @@
                     }
                 }
 
-                // Update Info Panel UI
                 if (objData) {
                     document.getElementById('p-name').innerHTML = `${objData.emoji} ${objData.name} <span class="audio-icon" id="audio-indicator">🔊</span>`;
                     document.getElementById('p-nickname').innerText = objData.nickname; document.getElementById('p-nickname').style.display = 'block';
                     document.getElementById('p-desc').innerText = objData.info; 
                     
-                    // Pick a random fun fact from the expanded array
                     const randomFact = objData.funfacts[Math.floor(Math.random() * objData.funfacts.length)];
                     document.getElementById('p-funfact-text').innerText = randomFact; 
                     
