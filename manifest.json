@@ -1,19 +1,19 @@
 {
-  "name": "3D Solar System for Kids",
-  "short_name": "Solar 3D",
-  "start_url": "./index.html",
-  "display": "fullscreen",
+  "name": "Solar System 3D",
+  "short_name": "SolarSystem",
+  "description": "An Interactive, Photorealistic EdTech Universe.",
+  "start_url": "/app.html",
+  "display": "standalone",
   "background_color": "#030303",
-  "theme_color": "#ffcc00",
-  "orientation": "any",
+  "theme_color": "#030303",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
