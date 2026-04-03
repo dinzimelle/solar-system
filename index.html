@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System 3D | Educational Space Simulator</title>
+    <style>
+        /* 🌌 MODERN MINIMALIST RESET */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
+        body { background-color: #030303; color: #ffffff; overflow-x: hidden; line-height: 1.6; }
+
+        /* ✨ UPGRADED GALAXY & STARRY BACKGROUND */
+        .stars { 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; 
+            background-color: #030303;
+            /* Pulls the exact Milky Way texture from your app and darkens it for text readability */
+            background-image: linear-gradient(rgba(3, 3, 3, 0.5), rgba(3, 3, 3, 0.95)), url('textures/milkyway.jpg');
+            background-size: cover; background-position: center;
+        }
+
+        /* Layer 1: Dense, tiny static background stars */
+        .stars::before {
+            content: ''; position: absolute; width: 1px; height: 1px; background: transparent;
+            box-shadow: 
+                5vw 10vh #fff, 15vw 30vh #fff, 25vw 80vh #fff, 35vw 20vh #fff, 45vw 60vh #fff, 55vw 90vh #fff, 
+                65vw 15vh #fff, 75vw 45vh #fff, 85vw 75vh #fff, 95vw 25vh #fff, 10vw 50vh #fff, 20vw 15vh #fff, 
+                30vw 90vh #fff, 40vw 40vh #fff, 50vw 85vh #fff, 60vw 10vh #fff, 70vw 65vh #fff, 80vw 30vh #fff, 
+                90vw 85vh #fff, 12vw 70vh #fff, 28vw 35vh #fff, 48vw 15vh #fff, 68vw 85vh #fff, 88vw 50vh #fff;
+            opacity: 0.4;
+        }
+
+        /* Layer 2: Brighter, colored twinkling foreground stars */
+        .stars::after {
+            content: ''; position: absolute; width: 2px; height: 2px; background: transparent;
+            box-shadow: 
+                8vw 22vh #ffcc00, 22vw 78vh #fff, 38vw 12vh #88ccff, 52vw 58vh #fff, 62vw 88vh #ffcc00, 
+                78vw 18vh #fff, 88vw 68vh #88ccff, 18vw 42vh #fff, 42vw 82vh #fff, 72vw 32vh #ffcc00,
+                5vw 95vh #fff, 95vw 5vh #fff, 50vw 50vh #88ccff;
+            animation: twinkle 4s infinite alternate ease-in-out;
+        }
+
+        @keyframes twinkle { 
+            0% { opacity: 0.1; } 
+            100% { opacity: 1; } 
+        }
+
+        /* 🚀 NAVIGATION */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; max-width: 1200px; margin: 0 auto; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: #ffcc00; letter-spacing: 1px; text-transform: uppercase; }
+        .nav-btn { background: #88ccff; color: #000; text-decoration: none; padding: 10px 24px; border-radius: 50px; font-weight: bold; transition: 0.3s; }
+        .nav-btn:hover { background: #fff; transform: scale(1.05); box-shadow: 0 0 15px rgba(136, 204, 255, 0.5); }
+
+        /* 🦸‍♂️ HERO SECTION */
+        .hero { text-align: center; padding: 100px 20px 60px; max-width: 900px; margin: 0 auto; }
+        .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; background: linear-gradient(to right, #ffffff, #88ccff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: clamp(1rem, 2vw, 1.25rem); color: #aaaaaa; margin-bottom: 40px; max-width: 600px; margin-inline: auto; }
+        .cta-btn { display: inline-block; background: #ffcc00; color: #000; text-decoration: none; padding: 18px 40px; border-radius: 12px; font-size: 1.2rem; font-weight: 800; transition: 0.3s; box-shadow: 0 10px 30px rgba(255, 204, 0, 0.2); }
+        .cta-btn:hover { background: #ffe666; transform: translateY(-3px); box-shadow: 0 15px 40px rgba(255, 204, 0, 0.4); }
+
+        /* 🍱 BENTO BOX FEATURE GRID */
+        .bento-container { 
+            max-width: 1200px; margin: 0 auto; padding: 20px 20px 100px; 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; 
+            grid-auto-flow: dense;
+        }
+        
+        .bento-card { 
+            background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-radius: 24px; padding: 35px 30px; transition: 0.3s; display: flex; flex-direction: column; justify-content: flex-start;
+        }
+        .bento-card:hover { border-color: rgba(136, 204, 255, 0.3); transform: translateY(-5px); }
+        
+        .bento-icon { font-size: 2.8rem; margin-bottom: 15px; display: block; }
+        .bento-title { font-size: 1.4rem; color: #fff; margin-bottom: 10px; font-weight: 700; }
+        .bento-desc { color: #aaa; font-size: 0.95rem; line-height: 1.5; }
+        .feature-list { list-style: none; margin-top: 15px; color: #88ccff; font-size: 0.85rem; font-weight: bold; }
+        .feature-list li { margin-bottom: 5px; }
+        .feature-list li::before { content: '✓ '; color: #ffcc00; }
+
+        /* Grid Spanning Rules */
+        .span-2 { grid-column: span 2; }
+        @media (max-width: 900px) { .span-2 { grid-column: span 1; } }
+
+        /* 🛡️ FOOTER */
+        footer { text-align: center; padding: 40px 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); color: #555; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    <div class="stars"></div>
+
+    <nav>
+        <div class="logo">Solar System 3D</div>
+        <a href="app.html" class="nav-btn">Launch App</a>
+    </nav>
+
+    <header class="hero">
+        <h1>Explore the Cosmos.<br>Right from your browser.</h1>
+        <p>A photorealistic, fully interactive 3D universe featuring personalized AI guides, gamified learning, and millions of miles of deep space. No downloads required.</p>
+        <a href="app.html" class="cta-btn">Enter the Universe 🚀</a>
+    </header>
+
+    <section class="bento-container">
+        <div class="bento-card span-2" style="background: linear-gradient(145deg, rgba(20,20,30,0.8), rgba(10,20,40,0.8)); border-color: rgba(136,204,255,0.2);">
+            <span class="bento-icon">🌌</span>
+            <h3 class="bento-title">Cinematic 3D Immersion</h3>
+            <p class="bento-desc">Experience the true scale of the cosmos. Our engine renders stunning high-definition planetary maps surrounded by a breathtaking deep space environment.</p>
+            <ul class="feature-list">
+                <li>2K Photorealistic Planetary Textures</li>
+                <li>3,000+ Particle Kuiper Belt Simulation</li>
+                <li>Glowing Andromeda Galaxy Background</li>
+                <li>Interactive Time Warp Controls (Speed up/Pause time)</li>
+            </ul>
+        </div>
+
+        <div class="bento-card">
+            <span class="bento-icon">🧑‍🚀</span>
+            <h3 class="bento-title">Personalized Onboarding</h3>
+            <p class="bento-desc">Students select their gender and future STEM role (Doctor, Engineer, Commander) to receive a customized title, avatar, and a personalized AI welcome to the solar system.</p>
+        </div>
+
+        <div class="bento-card span-2" style="background: linear-gradient(145deg, rgba(40,30,0,0.8), rgba(20,15,0,0.8)); border-color: rgba(255,204,0,0.2);">
+            <span class="bento-icon">🎮</span>
+            <h3 class="bento-title">Dual-Track Gamification Engine</h3>
+            <p class="bento-desc">A progression system built for all ages. Learning is reinforced through positive feedback, confetti celebrations, and a persistent browser save state.</p>
+            <ul class="feature-list">
+                <li><strong>Toddler Track:</strong> Earn glowing Discovery Stars (⭐) just for finding planets.</li>
+                <li><strong>Learner Track:</strong> Answer Quiz questions to earn XP and rank up from Space Cadet to Universe Master!</li>
+                <li><strong>Social Share:</strong> Native Web Share API to post your rank to social media.</li>
+            </ul>
+        </div>
+
+        <div class="bento-card">
+            <span class="bento-icon">🔊</span>
+            <h3 class="bento-title">Dynamic Knowledge Engine</h3>
+            <p class="bento-desc">The built-in AI Narrator uses the Web Speech API to read aloud shuffling fun facts for every planet, making learning highly accessible for emerging readers.</p>
+        </div>
+
+        <div class="bento-card">
+            <span class="bento-icon">📱</span>
+            <h3 class="bento-title">Native Mobile Excellence</h3>
+            <p class="bento-desc">Flawless touch controls. Features a completely modular, draggable HUD that automatically docks itself based on Portrait or Landscape screen orientations.</p>
+        </div>
+
+        <div class="bento-card">
+            <span class="bento-icon">🔒</span>
+            <h3 class="bento-title">100% School Safe</h3>
+            <p class="bento-desc">Enterprise-grade security. Zero ads, zero tracking, and a zero-backend architecture. All progress is saved locally, ensuring complete COPPA & GDPR compliance.</p>
+        </div>
+
+    </section>
+
+    <footer>
+        <p>© 2026 solarsystem3d.space. Built with Three.js. Designed for the future young scientists of Earth.</p>
+    </footer>
+
+</body>
+</html>
