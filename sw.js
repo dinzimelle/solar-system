@@ -1,27 +1,66 @@
-const CACHE_NAME = 'solar-system-cache-v1';
-const ASSETS_TO_CACHE = [
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+const CACHE_NAME = 'solar-system-cache-v3.0.1';
+
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/app.html',
+  '/manifest.json',
+  '/textures/sun.jpg',
+  '/textures/mercury.jpg',
+  '/textures/venus.jpg',
+  '/textures/earth.jpg',
+  '/textures/mars.jpg',
+  '/textures/jupiter.jpg',
+  '/textures/saturn.jpg',
+  '/textures/uranus.jpg',
+  '/textures/neptune.jpg',
+  '/textures/pluto.jpg',
+  '/textures/milkyway.jpg',
+  '/textures/andromeda.jpg'
 ];
 
-// Step 1: Install the Service Worker and Cache the files
-self.addEventListener('install', (event) => {
+// 1. INSTALL: Save the new V3.0.1 files to the device
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('DevOps Engine: Caching app assets for offline use.');
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('Opened cache v3.0.1');
+        return cache.addAll(urlsToCache);
+      })
   );
+  // Force the waiting service worker to become the active service worker
+  self.skipWaiting();
 });
 
-// Step 2: Intercept network requests and serve from cache if offline
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      // Return the cached version if found, otherwise go to the internet
-      return cachedResponse || fetch(event.request);
+// 2. ACTIVATE: Delete any old caches (like V2.6.0) to free up storage
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
     })
+  );
+  // Ensure the Service Worker takes control immediately
+  self.clients.claim();
+});
+
+// 3. FETCH: Intercept network requests and return cached files if available
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        // Cache hit - return the fast local file
+        if (response) {
+          return response;
+        }
+        // Cache miss - fetch from the internet
+        return fetch(event.request);
+      })
   );
 });
